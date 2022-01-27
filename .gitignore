@@ -58,3 +58,6 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Ignore UserSettings folder
+# See tinyurl.com/bdhm8u95 for details
+/[Uu]serSettings/**/
