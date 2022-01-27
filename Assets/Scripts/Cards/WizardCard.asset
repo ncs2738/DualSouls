@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: WizardCard
   m_EditorClassIdentifier: 
   name: Wizard
-  artwork: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  artwork: {fileID: 21300000, guid: 321719cd5faceeb4fab398aed1763090, type: 3}
   unit: {fileID: 11400000, guid: e2bf97ce10c1c9e4d97b58ed59e89f55, type: 2}
+  frontDescription: White frame wizard
+  backDescription: Black frame wizard

@@ -28,13 +28,18 @@ public static class EnumUtils
     /// <param name="k">How many random elements to take</param>
     /// <returns>A list of k randomly chosen elements, in order</returns>
     public static List<Elements> RandomElementCombination(int k) {
-        List<Elements> elementList = new List<Elements>(k);
+        List<Elements> elementList = new List<Elements>(k) {
+            Elements.FIRE,
+            Elements.WATER,
+            Elements.GRASS
+        };
         List<Elements> combination = new List<Elements>(k);
 
-        while (elementList.Count > 0)
+        while (elementList.Count > 0 && combination.Count < k)
         {
-            combination.Add(elementList[Random.Range(0,elementList.Count)]);
-            elementList.RemoveAt(elementList.Count - 1);
+            int randomIndex = Random.Range(0, elementList.Count);
+            combination.Add(elementList[randomIndex]);
+            elementList.RemoveAt(randomIndex);
         }
 
         // Ensure "Fire-Water" and "Water-Fire" look the same after the function,
@@ -47,5 +52,37 @@ public static class EnumUtils
     public static Faces RandomFace()
     {
         return Random.Range(0, 2) == 0 ? Faces.FRONT : Faces.BACK;
+    }
+
+    // Used for now instead of actual images
+    public static Color GetColor(this Faces face)
+    {
+        switch (face)
+        {
+            case Faces.FRONT:
+                return Color.white;
+            case Faces.BACK:
+                return Color.black;
+            default:
+                // impossible case but keeps the compiler happy
+                return Color.magenta;
+        }
+    }
+
+    // Used for now instead of actual images
+    public static Color GetColor(this Elements element)
+    {
+        switch (element)
+        {
+            case Elements.FIRE:
+                return Color.red;
+            case Elements.WATER:
+                return Color.blue;
+            case Elements.GRASS:
+                return Color.green;
+            default:
+                // impossible case but keeps the compiler happy
+                return Color.magenta;
+        }
     }
 }

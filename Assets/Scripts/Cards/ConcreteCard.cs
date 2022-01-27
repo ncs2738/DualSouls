@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ConcreteCard : MonoBehaviour
 {
     public CardKind cardKind;
+    public string Name => cardKind.name;
+    public Sprite Artwork => cardKind.artwork;
+    public UnitKind Unit => cardKind.unit;
+    public string FrontDescription => cardKind.frontDescription;
+    public string BackDescription => cardKind.backDescription;
     public Elements elementOne;
     public Elements elementTwo;
     public Faces face;
@@ -12,6 +18,11 @@ public class ConcreteCard : MonoBehaviour
     public void Flip()
     {
         face = face.Opposite();
+
+        if (OnModified != null)
+        {
+            OnModified();
+        }
     }
 
     public void Reshuffle()
@@ -21,5 +32,12 @@ public class ConcreteCard : MonoBehaviour
         elementTwo = randomElements[1];
 
         face = EnumUtils.RandomFace();
+
+        if (OnModified != null)
+        {
+            OnModified();
+        }
     }
+
+    public event Action OnModified; 
 }
