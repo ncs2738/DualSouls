@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb8452ca1ae838a46a29e7961564926c, type: 3}
-  m_Name: SoldierKind
+  m_Name: ThiefCard
   m_EditorClassIdentifier: 
-  name: Warrior
-  artwork: {fileID: 21300000, guid: d74e32fdea977224087d095a267d37bd, type: 3}
+  name: Thief
+  artwork: {fileID: 21300000, guid: 7bf8d8bc81a11484bbaddb2886d6e3ef, type: 3}
   unit: {fileID: 11400000, guid: e2bf97ce10c1c9e4d97b58ed59e89f55, type: 2}
-  frontDescription: warrior has white frame
-  backDescription: warrior has black frame
+  frontDescription: flip your card
+  backDescription: flip your opponent's card
