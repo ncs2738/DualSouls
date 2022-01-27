@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     [SerializeField]
-    private SpriteRenderer renderer;
+    private new SpriteRenderer renderer;
     [SerializeField]
     private GameObject tileHighlight;
 

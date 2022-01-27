@@ -19,7 +19,7 @@ public class GridManager : MonoBehaviour
     private Tile tile;
 
     [SerializeField]
-    private Transform camera;
+    private new Transform camera;
 
     private Dictionary<Vector2, Tile> tiles;
 
