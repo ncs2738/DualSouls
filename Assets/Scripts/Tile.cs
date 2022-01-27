@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -12,29 +13,27 @@ public class Tile : MonoBehaviour
     private TileType tileType = 0;
     private bool isWalkable = true;
 
-    private bool canSpawnUnitOn = false;
-
     private PlayerTeam.Faction tileOwner = PlayerTeam.Faction.None;
 
     private Unit occupiedUnit = null;
 
+    private TileType maxTypeVal;
+    private TileType minTypeVal;
+
     public enum TileType
     {
         Grass = 0,
-        Mountain = 1
+        Fortress = 1,
+        MainFortress = 2,
+        SpawnableTile = 3,
     }
 
     private void Start()
     {
-        if (tileType == TileType.Grass)
-        {
-            this.renderer.color = Color.black;
-        }
-        else
-        {
-            this.renderer.color = Color.red;
-            tileType = TileType.Mountain;
-        }
+        maxTypeVal = System.Enum.GetValues(typeof(TileType)).Cast<TileType>().Max();
+        minTypeVal = System.Enum.GetValues(typeof(TileType)).Cast<TileType>().Min();
+
+        SetTileType(tileType);
     }
 
     private void OnMouseEnter()
@@ -53,13 +52,47 @@ public class Tile : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                this.renderer.color = Color.black;
+                tileType++;
+
+                if(tileType > maxTypeVal)
+                {
+                    tileType = minTypeVal;
+                }
             }
-            else if (Input.GetMouseButtonDown(1))
+
+            if (Input.GetMouseButtonDown(1))
             {
-                this.renderer.color = Color.red;
-                tileType = TileType.Mountain;
+                tileType--;
+
+                if (tileType < minTypeVal)
+                {
+                    tileType = maxTypeVal;
+                }
             }
+
+            if (Input.GetMouseButtonDown(2))
+            {
+                if(occupiedUnit == null)
+                {
+                    UnitManager.Instance.AddUnit(this);
+                }
+                else
+                {
+                    Debug.Log(occupiedUnit);
+                    UnitManager.Instance.RemoveUnit(occupiedUnit);
+                }
+            }
+
+            if(occupiedUnit)
+            {
+                if(Input.GetKeyDown(KeyCode.Space))
+                {
+                    UnitManager.Instance.SwapUnitTeam(occupiedUnit);
+                }
+            }
+
+
+            SetTileType(tileType);
         }
     }
 
@@ -73,22 +106,50 @@ public class Tile : MonoBehaviour
         return false;
     }
 
-    public void SetIsWalkable(bool _isWalkable)
+    public void OccupyTile(Unit newUnit)
     {
-        isWalkable = _isWalkable;
+        occupiedUnit = newUnit;
+        occupiedUnit.SetTileLocation(this);
+    }
+
+    public void RemoveUnit()
+    {
+        occupiedUnit = null;
     }
 
     public void SetTileType(TileType type)
     {
         tileType = type;
 
-        if (tileType == TileType.Grass)
+        switch(tileType)
         {
-            this.renderer.color = Color.black;
-        }
-        else
-        {
-            this.renderer.color = Color.red;
+            case TileType.Grass:
+            {
+                renderer.color = Color.green;
+                isWalkable = true;            
+                break;
+            }
+
+            case TileType.Fortress:
+            {
+                renderer.color = Color.gray;
+                isWalkable = true;
+                break;
+            }
+
+            case TileType.MainFortress:
+            {
+                renderer.color = Color.black;
+                isWalkable = true;
+                break;
+            }
+
+            case TileType.SpawnableTile:
+            {
+                renderer.color = Color.green;
+                isWalkable = true;
+                break;
+            }
         }
     }
 
@@ -99,7 +160,6 @@ public class Tile : MonoBehaviour
         public bool isWalkable;
         public float posX;
         public float posY;
-        public bool canSpawnUnitOn;
         public PlayerTeam.Faction tileOwner;
         public Unit.SaveObject occupiedUnit;
     }
@@ -114,7 +174,6 @@ public class Tile : MonoBehaviour
                 isWalkable = isWalkable,
                 posX = transform.position.x,
                 posY = transform.position.y,
-                canSpawnUnitOn = canSpawnUnitOn,
                 tileOwner = tileOwner,
                 occupiedUnit = occupiedUnit.Save()
             };
@@ -127,7 +186,6 @@ public class Tile : MonoBehaviour
                 isWalkable = isWalkable,
                 posX = transform.position.x,
                 posY = transform.position.y,
-                canSpawnUnitOn = canSpawnUnitOn,
                 tileOwner = tileOwner,
                 occupiedUnit = null,
             };

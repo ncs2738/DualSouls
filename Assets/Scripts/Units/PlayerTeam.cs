@@ -24,14 +24,21 @@ public class PlayerTeam : MonoBehaviour
 
     public void AddUnit(Unit newUnit)
     {
+        newUnit.SetUnitFaction(playerFaction);
         playerUnits.Add(newUnit);
     }
 
-    public void RemoveUnit(Unit removedUnit)
+    public void RemoveUnit(Unit removedUnit, bool destroyUnit = true)
     {
         if(playerUnits.Contains(removedUnit))
         {
             playerUnits.Remove(removedUnit);
+
+            if(destroyUnit)
+            {
+                removedUnit.ClearTile();
+                Destroy(removedUnit.gameObject);
+            }
         }
     }
 

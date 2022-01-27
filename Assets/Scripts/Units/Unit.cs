@@ -5,10 +5,26 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     PlayerTeam.Faction playerFaction;
+    Tile tileLocation;
+
+    public void SetUnitFaction(PlayerTeam.Faction _playerFaction)
+    {
+        playerFaction = _playerFaction;
+    }
 
     public PlayerTeam.Faction GetFaction()
     {
         return playerFaction;
+    }
+
+    public void SetTileLocation(Tile _tileLocation)
+    {
+        tileLocation = _tileLocation;
+    }
+
+    public void ClearTile()
+    {
+        tileLocation.RemoveUnit();
     }
 
     [System.Serializable]
