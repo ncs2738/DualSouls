@@ -60,4 +60,4 @@ crashlytics-build.properties
 
 # Ignore UserSettings folder
 # See tinyurl.com/bdhm8u95 for details
-/[Uu]serSettings/
+/[Uu]serSettings/**/
