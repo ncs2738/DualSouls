@@ -52,35 +52,23 @@ public class Tile : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                tileType++;
-
-                if (tileType > maxTypeVal)
+                if (Input.GetKey(KeyCode.U))
                 {
-                    tileType = minTypeVal;
+                    AddUnit();
+                } else
+                {
+                    IncrementTileType();
                 }
             }
 
             if (Input.GetMouseButtonDown(1))
             {
-                tileType--;
-
-                if (tileType < minTypeVal)
-                {
-                    tileType = maxTypeVal;
-                }
+                DecrementTileType();
             }
 
             if (Input.GetMouseButtonDown(2))
             {
-                if (occupiedUnit == null)
-                {
-                    UnitManager.Instance.AddUnit(this);
-                }
-                else
-                {
-                    Debug.Log(occupiedUnit);
-                    UnitManager.Instance.RemoveUnit(occupiedUnit);
-                }
+                AddUnit();
             }
 
             if(occupiedUnit)
@@ -93,6 +81,39 @@ public class Tile : MonoBehaviour
 
 
             SetTileType(tileType);
+        }
+    }
+
+    private void AddUnit()
+    {
+        if (occupiedUnit == null)
+        {
+            UnitManager.Instance.AddUnit(this);
+        }
+        else
+        {
+            Debug.Log(occupiedUnit);
+            UnitManager.Instance.RemoveUnit(occupiedUnit);
+        }
+    }
+
+    private void IncrementTileType()
+    {
+        tileType++;
+
+        if (tileType > maxTypeVal)
+        {
+            tileType = minTypeVal;
+        }
+    }
+
+    private void DecrementTileType()
+    {
+        tileType--;
+
+        if (tileType < minTypeVal)
+        {
+            tileType = maxTypeVal;
         }
     }
 
