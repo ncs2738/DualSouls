@@ -30,7 +30,6 @@ public class UnitManager : MonoBehaviour
         Unit newUnit = Instantiate(units[0], new Vector3(tile.transform.position.x, tile.transform.position.y, -1), Quaternion.identity);
         if(faction == PlayerTeam.Faction.Red)
         {
-            Debug.Log("CALLED?");
             redTeam.AddUnit(newUnit);
             tile.OccupyTile(newUnit);
         }

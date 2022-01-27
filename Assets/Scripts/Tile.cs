@@ -54,7 +54,7 @@ public class Tile : MonoBehaviour
             {
                 tileType++;
 
-                if(tileType > maxTypeVal)
+                if (tileType > maxTypeVal)
                 {
                     tileType = minTypeVal;
                 }
@@ -72,7 +72,7 @@ public class Tile : MonoBehaviour
 
             if (Input.GetMouseButtonDown(2))
             {
-                if(occupiedUnit == null)
+                if (occupiedUnit == null)
                 {
                     UnitManager.Instance.AddUnit(this);
                 }
@@ -146,7 +146,7 @@ public class Tile : MonoBehaviour
 
             case TileType.SpawnableTile:
             {
-                renderer.color = Color.green;
+                renderer.color = Color.yellow;
                 isWalkable = true;
                 break;
             }

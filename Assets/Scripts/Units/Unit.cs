@@ -10,6 +10,10 @@ public class Unit : MonoBehaviour
     public void SetUnitFaction(PlayerTeam.Faction _playerFaction)
     {
         playerFaction = _playerFaction;
+        GetComponent<SpriteRenderer>().color =
+            playerFaction == PlayerTeam.Faction.Red
+                ? Color.red
+                : Color.blue;
     }
 
     public PlayerTeam.Faction GetFaction()
