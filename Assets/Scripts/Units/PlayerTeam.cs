@@ -22,8 +22,8 @@ public class PlayerTeam : ScriptableObject
 
     public void Initialize()
     {
-        playerUnits.Initialize();
-        playerFortress.Initialize();
+        playerUnits.Clear();
+        playerFortress.Clear();
     }
 
     public void AddUnit(Unit newUnit)
@@ -65,5 +65,21 @@ public class PlayerTeam : ScriptableObject
             // with a key
             //gameover code here!
         }
+    }
+
+    public void ClearLists()
+    {
+        for(int i = 0; i < playerUnits.Count; i++)
+        {
+            Destroy(playerUnits[i].gameObject);
+        }
+
+        for (int i = 0; i < playerFortress.Count; i++)
+        {
+            Destroy(playerFortress[i].gameObject);
+        }
+
+        playerUnits.Clear();
+        playerFortress.Clear();
     }
 }

@@ -65,4 +65,10 @@ public class UnitManager : MonoBehaviour
             redTeam.AddUnit(removedUnit);
         }
     }
+
+    public void ClearLists()
+    {
+        redTeam.ClearLists();
+        blueTeam.ClearLists();
+    }
 }

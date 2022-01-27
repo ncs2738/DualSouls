@@ -109,6 +109,7 @@ public class GridManager : MonoBehaviour
             }
 
             tiles.Clear();
+            UnitManager.Instance.ClearLists();
         }
         else
         {
@@ -145,6 +146,11 @@ public class GridManager : MonoBehaviour
             Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
 
             tiles.Add(newTile.transform.position, newTile);
+
+            if(savedTile.occupiedUnit.playerFaction != PlayerTeam.Faction.None)
+            {
+                UnitManager.Instance.AddUnit(newTile, savedTile.occupiedUnit.playerFaction);
+            }
         }
 
         OnLoaded?.Invoke(this, EventArgs.Empty);

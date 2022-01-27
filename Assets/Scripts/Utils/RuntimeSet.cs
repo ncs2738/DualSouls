@@ -8,7 +8,7 @@ public abstract class RuntimeSet<T> : ScriptableObject
     [NonSerialized]
     private List<T> items = new List<T>();
 
-    public void Initialize()
+    public void Clear()
     {
         items.Clear();
     }
