@@ -59,4 +59,20 @@ public class PlayerTeam : MonoBehaviour
             //gameover code here!
         }
     }
+
+    public void ClearLists()
+    {
+        for(int i = 0; i < playerUnits.Count; i++)
+        {
+            Destroy(playerUnits[i].gameObject);
+        }
+
+        for (int i = 0; i < playerFortress.Count; i++)
+        {
+            Destroy(playerFortress[i].gameObject);
+        }
+
+        playerUnits.Clear();
+        playerFortress.Clear();
+    }
 }

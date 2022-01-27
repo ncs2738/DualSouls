@@ -187,8 +187,12 @@ public class Tile : MonoBehaviour
                 posX = transform.position.x,
                 posY = transform.position.y,
                 tileOwner = tileOwner,
-                occupiedUnit = null,
             };
         }
+    }
+
+    public void Load(Unit loadedUnit)
+    {
+        UnitManager.Instance.AddUnit(this, loadedUnit.GetFaction());
     }
 }

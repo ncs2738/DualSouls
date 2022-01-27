@@ -64,4 +64,10 @@ public class UnitManager : MonoBehaviour
             redPlayer.AddUnit(removedUnit);
         }
     }
+
+    public void ClearLists()
+    {
+        redPlayer.ClearLists();
+        bluePlayer.ClearLists();
+    }
 }
