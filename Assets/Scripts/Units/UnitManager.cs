@@ -6,8 +6,10 @@ public class UnitManager : MonoBehaviour
 {
     public static UnitManager Instance;
 
-    private PlayerTeam redPlayer;
-    private PlayerTeam bluePlayer;
+    [SerializeField]
+    private PlayerTeam redTeam;
+    [SerializeField]
+    private PlayerTeam blueTeam;
 
     [SerializeField]
     private Unit[] units;
@@ -19,8 +21,8 @@ public class UnitManager : MonoBehaviour
 
     private void Start()
     {
-        redPlayer = new PlayerTeam(PlayerTeam.Faction.Red);
-        bluePlayer = new PlayerTeam(PlayerTeam.Faction.Blue);
+        redTeam.Initialize();
+        blueTeam.Initialize();
     }
 
     public void AddUnit(Tile tile, PlayerTeam.Faction faction = PlayerTeam.Faction.Red)
@@ -29,12 +31,12 @@ public class UnitManager : MonoBehaviour
         if(faction == PlayerTeam.Faction.Red)
         {
             Debug.Log("CALLED?");
-            redPlayer.AddUnit(newUnit);
+            redTeam.AddUnit(newUnit);
             tile.OccupyTile(newUnit);
         }
         else if(faction == PlayerTeam.Faction.Blue)
         {
-            bluePlayer.AddUnit(newUnit);
+            blueTeam.AddUnit(newUnit);
             tile.OccupyTile(newUnit);
         }
     }
@@ -43,11 +45,11 @@ public class UnitManager : MonoBehaviour
     {
         if (removedUnit.GetFaction() == PlayerTeam.Faction.Red)
         {
-            redPlayer.RemoveUnit(removedUnit);
+            redTeam.RemoveUnit(removedUnit);
         }
         else if (removedUnit.GetFaction() == PlayerTeam.Faction.Blue)
         {
-            bluePlayer.RemoveUnit(removedUnit);
+            blueTeam.RemoveUnit(removedUnit);
         }
     }
 
@@ -55,13 +57,13 @@ public class UnitManager : MonoBehaviour
     {
         if (removedUnit.GetFaction() == PlayerTeam.Faction.Red)
         {
-            redPlayer.RemoveUnit(removedUnit, false);
-            bluePlayer.AddUnit(removedUnit);
+            redTeam.RemoveUnit(removedUnit, false);
+            blueTeam.AddUnit(removedUnit);
         }
         else if (removedUnit.GetFaction() == PlayerTeam.Faction.Blue)
         {
-            bluePlayer.RemoveUnit(removedUnit, false);
-            redPlayer.AddUnit(removedUnit);
+            blueTeam.RemoveUnit(removedUnit, false);
+            redTeam.AddUnit(removedUnit);
         }
     }
 }

@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTeam : MonoBehaviour
+[CreateAssetMenu(fileName = "New PlayerTeam", menuName = "ScriptableObjects/PlayerTeam")]
+public class PlayerTeam : ScriptableObject
 {
+    [SerializeField]
     private Faction playerFaction;
-    private List<Unit> playerUnits;
-    private List<Tile> playerFortress;
+    [SerializeField]
+    private UnitRuntimeSet playerUnits;
+    [SerializeField]
+    // TODO: Rename this to playerOwnedForts maybe?
+    private TileRuntimeSet playerFortress;
 
     public enum Faction
     {
@@ -15,11 +20,10 @@ public class PlayerTeam : MonoBehaviour
         Blue = 2,
     }
 
-    public PlayerTeam(Faction _playerFaction)
+    public void Initialize()
     {
-        playerFaction = _playerFaction;
-        playerUnits = new List<Unit>();
-        playerFortress = new List<Tile>();
+        playerUnits.Initialize();
+        playerFortress.Initialize();
     }
 
     public void AddUnit(Unit newUnit)
@@ -56,6 +60,9 @@ public class PlayerTeam : MonoBehaviour
 
         if(playerFortress.Count <= 0)
         {
+            // TODO: The lose condition is different --
+            // You lose if an enemy's unit reaches your castle
+            // with a key
             //gameover code here!
         }
     }
