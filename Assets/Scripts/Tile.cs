@@ -20,6 +20,8 @@ public class Tile : MonoBehaviour
     private TileType maxTypeVal;
     private TileType minTypeVal;
 
+    private bool isHovered = false;
+
     public enum TileType
     {
         Grass = 0,
@@ -38,62 +40,99 @@ public class Tile : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        tileHighlight.SetActive(true);
+        //First, check if there is a unit on the tile
+        if(occupiedUnit != null)
+        {
+            //Then check to make sure we've not hovered over unit currently selected...
+            if(!GridManager.Instance.IsUnitSelected(occupiedUnit))
+            {
+                isHovered = true;
+                //occupiedUnit.GetAvailableMoves(Unit.UnitMoveTypes.Dragon);
+                //occupiedUnit.ShowAvailableMoves(true);
+            }
+        }
+
+        SetTileHighlight(true);
     }
 
     private void OnMouseExit()
     {
-        tileHighlight.SetActive(false);
+        if(isHovered)
+        {
+            isHovered = false;
+            //occupiedUnit.ShowAvailableMoves(false);
+        }
+
+        if(!GridManager.Instance.IsTileInMovePool(this))
+        {
+            SetTileHighlight(false);
+        }
+    }
+
+    public void SetTileHighlight(bool status)
+    {
+        tileHighlight.SetActive(status);
     }
 
     private void OnMouseOver()
     {
         if (GridManager.Instance.IsMapEditEnabled())
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                tileType++;
-
-                if(tileType > maxTypeVal)
-                {
-                    tileType = minTypeVal;
-                }
-            }
-
-            if (Input.GetMouseButtonDown(1))
-            {
-                tileType--;
-
-                if (tileType < minTypeVal)
-                {
-                    tileType = maxTypeVal;
-                }
-            }
-
-            if (Input.GetMouseButtonDown(2))
-            {
-                if(occupiedUnit == null)
-                {
-                    UnitManager.Instance.AddUnit(this);
-                }
-                else
-                {
-                    Debug.Log(occupiedUnit);
-                    UnitManager.Instance.RemoveUnit(occupiedUnit);
-                }
-            }
-
-            if(occupiedUnit)
-            {
-                if(Input.GetKeyDown(KeyCode.Space))
-                {
-                    UnitManager.Instance.SwapUnitTeam(occupiedUnit);
-                }
-            }
-
-
-            SetTileType(tileType);
+            EditModeInputs();
         }
+        else
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                GridManager.Instance.LeftClickInputHandler(this, occupiedUnit);
+            }
+        }
+    }
+
+    private void EditModeInputs()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            tileType++;
+
+            if (tileType > maxTypeVal)
+            {
+                tileType = minTypeVal;
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            tileType--;
+
+            if (tileType < minTypeVal)
+            {
+                tileType = maxTypeVal;
+            }
+        }
+
+        if (Input.GetMouseButtonDown(2))
+        {
+            if (occupiedUnit == null)
+            {
+                UnitManager.Instance.AddUnit(this);
+            }
+            else
+            {
+                Debug.Log(occupiedUnit);
+                UnitManager.Instance.RemoveUnit(occupiedUnit);
+            }
+        }
+
+        if (occupiedUnit)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                UnitManager.Instance.SwapUnitTeam(occupiedUnit);
+            }
+        }
+
+        SetTileType(tileType);
     }
 
     public bool IsTileEmpty()
@@ -106,10 +145,23 @@ public class Tile : MonoBehaviour
         return false;
     }
 
+    public bool IsPassable(PlayerTeam.Faction faction)
+    {
+        if (isWalkable)
+        {
+            if((occupiedUnit == null || occupiedUnit.GetFaction().Equals(faction)))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        return false;
+    }
+
     public void OccupyTile(Unit newUnit)
     {
         occupiedUnit = newUnit;
-        occupiedUnit.SetTileLocation(this);
     }
 
     public void RemoveUnit()

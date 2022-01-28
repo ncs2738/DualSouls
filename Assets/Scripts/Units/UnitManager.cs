@@ -28,14 +28,13 @@ public class UnitManager : MonoBehaviour
         Unit newUnit = Instantiate(units[0], new Vector3(tile.transform.position.x, tile.transform.position.y, -1), Quaternion.identity);
         if(faction == PlayerTeam.Faction.Red)
         {
-            Debug.Log("CALLED?");
             redPlayer.AddUnit(newUnit);
-            tile.OccupyTile(newUnit);
+            newUnit.SetTileLocation(tile);
         }
         else if(faction == PlayerTeam.Faction.Blue)
         {
             bluePlayer.AddUnit(newUnit);
-            tile.OccupyTile(newUnit);
+            newUnit.SetTileLocation(tile);
         }
     }
 
