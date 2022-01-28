@@ -18,8 +18,8 @@ public class UnitManager : MonoBehaviour
     private ConcreteCard spawnCard;
 
     [SerializeField]
-    private SpellTypes spell;
-    public SpellTypes SpellType => spell;
+    private SpellTypes? spell;
+    public SpellTypes? SpellType => spell;
     private Faces spellFace;
 
     private void Awake()
@@ -36,6 +36,14 @@ public class UnitManager : MonoBehaviour
     public void SetSpawnCard(ConcreteCard spawnCard)
     {
         this.spawnCard = spawnCard;
+        this.spell = null;
+    }
+
+    public void SetSpellAndFace(SpellTypes spell, Faces face)
+    {
+        this.spawnCard = null;
+        this.spell = spell;
+        this.spellFace = face;
     }
 
     public void CastSpell(Tile tile, ConcreteCard card)

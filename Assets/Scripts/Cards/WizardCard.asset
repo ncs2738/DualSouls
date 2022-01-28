@@ -17,3 +17,4 @@ MonoBehaviour:
   unit: {fileID: 11400000, guid: e2bf97ce10c1c9e4d97b58ed59e89f55, type: 2}
   frontDescription: White frame wizard
   backDescription: Black frame wizard
+  spell: 1

@@ -85,8 +85,9 @@ public class ConcreteUnit : MonoBehaviour
 
     public bool IsTileInMovePool(Tile tile) => availableMoves.Contains(tile);
 
-    public List<Tile> GetAvailableMoves(SpellTypes moveType)
+    public List<Tile> GetAvailableMoves(SpellTypes? moveType)
     {
+        if (moveType == null) return null;
         if (moveType.Equals(SpellTypes.Dragon))
         {
             SetDragonMoves();

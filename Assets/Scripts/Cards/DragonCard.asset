@@ -17,3 +17,4 @@ MonoBehaviour:
   unit: {fileID: 11400000, guid: 7bbb2b57514db114bb046741f4b38a76, type: 2}
   frontDescription: How scary, white frame
   backDescription: How scary, black frame
+  spell: 2
