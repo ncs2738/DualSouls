@@ -20,6 +20,15 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            GridManager.Instance.Save();
+        }
 
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log("loaded");
+            GridManager.Instance.Load();
+        }
     }
 }
