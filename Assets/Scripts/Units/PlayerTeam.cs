@@ -26,13 +26,13 @@ public class PlayerTeam : ScriptableObject
         playerFortress.Clear();
     }
 
-    public void AddUnit(Unit newUnit)
+    public void AddUnit(ConcreteUnit newUnit)
     {
-        newUnit.SetUnitFaction(playerFaction);
+        newUnit.faction = playerFaction;
         playerUnits.Add(newUnit);
     }
 
-    public void RemoveUnit(Unit removedUnit, bool destroyUnit = true)
+    public void RemoveUnit(ConcreteUnit removedUnit, bool destroyUnit = true)
     {
         if(playerUnits.Contains(removedUnit))
         {

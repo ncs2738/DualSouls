@@ -15,7 +15,7 @@ public class Tile : MonoBehaviour
 
     private PlayerTeam.Faction tileOwner = PlayerTeam.Faction.None;
 
-    private Unit occupiedUnit = null;
+    private ConcreteUnit occupiedUnit = null;
 
     private TileType maxTypeVal;
     private TileType minTypeVal;
@@ -127,10 +127,10 @@ public class Tile : MonoBehaviour
         return false;
     }
 
-    public void OccupyTile(Unit newUnit)
+    public void OccupyTile(ConcreteUnit newUnit)
     {
         occupiedUnit = newUnit;
-        occupiedUnit.SetTileLocation(this);
+        occupiedUnit.location = this;
     }
 
     public void RemoveUnit()
@@ -182,7 +182,7 @@ public class Tile : MonoBehaviour
         public float posX;
         public float posY;
         public PlayerTeam.Faction tileOwner;
-        public Unit.SaveObject occupiedUnit;
+        public ConcreteUnit.SaveObject occupiedUnit;
     }
 
     public SaveObject Save()

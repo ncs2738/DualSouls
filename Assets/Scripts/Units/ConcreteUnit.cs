@@ -29,6 +29,11 @@ public class ConcreteUnit : MonoBehaviour
         location.RemoveUnit();
     }
 
+    public void UpdateAppearance()
+    {
+        GetComponent<SpriteRenderer>().sprite = Appearance;
+    }
+
     [System.Serializable]
     public class SaveObject
     {

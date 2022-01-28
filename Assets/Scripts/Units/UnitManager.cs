@@ -12,7 +12,10 @@ public class UnitManager : MonoBehaviour
     private PlayerTeam blueTeam;
 
     [SerializeField]
-    private Unit[] units;
+    private GameObject unitPrefab;
+
+    [SerializeField]
+    private ConcreteCard spawnCard;
 
     private void Awake()
     {
@@ -25,10 +28,28 @@ public class UnitManager : MonoBehaviour
         blueTeam.Initialize();
     }
 
+    public void SetSpawnCard(ConcreteCard spawnCard)
+    {
+        this.spawnCard = spawnCard;
+    }
+
     public void AddUnit(Tile tile, PlayerTeam.Faction faction = PlayerTeam.Faction.Red)
     {
-        Unit newUnit = Instantiate(units[0], new Vector3(tile.transform.position.x, tile.transform.position.y, -1), Quaternion.identity);
-        if(faction == PlayerTeam.Faction.Red)
+        ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -1), Quaternion.identity)
+            .GetComponent<ConcreteUnit>();
+
+        newUnit.unitKind = spawnCard.UnitKind;
+        newUnit.elementOne = spawnCard.elementOne;
+        newUnit.elementTwo = spawnCard.elementTwo;
+        newUnit.location = tile;
+        newUnit.orientation = faction == PlayerTeam.Faction.Red
+            ? ConcreteUnit.Orientation.EAST
+            : ConcreteUnit.Orientation.WEST;
+        newUnit.faction = faction;
+
+        newUnit.UpdateAppearance();
+
+        if (faction == PlayerTeam.Faction.Red)
         {
             redTeam.AddUnit(newUnit);
             tile.OccupyTile(newUnit);
@@ -40,29 +61,29 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-    public void RemoveUnit(Unit removedUnit)
+    public void RemoveUnit(ConcreteUnit removedUnit)
     {
-        if (removedUnit.GetFaction() == PlayerTeam.Faction.Red)
+        if (removedUnit.faction == PlayerTeam.Faction.Red)
         {
             redTeam.RemoveUnit(removedUnit);
         }
-        else if (removedUnit.GetFaction() == PlayerTeam.Faction.Blue)
+        else if (removedUnit.faction == PlayerTeam.Faction.Blue)
         {
             blueTeam.RemoveUnit(removedUnit);
         }
     }
 
-    public void SwapUnitTeam(Unit removedUnit)
+    public void SwapUnitTeam(ConcreteUnit unit)
     {
-        if (removedUnit.GetFaction() == PlayerTeam.Faction.Red)
+        if (unit.faction == PlayerTeam.Faction.Red)
         {
-            redTeam.RemoveUnit(removedUnit, false);
-            blueTeam.AddUnit(removedUnit);
+            redTeam.RemoveUnit(unit, false);
+            blueTeam.AddUnit(unit);
         }
-        else if (removedUnit.GetFaction() == PlayerTeam.Faction.Blue)
+        else if (unit.faction == PlayerTeam.Faction.Blue)
         {
-            blueTeam.RemoveUnit(removedUnit, false);
-            redTeam.AddUnit(removedUnit);
+            blueTeam.RemoveUnit(unit, false);
+            redTeam.AddUnit(unit);
         }
     }
 

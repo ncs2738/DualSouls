@@ -8,7 +8,7 @@ public class ConcreteCard : MonoBehaviour
     public CardKind cardKind;
     public string Name => cardKind.name;
     public Sprite Artwork => cardKind.artwork;
-    public UnitKind Unit => cardKind.unit;
+    public UnitKind UnitKind => cardKind.unit;
     public string FrontDescription => cardKind.frontDescription;
     public string BackDescription => cardKind.backDescription;
     public Elements elementOne;
