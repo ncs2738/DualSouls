@@ -85,12 +85,10 @@ public abstract class Tile : MonoBehaviour
         }
         else
         {
-            /*
             if(Input.GetMouseButtonDown(0))
             {
                 GridManager.Instance.LeftClickInputHandler(this, occupiedUnit);
             }
-            */
 
             GameModeInputs();
         }
@@ -217,39 +215,32 @@ public abstract class Tile : MonoBehaviour
         public bool isWalkable;
         public float posX;
         public float posY;
-        //public PlayerTeam.Faction tileOwner;
-        //public Unit.SaveObject occupiedUnit;
+        public ConcreteUnit.SaveObject occupiedUnit;
+        public SpawnableTile.SaveObject spawnableTileData;
     }
 
     public SaveObject Save()
     {
-        if(occupiedUnit != null)
+        SpawnableTile spawnTile = this as SpawnableTile;
+        return new SaveObject
         {
-            return new SaveObject
-            {
-                tileType = tileType,
-                isWalkable = isWalkable,
-                posX = transform.position.x,
-                posY = transform.position.y,
-                //tileOwner = tileOwner,
-                //occupiedUnit = occupiedUnit.Save()
-            };
-        }
-        else
-        {
-            return new SaveObject
-            {
-                tileType = tileType,
-                isWalkable = isWalkable,
-                posX = transform.position.x,
-                posY = transform.position.y,
-                //tileOwner = tileOwner,
-            };
-        }
-    }
+            tileType = tileType,
+            isWalkable = isWalkable,
+            posX = transform.position.x,
+            posY = transform.position.y,
+            occupiedUnit = occupiedUnit != null ? occupiedUnit.Save() : null,
+            spawnableTileData = spawnTile != null ? spawnTile.Save() : null,
+        };
+}
 
-    public void Load(ConcreteUnit loadedUnit)
+    public void Load(ConcreteUnit.SaveObject loadedUnit, SpawnableTile.SaveObject spawnableTileData = null)
     {
-        UnitManager.Instance.AddUnit(this, loadedUnit.faction);
+        UnitManager.Instance.AddUnit(this, loadedUnit.playerFaction);
+
+        if(spawnableTileData != null)
+        {
+            SpawnableTile spawnTile = this as SpawnableTile;
+            spawnTile.SetTileOwner(spawnableTileData.tileOwner);
+        }
     }
 }

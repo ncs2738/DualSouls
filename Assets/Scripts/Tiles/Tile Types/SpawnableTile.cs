@@ -13,17 +13,20 @@ public class SpawnableTile : Tile
     {
         neighboringTiles = new List<Tile>();
 
-        Vector2 currentPos = transform.position;
+        if (tileType.Equals(TileType.Fortress) || tileType.Equals(TileType.PlayerCastle))
+        {
+            Vector2 currentPos = transform.position;
 
-        GetNeighboringTile(currentPos.x + 1, currentPos.y);
-        GetNeighboringTile(currentPos.x - 1, currentPos.y);
-        GetNeighboringTile(currentPos.x, currentPos.y + 1);
-        GetNeighboringTile(currentPos.x, currentPos.y - 1);
+            GetNeighboringTile(currentPos.x + 1, currentPos.y);
+            GetNeighboringTile(currentPos.x - 1, currentPos.y);
+            GetNeighboringTile(currentPos.x, currentPos.y + 1);
+            GetNeighboringTile(currentPos.x, currentPos.y - 1);
 
-        GetNeighboringTile(currentPos.x + 1, currentPos.y + 1);
-        GetNeighboringTile(currentPos.x + 1, currentPos.y - 1);
-        GetNeighboringTile(currentPos.x - 1, currentPos.y + 1);
-        GetNeighboringTile(currentPos.x - 1, currentPos.y - 1);
+            GetNeighboringTile(currentPos.x + 1, currentPos.y + 1);
+            GetNeighboringTile(currentPos.x + 1, currentPos.y - 1);
+            GetNeighboringTile(currentPos.x - 1, currentPos.y + 1);
+            GetNeighboringTile(currentPos.x - 1, currentPos.y - 1);
+        }
     }
 
     private void GetNeighboringTile(float x, float y)
@@ -79,8 +82,17 @@ public class SpawnableTile : Tile
 
     }
 
-    protected override void GameModeInputs()
+    [System.Serializable]
+    public class SaveObject
     {
-        base.GameModeInputs();
+        public PlayerTeam.Faction tileOwner;
+    }
+
+    public SaveObject Save()
+    {
+        return new SaveObject
+        {
+            tileOwner = tileOwner,
+        };
     }
 }

@@ -226,6 +226,28 @@ public class GridManager : MonoBehaviour
         return newTile;
     }
 
+    private Tile LoadNewTile(Tile.SaveObject savedTile, Transform parentObject)
+    {
+        int x = (int)savedTile.posX;
+        int y = (int)savedTile.posY;
+
+        Tile newTile = Instantiate(TileTypes[(int) savedTile.tileType], new Vector3(x,y,-1), Quaternion.identity);
+        newTile.name = $"X: {savedTile.posX} Y: {savedTile.posY}";
+        newTile.transform.parent = parentObject;
+
+        Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
+        Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
+
+        tiles.Add(newTile.transform.position, newTile);
+
+        if(savedTile.occupiedUnit.playerFaction != PlayerTeam.Faction.None)
+        {
+            newTile.Load(savedTile.occupiedUnit, savedTile.spawnableTileData);
+        }
+
+        return newTile;
+    }
+
     public void Save()
     {
         List<Tile.SaveObject> savedTiles = new List<Tile.SaveObject>();
@@ -279,30 +301,7 @@ public class GridManager : MonoBehaviour
 
         foreach (Tile.SaveObject savedTile in saveObject.savedLevel)
         {
-            CreateNewTile(tileRows[(int)savedTile.posX].transform, 0, (int)savedTile.posX, (int)savedTile.posY);
-
-            /*
-            Tile newTile = Instantiate(tile, new Vector3(, ), Quaternion.identity);
-            newTile.name = $"X: {savedTile.posX} Y: {savedTile.posY}";
-            newTile.transform.parent = ;
-            
-            //TODOOOOOO
-            //newTile.SetTileType(savedTile.tileType);
-
-            int x = (int) savedTile.posX;
-            int y = (int) savedTile.posY;
-
-            Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
-            Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
-
-            tiles.Add(newTile.transform.position, newTile);
-
-            /*
-            if(savedTile.occupiedUnit.playerFaction != PlayerTeam.Faction.None)
-            {
-                UnitManager.Instance.AddUnit(newTile, savedTile.occupiedUnit.playerFaction);
-            }
-            */
+            LoadNewTile(savedTile, tileRows[(int)savedTile.posX].transform);
         }
 
         OnLoaded?.Invoke(this, EventArgs.Empty);
@@ -315,3 +314,4 @@ public class GridManager : MonoBehaviour
         public int gridHeight;
     }
 }
+ 
