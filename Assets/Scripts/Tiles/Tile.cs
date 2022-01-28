@@ -74,7 +74,6 @@ public abstract class Tile : MonoBehaviour
 
     public void SetHoverHighlight(bool status)
     {
-        Debug.Log("called!");
         hoverHighlight.SetActive(status);
     }
 
