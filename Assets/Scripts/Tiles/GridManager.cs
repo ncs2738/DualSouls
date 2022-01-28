@@ -1,11 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
+
+    [SerializeField]
+    private List<Tile> TileTypes;
 
     [SerializeField]
     private bool MapEditModeEnabled = true;
@@ -48,6 +52,35 @@ public class GridManager : MonoBehaviour
         GenerateGrid();
     }
 
+    public void SetTileType(Tile tile, Tile.TileType tileType)
+    {
+        int newTileType = 0;
+
+        switch (tileType)
+        {
+            case Tile.TileType.Fortress:
+                newTileType = (int) Tile.TileType.Fortress;
+                break;
+
+            case Tile.TileType.PlayerCastle:
+                newTileType = (int)Tile.TileType.PlayerCastle;
+                break;
+
+            case Tile.TileType.SpawnableTile:
+                newTileType = (int)Tile.TileType.SpawnableTile;
+                break;
+
+            default:
+                newTileType = 0;
+                break;   
+        }
+
+        Tile newTile = CreateNewTile(tile.gameObject.transform.parent, newTileType, (int)tile.transform.position.x, (int)tile.transform.position.y);
+        tiles[tile.transform.position] = newTile;
+
+        Destroy(tile.gameObject);
+    }
+
     private void GenerateGrid()
     {
         tiles = new Dictionary<Vector2, Tile>();
@@ -60,7 +93,7 @@ public class GridManager : MonoBehaviour
 
             for (int y = 0; y < gridHeight; y++)
             {
-                Tile newTile = Instantiate(tile, new Vector3(x, y), Quaternion.identity);
+                Tile newTile = Instantiate(TileTypes[0], new Vector3(x, y), Quaternion.identity);
                 newTile.name = $"Y: {y}";
                 newTile.transform.parent = newColumn.transform;
 
@@ -184,6 +217,18 @@ public class GridManager : MonoBehaviour
         return false;
     }
 
+    private Tile CreateNewTile(Transform parentObject, int tileType, int x, int y)
+    {
+        Tile newTile = Instantiate(TileTypes[tileType], new Vector3(x, y), Quaternion.identity);
+        newTile.name = $"Y: {y}";
+        newTile.transform.parent = parentObject;
+
+        Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
+        Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
+
+        return newTile;
+    }
+
     public void Save()
     {
         List<Tile.SaveObject> savedTiles = new List<Tile.SaveObject>();
@@ -237,10 +282,15 @@ public class GridManager : MonoBehaviour
 
         foreach (Tile.SaveObject savedTile in saveObject.savedLevel)
         {
-            Tile newTile = Instantiate(tile, new Vector3(savedTile.posX, savedTile.posY), Quaternion.identity);
+            CreateNewTile(tileRows[(int)savedTile.posX].transform, 0, (int)savedTile.posX, (int)savedTile.posY);
+
+            /*
+            Tile newTile = Instantiate(tile, new Vector3(, ), Quaternion.identity);
             newTile.name = $"X: {savedTile.posX} Y: {savedTile.posY}";
-            newTile.transform.parent = tileRows[(int)savedTile.posX].gameObject.transform;
-            newTile.SetTileType(savedTile.tileType);
+            newTile.transform.parent = ;
+            
+            //TODOOOOOO
+            //newTile.SetTileType(savedTile.tileType);
 
             int x = (int) savedTile.posX;
             int y = (int) savedTile.posY;
@@ -250,10 +300,12 @@ public class GridManager : MonoBehaviour
 
             tiles.Add(newTile.transform.position, newTile);
 
+            /*
             if(savedTile.occupiedUnit.playerFaction != PlayerTeam.Faction.None)
             {
                 UnitManager.Instance.AddUnit(newTile, savedTile.occupiedUnit.playerFaction);
             }
+            */
         }
 
         OnLoaded?.Invoke(this, EventArgs.Empty);
