@@ -28,6 +28,8 @@ public class GridManager : MonoBehaviour
 
     private Tile currentSelectedTile;
     private ConcreteUnit currentSelectedUnit;
+
+    [SerializeField]
     private List<Tile> availableUnitMoves;
 
     private List<ConcreteUnit> selectedEnemyUnits;
@@ -126,12 +128,13 @@ public class GridManager : MonoBehaviour
 
     public void SetUnitData(Tile newSelectedTile, ConcreteUnit newSelectedUnit)
     {
+        Debug.Log("SET UNIT DATA CALLED");
         //update the unit data
         currentSelectedTile = newSelectedTile;
         currentSelectedUnit = newSelectedUnit;
 
         //grab & show it's move-pool 
-        availableUnitMoves = currentSelectedUnit.GetAvailableMoves(UnitMoveTypes.Wizard);
+        availableUnitMoves = currentSelectedUnit.GetAvailableMoves(UnitManager.Instance.SpellType);
         currentSelectedUnit.ShowAvailableMoves(true);
     }
 
@@ -145,8 +148,9 @@ public class GridManager : MonoBehaviour
 
     public void LeftClickInputHandler(Tile newSelectedTile, ConcreteUnit newSelectedUnit = null)
     {
+        Debug.Log("LeftClickInputHandler");
         //check to see if we've selected a unit yet...
-        if(currentSelectedUnit != null)
+        if (currentSelectedUnit != null)
         {
             //we have a selected unit, so check if the tile we selected is in the unit's movement list
             if(currentSelectedUnit.IsTileInMovePool(newSelectedTile))
@@ -180,6 +184,7 @@ public class GridManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Tried to select a unit");
             //we haven't a selected unit yet, so check if the tile we selected has a unit...
             if (newSelectedUnit != null)
             {

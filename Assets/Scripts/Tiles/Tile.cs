@@ -20,6 +20,7 @@ public abstract class Tile : MonoBehaviour
     [SerializeField]
     protected bool isWalkable = true;
 
+    [SerializeField]
     protected ConcreteUnit occupiedUnit = null;
 
     private TileType maxTypeVal;
@@ -85,12 +86,10 @@ public abstract class Tile : MonoBehaviour
         }
         else
         {
-            /*
             if(Input.GetMouseButtonDown(0))
             {
                 GridManager.Instance.LeftClickInputHandler(this, occupiedUnit);
             }
-            */
 
             GameModeInputs();
         }
@@ -168,6 +167,7 @@ public abstract class Tile : MonoBehaviour
 
     protected virtual void GameModeInputs()
     {
+        UnitManager.Instance.CastSpell(tile: this, card: null);
         return;
     }
 
