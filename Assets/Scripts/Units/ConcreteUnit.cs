@@ -50,9 +50,11 @@ public class ConcreteUnit : MonoBehaviour
 
     public void MoveUnit(Tile newLocation)
     {
+        Debug.Log("MoveUnit called");
         ClearTile();
         Location = newLocation;
-        transform.position = CurrentPos;
+        float oldZ = transform.position.z;
+        transform.position = new Vector3 (CurrentPos.x, CurrentPos.y, oldZ);
     }
 
     public void ShowAvailableMoves(bool status)

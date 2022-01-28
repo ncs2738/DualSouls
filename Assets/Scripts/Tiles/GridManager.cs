@@ -133,7 +133,7 @@ public class GridManager : MonoBehaviour
         currentSelectedTile = newSelectedTile;
         currentSelectedUnit = newSelectedUnit;
 
-        //grab & show it's move-pool 
+        //grab & show it's move-pool
         availableUnitMoves = currentSelectedUnit.GetAvailableMoves(UnitManager.Instance.SpellType);
         currentSelectedUnit.ShowAvailableMoves(true);
     }

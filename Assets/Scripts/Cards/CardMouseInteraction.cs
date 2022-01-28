@@ -30,15 +30,11 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
 
     public void SelectUnitOfCard()
     {
-        Debug.Log("SelectUnitOfCard called");
-        Debug.Log(card.Name);
         UnitManager.Instance.SetSpawnCard(card);
     }
 
     public void SelectSpellOfCard()
     {
-        Debug.Log("SelectSpellOfCard called");
-        Debug.Log(card.Name);
         UnitManager.Instance.SetSpellAndFace(card.Spell, card.face);
     }
 }
