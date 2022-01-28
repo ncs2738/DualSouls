@@ -41,7 +41,7 @@ public class UnitManager : MonoBehaviour
         newUnit.unitKind = spawnCard.UnitKind;
         newUnit.elementOne = spawnCard.elementOne;
         newUnit.elementTwo = spawnCard.elementTwo;
-        newUnit.location = tile;
+        newUnit.Location = tile;
         newUnit.orientation = faction == PlayerTeam.Faction.Red
             ? ConcreteUnit.Orientation.EAST
             : ConcreteUnit.Orientation.WEST;
