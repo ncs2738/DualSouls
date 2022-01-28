@@ -31,12 +31,12 @@ public class UnitManager : MonoBehaviour
         if(faction == PlayerTeam.Faction.Red)
         {
             redTeam.AddUnit(newUnit);
-            tile.OccupyTile(newUnit);
+            newUnit.SetTileLocation(tile);
         }
         else if(faction == PlayerTeam.Faction.Blue)
         {
             blueTeam.AddUnit(newUnit);
-            tile.OccupyTile(newUnit);
+            newUnit.SetTileLocation(tile);
         }
     }
 
