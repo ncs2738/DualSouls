@@ -17,3 +17,4 @@ MonoBehaviour:
   unit: {fileID: 11400000, guid: ed3d8b7f00a119643a4579052211ae77, type: 2}
   frontDescription: flip your card
   backDescription: flip your opponent's card
+  spell: 3

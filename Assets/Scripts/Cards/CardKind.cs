@@ -10,4 +10,5 @@ public class CardKind : ScriptableObject
     public UnitKind unit;
     public string frontDescription;
     public string backDescription;
+    public SpellTypes spell;
 }

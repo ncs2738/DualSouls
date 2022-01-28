@@ -17,6 +17,11 @@ public class UnitManager : MonoBehaviour
     [SerializeField]
     private ConcreteCard spawnCard;
 
+    [SerializeField]
+    private SpellTypes? spell;
+    public SpellTypes? SpellType => spell;
+    private Faces spellFace;
+
     private void Awake()
     {
         Instance = this;
@@ -31,8 +36,55 @@ public class UnitManager : MonoBehaviour
     public void SetSpawnCard(ConcreteCard spawnCard)
     {
         this.spawnCard = spawnCard;
+        this.spell = null;
     }
 
+    public void SetSpellAndFace(SpellTypes spell, Faces face)
+    {
+        this.spawnCard = null;
+        this.spell = spell;
+        this.spellFace = face;
+    }
+
+    public void CastSpell(Tile tile, ConcreteCard card)
+    {
+        void WarriorSpell(Faces face, Tile t)
+        {
+            ;
+        }
+        void DragonSpell(Faces face, Tile t)
+        {
+            ;
+        }
+        void WizardSpell(Faces face, Tile t)
+        {
+            ;
+        }
+        void ThiefSpell(Faces face, ConcreteCard c)
+        {
+            ;
+        }
+
+        switch (spell)
+        {
+            case SpellTypes.Warrior:
+                WarriorSpell(spellFace, tile);
+                break;
+            case SpellTypes.Wizard:
+                WizardSpell(spellFace, tile);
+                break;
+            case SpellTypes.Dragon:
+                DragonSpell(spellFace, tile);
+                break;
+            case SpellTypes.Thief:
+                ThiefSpell(spellFace, card);
+                break;
+            default:
+                // Do nothing -- spell might even be null.
+                break;
+        }
+    }
+    
     public void AddUnit(Tile tile, PlayerTeam.Faction faction = PlayerTeam.Faction.Red)
     {
         ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -1), Quaternion.identity)

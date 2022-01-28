@@ -11,6 +11,7 @@ public class ConcreteCard : MonoBehaviour
     public UnitKind UnitKind => cardKind.unit;
     public string FrontDescription => cardKind.frontDescription;
     public string BackDescription => cardKind.backDescription;
+    public SpellTypes Spell => cardKind.spell;
     public Elements elementOne;
     public Elements elementTwo;
     public Faces face;

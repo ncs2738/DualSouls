@@ -50,9 +50,11 @@ public class ConcreteUnit : MonoBehaviour
 
     public void MoveUnit(Tile newLocation)
     {
+        Debug.Log("MoveUnit called");
         ClearTile();
         Location = newLocation;
-        transform.position = CurrentPos;
+        float oldZ = transform.position.z;
+        transform.position = new Vector3 (CurrentPos.x, CurrentPos.y, oldZ);
     }
 
     public void ShowAvailableMoves(bool status)
@@ -85,15 +87,16 @@ public class ConcreteUnit : MonoBehaviour
 
     public bool IsTileInMovePool(Tile tile) => availableMoves.Contains(tile);
 
-    public List<Tile> GetAvailableMoves(UnitMoveTypes moveType)
+    public List<Tile> GetAvailableMoves(SpellTypes? moveType)
     {
-        if (moveType.Equals(UnitMoveTypes.Dragon))
+        if (moveType == null) return null;
+        if (moveType.Equals(SpellTypes.Dragon))
         {
             SetDragonMoves();
             ShowAvailableMoves(true);
             return availableMoves;
         }
-        else if (moveType.Equals(UnitMoveTypes.Wizard))
+        else if (moveType.Equals(SpellTypes.Wizard))
         {
             SetWizardMoves();
             ShowAvailableMoves(true);
