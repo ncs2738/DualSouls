@@ -69,7 +69,7 @@ public class Unit : MonoBehaviour
     {
         for (int i = 0; i < availableMoves.Count; i++)
         {
-            availableMoves[i].SetTileHighlight(status);
+            availableMoves[i].SetHoverHighlight(status);
         }
     }
 

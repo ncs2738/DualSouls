@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Tile : MonoBehaviour
+public abstract class Tile : MonoBehaviour
 {
     [SerializeField]
-    private new SpriteRenderer renderer;
+    private GameObject hoverHighlight;
     [SerializeField]
-    private GameObject tileHighlight;
+    private GameObject movementHighlight;
 
-    private TileType tileType = 0;
-    private bool isWalkable = true;
+    [SerializeField]
+    private GameObject blueAttackHighlight;
+    [SerializeField]
+    private GameObject redAttackHighlight;
 
-    private PlayerTeam.Faction tileOwner = PlayerTeam.Faction.None;
+    [SerializeField]
+    protected TileType tileType;
+    [SerializeField]
+    protected bool isWalkable = true;
 
-    private Unit occupiedUnit = null;
+    protected Unit occupiedUnit = null;
 
     private TileType maxTypeVal;
     private TileType minTypeVal;
@@ -26,7 +31,7 @@ public class Tile : MonoBehaviour
     {
         Grass = 0,
         Fortress = 1,
-        MainFortress = 2,
+        PlayerCastle = 2,
         SpawnableTile = 3,
     }
 
@@ -34,11 +39,9 @@ public class Tile : MonoBehaviour
     {
         maxTypeVal = System.Enum.GetValues(typeof(TileType)).Cast<TileType>().Max();
         minTypeVal = System.Enum.GetValues(typeof(TileType)).Cast<TileType>().Min();
-
-        SetTileType(tileType);
     }
 
-    private void OnMouseEnter()
+    protected void OnMouseEnter()
     {
         //First, check if there is a unit on the tile
         if(occupiedUnit != null)
@@ -52,10 +55,10 @@ public class Tile : MonoBehaviour
             }
         }
 
-        SetTileHighlight(true);
+        SetHoverHighlight(true);
     }
 
-    private void OnMouseExit()
+    protected void OnMouseExit()
     {
         if(isHovered)
         {
@@ -65,16 +68,17 @@ public class Tile : MonoBehaviour
 
         if(!GridManager.Instance.IsTileInMovePool(this))
         {
-            SetTileHighlight(false);
+            SetHoverHighlight(false);
         }
     }
 
-    public void SetTileHighlight(bool status)
+    public void SetHoverHighlight(bool status)
     {
-        tileHighlight.SetActive(status);
+        Debug.Log("called!");
+        hoverHighlight.SetActive(status);
     }
 
-    private void OnMouseOver()
+    protected void OnMouseOver()
     {
         if (GridManager.Instance.IsMapEditEnabled())
         {
@@ -82,10 +86,14 @@ public class Tile : MonoBehaviour
         }
         else
         {
+            /*
             if(Input.GetMouseButtonDown(0))
             {
                 GridManager.Instance.LeftClickInputHandler(this, occupiedUnit);
             }
+            */
+
+            GameModeInputs();
         }
     }
 
@@ -100,6 +108,8 @@ public class Tile : MonoBehaviour
             {
                 IncrementTileType();
             }
+
+            GridManager.Instance.SetTileType(this, tileType);
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -110,6 +120,8 @@ public class Tile : MonoBehaviour
             {
                 DecrementTileType();
             }
+
+            GridManager.Instance.SetTileType(this, tileType);
         }
 
         if (Input.GetMouseButtonDown(2))
@@ -132,8 +144,11 @@ public class Tile : MonoBehaviour
                 UnitManager.Instance.SwapUnitTeam(occupiedUnit);
             }
         }
+    }
 
-        SetTileType(tileType);
+    protected virtual void GameModeInputs()
+    {
+        return;
     }
 
     private void AddUnit()
@@ -203,40 +218,9 @@ public class Tile : MonoBehaviour
         occupiedUnit = null;
     }
 
-    public void SetTileType(TileType type)
+    public TileType GetTileType()
     {
-        tileType = type;
-
-        switch(tileType)
-        {
-            case TileType.Grass:
-            {
-                renderer.color = Color.green;
-                isWalkable = true;            
-                break;
-            }
-
-            case TileType.Fortress:
-            {
-                renderer.color = Color.gray;
-                isWalkable = true;
-                break;
-            }
-
-            case TileType.MainFortress:
-            {
-                renderer.color = Color.black;
-                isWalkable = true;
-                break;
-            }
-
-            case TileType.SpawnableTile:
-            {
-                renderer.color = Color.yellow;
-                isWalkable = true;
-                break;
-            }
-        }
+        return tileType;
     }
 
     [System.Serializable]
@@ -246,8 +230,8 @@ public class Tile : MonoBehaviour
         public bool isWalkable;
         public float posX;
         public float posY;
-        public PlayerTeam.Faction tileOwner;
-        public Unit.SaveObject occupiedUnit;
+        //public PlayerTeam.Faction tileOwner;
+        //public Unit.SaveObject occupiedUnit;
     }
 
     public SaveObject Save()
@@ -260,8 +244,8 @@ public class Tile : MonoBehaviour
                 isWalkable = isWalkable,
                 posX = transform.position.x,
                 posY = transform.position.y,
-                tileOwner = tileOwner,
-                occupiedUnit = occupiedUnit.Save()
+                //tileOwner = tileOwner,
+                //occupiedUnit = occupiedUnit.Save()
             };
         }
         else
@@ -272,7 +256,7 @@ public class Tile : MonoBehaviour
                 isWalkable = isWalkable,
                 posX = transform.position.x,
                 posY = transform.position.y,
-                tileOwner = tileOwner,
+                //tileOwner = tileOwner,
             };
         }
     }
