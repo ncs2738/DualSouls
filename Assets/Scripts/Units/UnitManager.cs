@@ -52,6 +52,11 @@ public class UnitManager : MonoBehaviour
             tile.OccupyTile(newUnit);
         }
 
+        foreach (Tile attackedTile in newUnit.GetTilesThisAttacks())
+        {
+            attackedTile.AddAttacker(newUnit);
+        }
+
         ShowPlacementTiles(false);
     }
 
