@@ -38,10 +38,16 @@ public class ConcreteUnit : MonoBehaviour
     public SpriteRenderer elementTwoRenderer;
     private bool UnitHasKey = false;
 
+    [SerializeField]
+    private Color BlueTeamTint;
+    [SerializeField]
+    private Color RedTeamTint;
+    [SerializeField]
+    private SpriteRenderer tintSprite;
+
     private void Start()
     {
         availableMoves = new List<Tile>();
-        CaptureKey.SetActive(false);
     }
 
     int everyTen = 0;
@@ -231,8 +237,8 @@ public class ConcreteUnit : MonoBehaviour
 
     public void UpdateAppearance()
     {
-
         GetComponent<SpriteRenderer>().sprite = Appearance;
+        tintSprite.sprite = Appearance;
         elementOneRenderer.sprite = elementOne.Sprite();
         elementTwoRenderer.sprite = elementTwo.Sprite();
 
@@ -280,5 +286,17 @@ public class ConcreteUnit : MonoBehaviour
 
             playerFaction = faction,
         };
+    }
+
+    public void SetUnitTeamTint()
+    {
+        if(faction.Equals(PlayerTeam.Faction.Red))
+        {
+            tintSprite.color = RedTeamTint;
+        }
+        else
+        {
+            tintSprite.color = BlueTeamTint;
+        }
     }
 }

@@ -38,6 +38,7 @@ public class PlayerTeam : ScriptableObject
     public void AddUnit(ConcreteUnit newUnit)
     {
         newUnit.faction = playerFaction;
+        newUnit.SetUnitTeamTint();
         playerUnits.Add(newUnit);
     }
 
