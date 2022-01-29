@@ -27,6 +27,7 @@ public abstract class Tile : MonoBehaviour
 
     [SerializeField]
     protected ConcreteUnit occupiedUnit = null;
+    public ConcreteUnit OccupiedUnit => occupiedUnit;
 
     private TileType maxTypeVal;
     private TileType minTypeVal;
@@ -36,6 +37,7 @@ public abstract class Tile : MonoBehaviour
     // TODO: HashSet would be better, but List is easier to debug for now.
     [SerializeField]
     protected List<ConcreteUnit> attackingUnits;
+    public List<ConcreteUnit> AttackingUnits => attackingUnits;
 
     public enum TileType
     {
