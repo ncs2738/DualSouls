@@ -207,11 +207,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileTypes:
-  - {fileID: 8006268087651358792, guid: fc417c3d5c5b2e3419312f1d3965a05a, type: 3}
-  - {fileID: 7649737633673765814, guid: 2066e9d84fc923945a75ef0f2543076f, type: 3}
-  - {fileID: 6857052161282010535, guid: 6f1fc354452d2b74d9759dc613c7b235, type: 3}
-  - {fileID: 2081366792533876624, guid: ac38fc78f6bf5244cba25b560654aa36, type: 3}
-  MapEditModeEnabled: 1
+  - {fileID: 3173160793217979424, guid: fc417c3d5c5b2e3419312f1d3965a05a, type: 3}
+  - {fileID: 7477132160650972708, guid: 2066e9d84fc923945a75ef0f2543076f, type: 3}
+  - {fileID: 6150683346018954727, guid: 6f1fc354452d2b74d9759dc613c7b235, type: 3}
+  - {fileID: 7260856724792336409, guid: ac38fc78f6bf5244cba25b560654aa36, type: 3}
   gridWidth: 16
   gridHeight: 9
   camera: {fileID: 519420032}
@@ -243,7 +242,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b74065a9f58ce248abd6bf0ba974ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTurn: 1
+  activePlayerTurn: 1
+  MapEditModeEnabled: 1
+  isGameStarted: 0
 --- !u!1001 &405760911
 PrefabInstance:
   m_ObjectHideFlags: 0

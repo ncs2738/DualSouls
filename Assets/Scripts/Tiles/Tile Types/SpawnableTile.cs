@@ -5,76 +5,70 @@ using UnityEngine;
 public class SpawnableTile : Tile
 {
     [SerializeField]
-    private List<Tile> neighboringTiles;
+    private Dictionary<Vector2, Tile> neighboringTiles;
 
     [SerializeField]
     private PlayerTeam.Faction tileOwner = PlayerTeam.Faction.None;
 
-    private bool isCapturable = false;
+    [SerializeField]
+    private GameObject BlueTeamColorTint;
+    [SerializeField]
+    private GameObject RedTeamColorTint;
 
     private void Start()
     {
-        neighboringTiles = new List<Tile>();
+        neighboringTiles = new Dictionary<Vector2, Tile>();
 
-        if (tileType.Equals(TileType.Fortress) || tileType.Equals(TileType.PlayerCastle))
+        SetTeamColor();
+
+        if(!tileOwner.Equals(PlayerTeam.Faction.None))
         {
-            Vector2 currentPos = transform.position;
-
-            GetNeighboringTile(currentPos.x + 1, currentPos.y);
-            GetNeighboringTile(currentPos.x - 1, currentPos.y);
-            GetNeighboringTile(currentPos.x, currentPos.y + 1);
-            GetNeighboringTile(currentPos.x, currentPos.y - 1);
-
-            GetNeighboringTile(currentPos.x + 1, currentPos.y + 1);
-            GetNeighboringTile(currentPos.x + 1, currentPos.y - 1);
-            GetNeighboringTile(currentPos.x - 1, currentPos.y + 1);
-            GetNeighboringTile(currentPos.x - 1, currentPos.y - 1);
-
-            isCapturable = true;
+            UnitManager.Instance.AddNewTile(this, tileOwner);
         }
     }
 
-    private void GetNeighboringTile(float x, float y)
+    private void GetNeighboringTiles()
+    {
+        neighboringTiles.Clear();
+
+        Vector2 currentPos = transform.position;
+
+        GetTile(currentPos.x + 1, currentPos.y);
+        GetTile(currentPos.x - 1, currentPos.y);
+        GetTile(currentPos.x, currentPos.y + 1);
+        GetTile(currentPos.x, currentPos.y - 1);
+
+        GetTile(currentPos.x + 1, currentPos.y + 1);
+        GetTile(currentPos.x + 1, currentPos.y - 1);
+        GetTile(currentPos.x - 1, currentPos.y + 1);
+        GetTile(currentPos.x - 1, currentPos.y - 1);
+    }
+
+    private void GetTile(float x, float y)
     {
         Tile t = GridManager.Instance.GetTile(new Vector2(x, y));
 
-        if(t != null)
+        if (t != null)
         {
-            neighboringTiles.Add(t);
+            neighboringTiles.Add(t.transform.position, t);
         }
     }
 
-    public void SetNeighboringTiles()
+    public void ClaimTile(PlayerTeam.Faction newOwner)
     {
-        List<Tile> newNeighbors = new List<Tile>();
+        SetTileOwner(newOwner);
+        UnitManager.Instance.ClaimNewTile(this, newOwner);
 
-        int neighborCount = neighboringTiles.Count;
+        GetNeighboringTiles();
 
-        for (int i = 0; i < neighborCount; i++)
+        foreach (Tile tile in neighboringTiles.Values)
         {
-            TileType type = neighboringTiles[i].GetTileType();
-            if (type.Equals(TileType.Grass))
-            {
-                Tile removedTile = neighboringTiles[i];
-                Vector2 removedTilePos = removedTile.transform.position;
-                neighboringTiles.RemoveAt(i);
-                GridManager.Instance.SetTileType(removedTile, TileType.Grass);
-
-                GetNeighboringTile(removedTilePos.x, removedTilePos.y);
-
-                SetNeighboringTileOwner(neighboringTiles[i], tileOwner);
-            }
-        }
-    }
-
-    public void ResetNeighboringTiles()
-    {
-        for (int i = 0; i < neighboringTiles.Count; i++)
-        {
-            TileType type = neighboringTiles[i].GetTileType();
+            TileType type = tile.GetTileType();
             if (type.Equals(TileType.SpawnableTile))
             {
-                //neighboringTiles[i].
+                UnitManager.Instance.ClaimNewTile(tile, newOwner);
+                SpawnableTile t = tile as SpawnableTile;
+                t.SetTileOwner(newOwner);
             }
         }
     }
@@ -82,35 +76,85 @@ public class SpawnableTile : Tile
     public void SetTileOwner(PlayerTeam.Faction newOwner)
     {
         tileOwner = newOwner;
+        SetTeamColor();
+    }
 
-        if(neighboringTiles.Count > 0)
+    private void SetTeamColor()
+    {
+        switch(tileOwner)
         {
-            for (int i = 0; i < neighboringTiles.Count; i++)
+            case PlayerTeam.Faction.Red:
+                RedTeamColorTint.SetActive(true);
+                BlueTeamColorTint.SetActive(false);
+                break;
+
+            case PlayerTeam.Faction.Blue:
+                RedTeamColorTint.SetActive(false);
+                BlueTeamColorTint.SetActive(true);
+                break;
+
+            default:
+                RedTeamColorTint.SetActive(false);
+                BlueTeamColorTint.SetActive(false);
+                break;
+        }
+    }
+
+    protected override void OnUnitEnter(ConcreteUnit occupiedUnit)
+    {
+        if(tileType.Equals(TileType.Fortress))
+        {
+            if(tileOwner.Equals(occupiedUnit.faction))
             {
-                SetNeighboringTileOwner(neighboringTiles[i], newOwner);
+                occupiedUnit.GiveUnitKey();
+            }
+            else
+            {
+                ClaimTile(occupiedUnit.faction);
+            }
+        }
+        else if (tileType.Equals(TileType.PlayerCastle))
+        {
+            if(occupiedUnit.DoesUnitHaveKey())
+            {
+                ClaimTile(occupiedUnit.faction);
+                //remove from list
             }
         }
     }
 
-    public void SetNeighboringTileOwner(Tile tile, PlayerTeam.Faction newOwner)
+    public PlayerTeam.Faction CycleTileOwner()
     {
-        TileType type = tile.GetTileType();
-        if (type.Equals(TileType.SpawnableTile))
+        PlayerTeam.Faction newFaction;
+        switch(tileOwner)
         {
-            SpawnableTile t = tile as SpawnableTile;
-            t.SetTileOwner(newOwner);
+            case PlayerTeam.Faction.None:
+                newFaction = PlayerTeam.Faction.Red;
+                break;
+
+            case PlayerTeam.Faction.Red:
+                newFaction = PlayerTeam.Faction.Blue;
+                break;
+
+            default:
+                newFaction = PlayerTeam.Faction.None;
+                break;
         }
+
+        ClaimTile(newFaction);
+
+        return  newFaction;
     }
 
     [System.Serializable]
-    public class SaveObject
+    public class SaveTileObject
     {
         public PlayerTeam.Faction tileOwner;
     }
 
-    public SaveObject Save()
+    public SaveTileObject SaveTile()
     {
-        return new SaveObject
+        return new SaveTileObject
         {
             tileOwner = tileOwner,
         };

@@ -16,6 +16,11 @@ public abstract class Tile : MonoBehaviour
     private GameObject redAttackHighlight;
 
     [SerializeField]
+    private GameObject bluePlacementHighlight;
+    [SerializeField]
+    private GameObject redPlacementHighlight;
+
+    [SerializeField]
     protected TileType tileType;
     [SerializeField]
     protected bool isWalkable = true;
@@ -67,7 +72,7 @@ public abstract class Tile : MonoBehaviour
             //occupiedUnit.ShowAvailableMoves(false);
         }
 
-        if(!GridManager.Instance.IsTileInMovePool(this))
+        //if(!GridManager.Instance.IsTileInMovePool(this))
         {
             SetHoverHighlight(false);
         }
@@ -78,19 +83,43 @@ public abstract class Tile : MonoBehaviour
         hoverHighlight.SetActive(status);
     }
 
+    public void SetMovementHighlight(bool status)
+    {
+        movementHighlight.SetActive(status);
+    }
+
+    public void SetAttackHighlight(PlayerTeam.Faction playerFaction, bool status)
+    {
+        if(playerFaction.Equals(PlayerTeam.Faction.Red))
+        {
+            redAttackHighlight.SetActive(status);
+        }
+        else
+        {
+            blueAttackHighlight.SetActive(status);
+        }
+    }
+
+    public void SetPlacementHighlight(PlayerTeam.Faction playerFaction, bool status)
+    {
+        if (playerFaction.Equals(PlayerTeam.Faction.Red))
+        {
+            redPlacementHighlight.SetActive(status);
+        }
+        else
+        {
+            bluePlacementHighlight.SetActive(status);
+        }
+    }
+
     protected void OnMouseOver()
     {
-        if (GridManager.Instance.IsMapEditEnabled())
+        if (GameManager.Instance.IsMapEditEnabled())
         {
             EditModeInputs();
         }
         else
         {
-            if(Input.GetMouseButtonDown(0))
-            {
-                GridManager.Instance.LeftClickInputHandler(this, occupiedUnit);
-            }
-
             GameModeInputs();
         }
     }
@@ -99,14 +128,17 @@ public abstract class Tile : MonoBehaviour
     {
         void AddUnit()
         {
-            if (occupiedUnit == null)
-            {
-                UnitManager.Instance.AddUnit(this);
-            }
-            else
-            {
-                Debug.Log(occupiedUnit);
-                UnitManager.Instance.RemoveUnit(occupiedUnit);
+            if (UnitManager.Instance.HasSelectedUnit() && UnitManager.Instance.CanPlayerSpawnUnit(this))
+            { 
+                if (occupiedUnit == null)
+                {
+                    UnitManager.Instance.AddUnit(this);
+                }
+                else
+                {
+                    Debug.Log(occupiedUnit);
+                    UnitManager.Instance.RemoveUnit(occupiedUnit);
+                }
             }
         }
 
@@ -114,10 +146,8 @@ public abstract class Tile : MonoBehaviour
         {
             tileType++;
 
-            /*
-            I'm really not sure why this isn't working... for some reason the maxTypeVal keeps changing? it's quite odd. I'm just gonna hardcode it.
-            if (tileType > maxTypeVal)
-            */
+            /* I'm really not sure why this isn't working... for some reason the maxTypeVal keeps changing? it's quite odd. I'm just gonna hardcode it.
+            if (tileType > maxTypeVal) */
             if ((int) tileType > 3)
             {
                 tileType = minTypeVal;
@@ -140,7 +170,7 @@ public abstract class Tile : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetKey(KeyCode.U) && UnitManager.Instance.HasSelectedUnit())
+            if (Input.GetKey(KeyCode.U))
             {
                 AddUnit();
             }
@@ -160,19 +190,34 @@ public abstract class Tile : MonoBehaviour
             AddUnit();
         }
 
-        if (occupiedUnit)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if(tileType.Equals(TileType.Fortress) || tileType.Equals(TileType.PlayerCastle))
+            {
+                SpawnableTile t = this as SpawnableTile;
+                PlayerTeam.Faction newFaction = t.CycleTileOwner();
+                if (occupiedUnit && !occupiedUnit.faction.Equals(newFaction))
+                {
+                    UnitManager.Instance.SwapUnitTeam(occupiedUnit);
+                }
+            }
+            else if (occupiedUnit)
             {
                 UnitManager.Instance.SwapUnitTeam(occupiedUnit);
             }
         }
     }
 
-    protected virtual void GameModeInputs()
+    private void GameModeInputs()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            GridManager.Instance.LeftClickInputHandler(this, occupiedUnit);
+        }
+
         //UnitManager.Instance.CastSpell(tile: this, card: null);
-        return;
+
+        //if()
     }
 
     public bool IsTileEmpty()
@@ -202,11 +247,23 @@ public abstract class Tile : MonoBehaviour
     public void OccupyTile(ConcreteUnit newUnit)
     {
         occupiedUnit = newUnit;
+        OnUnitEnter(occupiedUnit);
+    }
+
+    protected virtual void OnUnitEnter(ConcreteUnit occupiedUnit)
+    {
+        return;
     }
 
     public void RemoveUnit()
     {
         occupiedUnit = null;
+        OnUnitExit();
+    }
+
+    protected virtual void OnUnitExit()
+    {
+        return;
     }
 
     public TileType GetTileType()
@@ -222,7 +279,7 @@ public abstract class Tile : MonoBehaviour
         public float posX;
         public float posY;
         public ConcreteUnit.SaveObject occupiedUnit;
-        public SpawnableTile.SaveObject spawnableTileData;
+        public SpawnableTile.SaveTileObject spawnableTileData;
     }
 
     public SaveObject Save()
@@ -235,18 +292,23 @@ public abstract class Tile : MonoBehaviour
             posX = transform.position.x,
             posY = transform.position.y,
             occupiedUnit = occupiedUnit != null ? occupiedUnit.Save() : null,
-            spawnableTileData = spawnTile != null ? spawnTile.Save() : null,
+            spawnableTileData = spawnTile != null ? spawnTile.SaveTile() : null,
         };
-}
+    }
 
-    public void Load(ConcreteUnit.SaveObject loadedUnit, SpawnableTile.SaveObject spawnableTileData = null)
+    public void LoadUnit(ConcreteUnit.SaveObject loadedUnit)
     {
         UnitManager.Instance.LoadUnit(this, loadedUnit);
+    }
 
-        SpawnableTile spawnTile = this as SpawnableTile;
-        if (spawnTile != null && spawnableTileData != null)
+    public void LoadSpawnableTile(SpawnableTile.SaveTileObject spawnableTileData)
+    {
+        SpawnableTile spawnableTile = this as SpawnableTile;
+
+        if (spawnableTile != null)
         {
-            //spawnTile.SetTileOwner(spawnableTileData.tileOwner);
+            spawnableTile.SetTileOwner(spawnableTileData.tileOwner);
+            UnitManager.Instance.ClaimNewTile(spawnableTile, spawnableTileData.tileOwner); 
         }
     }
 }

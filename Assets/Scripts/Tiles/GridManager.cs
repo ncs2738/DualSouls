@@ -12,9 +12,6 @@ public class GridManager : MonoBehaviour
     private List<Tile> TileTypes;
 
     [SerializeField]
-    private bool MapEditModeEnabled = true;
-
-    [SerializeField]
     private int gridWidth;
     [SerializeField]
     private int gridHeight;
@@ -56,12 +53,6 @@ public class GridManager : MonoBehaviour
         Tile newTile = CreateNewTile(tile.gameObject.transform.parent, (int) tileType, (int)tile.transform.position.x, (int)tile.transform.position.y);
         tiles[tile.transform.position] = newTile;
         Destroy(tile.gameObject);
-
-        if(tileType.Equals(Tile.TileType.Fortress) || tileType.Equals(Tile.TileType.PlayerCastle))
-        {
-            SpawnableTile t = newTile as SpawnableTile;
-            t.SetNeighboringTiles();
-        }
     }
 
     private void GenerateGrid()
@@ -105,11 +96,6 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
-    public bool IsMapEditEnabled()
-    {
-        return MapEditModeEnabled;
-    }
-
     public void SetUnitData(Tile newSelectedTile, ConcreteUnit newSelectedUnit)
     {
         //update the unit data
@@ -128,8 +114,10 @@ public class GridManager : MonoBehaviour
 
     public void ClearUnitData()
     {
+        //TODO - PROBABLY WILL HAVE TO MOVE THIS TO HANDLE SHOWING MULTIPLE UNITS
+        currentSelectedUnit.ShowAttackedTiles(false);
         currentSelectedUnit.ShowAvailableMoves(false);
-        availableUnitMoves.Clear();
+        availableUnitMoves.Clear(); currentSelectedUnit.ShowAvailableMoves(false);
         currentSelectedTile = null;
         currentSelectedUnit = null;
     }
@@ -143,7 +131,11 @@ public class GridManager : MonoBehaviour
             //we have a selected unit, so check if the tile we selected is in the unit's movement list
             if(currentSelectedUnit.IsTileInMovePool(newSelectedTile))
             {
-                //it is! this is a valid selection! First move the unit
+                //TODO - PROBABLY WILL HAVE TO MOVE THIS TO HANDLE SHOWING MULTIPLE UNITS
+                //it is! this is a valid selection! First clear the attack-ranges!
+                currentSelectedUnit.ShowAttackedTiles(false);
+
+                //next move the unit
                 currentSelectedUnit.MoveUnit(newSelectedTile);
                 UnitManager.Instance.CastSpell(tile: newSelectedTile, card: null);
 
@@ -234,9 +226,14 @@ public class GridManager : MonoBehaviour
 
         tiles.Add(newTile.transform.position, newTile);
 
-        if(!savedTile.occupiedUnit.playerFaction.Equals(PlayerTeam.Faction.None))
+        if (!savedTile.occupiedUnit.playerFaction.Equals(PlayerTeam.Faction.None))
         {
-            newTile.Load(savedTile.occupiedUnit, savedTile.spawnableTileData);
+            newTile.LoadUnit(savedTile.occupiedUnit);
+        }
+
+        if (!savedTile.spawnableTileData.tileOwner.Equals(PlayerTeam.Faction.None))
+        {
+            newTile.LoadSpawnableTile(savedTile.spawnableTileData);
         }
 
         return newTile;
@@ -292,13 +289,10 @@ public class GridManager : MonoBehaviour
             tileRows[x] = newColumn;
         }
         
-
         foreach (Tile.SaveObject savedTile in saveObject.savedLevel)
         {
             LoadNewTile(savedTile, tileRows[(int)savedTile.posX].transform);
         }
-
-        OnLoaded?.Invoke(this, EventArgs.Empty);
     }
 
     public class SaveObject

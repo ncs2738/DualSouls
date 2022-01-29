@@ -6,7 +6,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public PlayerTeam.Faction playerTurn = PlayerTeam.Faction.Red;
+    public PlayerTeam.Faction activePlayerTurn = PlayerTeam.Faction.Red;
+
+    [SerializeField]
+    private bool MapEditModeEnabled = true;
+    [SerializeField]
+    private bool isGameStarted = false;
 
     private void Awake()
     {
@@ -34,8 +39,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public PlayerTeam.Faction GetCurrentPlayerTurn()
+    public bool IsMapEditEnabled()
     {
-        return playerTurn;
+        return MapEditModeEnabled;
+    }
+
+    public bool IsGameStarted()
+    {
+        return isGameStarted;
     }
 }

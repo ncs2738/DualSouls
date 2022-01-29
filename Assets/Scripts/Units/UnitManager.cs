@@ -98,7 +98,7 @@ public class UnitManager : MonoBehaviour
                 break;
         }
     }
-    
+
     public void AddUnit(Tile tile, PlayerTeam.Faction faction = PlayerTeam.Faction.Red)
     {
         ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -2), Quaternion.identity)
@@ -120,7 +120,7 @@ public class UnitManager : MonoBehaviour
             redTeam.AddUnit(newUnit);
             tile.OccupyTile(newUnit);
         }
-        else if(faction == PlayerTeam.Faction.Blue)
+        else if (faction == PlayerTeam.Faction.Blue)
         {
             blueTeam.AddUnit(newUnit);
             tile.OccupyTile(newUnit);
@@ -182,10 +182,67 @@ public class UnitManager : MonoBehaviour
         }
     }
 
+    public void AddNewTile(Tile newTile, PlayerTeam.Faction playerFaction)
+    {
+        if (playerFaction == PlayerTeam.Faction.Red)
+        {
+            if (Tile.TileType.PlayerCastle.Equals(newTile.GetTileType()))
+            {
+                redTeam.AddCastle(newTile);
+            }
+            redTeam.AddOwnedTile(newTile);
+        }
+        else if (playerFaction == PlayerTeam.Faction.Blue)
+        {
+            if (Tile.TileType.PlayerCastle.Equals(newTile.GetTileType()))
+            {
+                blueTeam.AddCastle(newTile);
+            }
+            blueTeam.AddOwnedTile(newTile);
+        }
+    }
+
+    public void RemoveTile(Tile removedTile, PlayerTeam.Faction playerFaction)
+    {
+        if (playerFaction == PlayerTeam.Faction.Red)
+        {
+            if (Tile.TileType.PlayerCastle.Equals(removedTile.GetTileType()))
+            {
+                redTeam.RemoveCastle(removedTile);
+            }
+            redTeam.RemoveOwnedTile(removedTile);
+        }
+        else if (playerFaction == PlayerTeam.Faction.Blue)
+        {
+            if (Tile.TileType.PlayerCastle.Equals(removedTile.GetTileType()))
+            {
+                blueTeam.RemoveCastle(removedTile);
+            }
+            blueTeam.RemoveOwnedTile(removedTile);
+        }
+    }
+
+    public void ClaimNewTile (Tile claimedTile, PlayerTeam.Faction playerFaction)
+    {
+        PlayerTeam.Faction enemyTeam = playerFaction.Equals(PlayerTeam.Faction.Red) ? PlayerTeam.Faction.Blue : PlayerTeam.Faction.Red;
+        RemoveTile(claimedTile, enemyTeam);
+        AddNewTile(claimedTile, playerFaction);
+    }
+
     public void ClearLists()
     {
         redTeam.ClearLists();
         blueTeam.ClearLists();
+    }
+
+    public bool CanPlayerSpawnUnit(Tile tile)
+    {
+        if(GameManager.Instance.activePlayerTurn.Equals(PlayerTeam.Faction.Red))
+        {
+            return redTeam.DoesPlayerOwnTile(tile);
+        }
+        
+         return blueTeam.DoesPlayerOwnTile(tile);
     }
 
     public bool HasSelectedUnit()
@@ -195,5 +252,29 @@ public class UnitManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void ShowPlacementTiles(bool status)
+    {
+        List<Tile> placementTiles;
+
+        if(GameManager.Instance.activePlayerTurn.Equals(PlayerTeam.Faction.Red))
+        {
+            placementTiles = redTeam.GetPlaceableTiles();
+
+            foreach(Tile tile in placementTiles)
+            {
+                tile.SetPlacementHighlight(PlayerTeam.Faction.Red, status);
+            }
+        }
+        else
+        {
+            placementTiles = blueTeam.GetPlaceableTiles();
+
+            foreach (Tile tile in placementTiles)
+            {
+                tile.SetPlacementHighlight(PlayerTeam.Faction.Blue, status);
+            }
+        }       
     }
 }

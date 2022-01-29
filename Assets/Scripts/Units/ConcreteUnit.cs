@@ -33,6 +33,7 @@ public class ConcreteUnit : MonoBehaviour
 
     public SpriteRenderer elementOneRenderer;
     public SpriteRenderer elementTwoRenderer;
+    private bool UnitHasKey = false;
 
     private void Start()
     {
@@ -71,7 +72,7 @@ public class ConcreteUnit : MonoBehaviour
     {
         foreach (Tile tile in GetTilesThisAttacks())
         {
-            tile.SetHoverHighlight(status);
+            tile.SetAttackHighlight(faction, status);
         }
     }
 
@@ -79,7 +80,7 @@ public class ConcreteUnit : MonoBehaviour
     {
         for (int i = 0; i < availableMoves.Count; i++)
         {
-            availableMoves[i].SetHoverHighlight(status);
+            availableMoves[i].SetMovementHighlight(status);
         }
     }
 
@@ -202,6 +203,16 @@ public class ConcreteUnit : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public bool DoesUnitHaveKey()
+    {
+        return UnitHasKey;
+    }
+
+    public void GiveUnitKey()
+    {
+        UnitHasKey = true;
     }
 
     public void UpdateAppearance()

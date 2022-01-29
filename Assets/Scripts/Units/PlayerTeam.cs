@@ -11,7 +11,9 @@ public class PlayerTeam : ScriptableObject
     private UnitRuntimeSet playerUnits;
     [SerializeField]
     // TODO: Rename this to playerOwnedForts maybe?
-    private TileRuntimeSet playerFortress;
+    private TileRuntimeSet playerCastles;
+    [SerializeField]
+    private TileRuntimeSet playerOwnedTiles;
 
     public enum Faction
     {
@@ -23,10 +25,11 @@ public class PlayerTeam : ScriptableObject
 
     public void Initialize(Faction _playerFaction = Faction.None)
     {
-        playerUnits.Clear();
-        playerFortress.Clear();
+        playerUnits = CreateInstance<UnitRuntimeSet>();
+        playerCastles = CreateInstance<TileRuntimeSet>();
+        playerOwnedTiles = CreateInstance<TileRuntimeSet>();
 
-        if(!playerFaction.Equals(Faction.None))
+        if (!playerFaction.Equals(Faction.None))
         {
             playerFaction = _playerFaction;
         }
@@ -52,24 +55,37 @@ public class PlayerTeam : ScriptableObject
         }
     }
 
-    public void AddFortress(Tile newFortress)
+    public void AddCastle(Tile newCastle)
     {
-        playerFortress.Add(newFortress);
+        playerCastles.Add(newCastle);
     }
 
-    public void RemoveFortress(Tile removedFortress)
+    public void RemoveCastle(Tile removedCastle)
     {
-        if (playerFortress.Contains(removedFortress))
+        if (playerCastles.Contains(removedCastle))
         {
-            playerFortress.Remove(removedFortress);
+            playerCastles.Remove(removedCastle);
         }
 
-        if(playerFortress.Count <= 0)
+        if(playerCastles.Count <= 0)
         {
             // TODO: The lose condition is different --
             // You lose if an enemy's unit reaches your castle
             // with a key
             //gameover code here!
+        }
+    }
+
+    public void AddOwnedTile(Tile newTile)
+    {
+        playerOwnedTiles.Add(newTile);
+    }
+
+    public void RemoveOwnedTile(Tile removedTile)
+    {
+        if (playerOwnedTiles.Contains(removedTile))
+        {
+            playerOwnedTiles.Remove(removedTile);
         }
     }
 
@@ -80,12 +96,33 @@ public class PlayerTeam : ScriptableObject
             Destroy(playerUnits[i].gameObject);
         }
 
-        for (int i = 0; i < playerFortress.Count; i++)
+        for (int i = 0; i < playerOwnedTiles.Count; i++)
         {
-            Destroy(playerFortress[i].gameObject);
+            Destroy(playerOwnedTiles[i].gameObject);
         }
 
         playerUnits.Clear();
-        playerFortress.Clear();
+        playerCastles.Clear();
+        playerOwnedTiles.Clear();
+    }
+
+    public bool DoesPlayerOwnTile(Tile tile)
+    {
+        return playerOwnedTiles.Contains(tile);
+    }
+
+    public List<Tile> GetPlaceableTiles()
+    {
+        List<Tile> placeableTiles = new List<Tile>();
+
+        for(int i = 0; i < playerOwnedTiles.Count; i++)
+        {
+            if(playerOwnedTiles[i].IsTileEmpty())
+            {
+                placeableTiles.Add((Tile)playerOwnedTiles[i]);
+            }
+        }
+
+        return placeableTiles;
     }
 }
