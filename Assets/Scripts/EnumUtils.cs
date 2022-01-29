@@ -4,6 +4,39 @@ using UnityEngine;
 
 public static class EnumUtils
 {
+    private static Sprite fireSprite = null;
+    private static Sprite waterSprite = null;
+    private static Sprite grassSprite = null;
+
+    public static Sprite Sprite(this Elements element)
+    {
+        switch (element)
+        {
+            case Elements.FIRE:
+                if (fireSprite == null)
+                {
+                    fireSprite = Resources.Load<Sprite>("Sprites/fire");
+                }
+                return fireSprite;
+            case Elements.WATER:
+                if (waterSprite == null)
+                {
+                    waterSprite = Resources.Load<Sprite>("Sprites/water");
+                }
+                return waterSprite;
+            case Elements.GRASS:
+                if (grassSprite == null)
+                {
+                    grassSprite = Resources.Load<Sprite>("Sprites/grass");
+                }
+                return grassSprite;
+            default:
+                Debug.LogWarning("Bad switch statement in SpriteFromElement");
+                fireSprite = Resources.Load<Sprite>("Sprites/fire");
+                return fireSprite;
+        }
+    }
+
     // Rotate a vector so that the basis vector pointing to the right
     // points towards the given orientation.
     //

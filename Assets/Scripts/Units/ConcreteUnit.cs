@@ -31,6 +31,9 @@ public class ConcreteUnit : MonoBehaviour
 
     public PlayerTeam.Faction faction;
 
+    public SpriteRenderer elementOneRenderer;
+    public SpriteRenderer elementTwoRenderer;
+
     private void Start()
     {
         availableMoves = new List<Tile>();
@@ -203,7 +206,10 @@ public class ConcreteUnit : MonoBehaviour
 
     public void UpdateAppearance()
     {
+
         GetComponent<SpriteRenderer>().sprite = Appearance;
+        elementOneRenderer.sprite = elementOne.Sprite();
+        elementTwoRenderer.sprite = elementTwo.Sprite();
 
         switch (orientation)
         {
