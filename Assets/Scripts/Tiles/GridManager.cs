@@ -104,10 +104,10 @@ public class GridManager : MonoBehaviour
 
         currentSelectedUnit.ShowAttackedTiles(true);
 
-        if (UnitManager.Instance.SpellType.Equals(SpellTypes.Dragon) || UnitManager.Instance.SpellType.Equals(SpellTypes.Wizard))
+        if (CardManager.Instance.SpellType.Equals(SpellTypes.Dragon) || CardManager.Instance.SpellType.Equals(SpellTypes.Wizard))
         {
             //grab & show it's move-pool
-            availableUnitMoves = currentSelectedUnit.GetAvailableMoves(UnitManager.Instance.SpellType);
+            availableUnitMoves = currentSelectedUnit.GetAvailableMoves(CardManager.Instance.SpellType);
             currentSelectedUnit.ShowAvailableMoves(true);
         }
     }
@@ -137,7 +137,7 @@ public class GridManager : MonoBehaviour
 
                 //next move the unit
                 currentSelectedUnit.MoveUnit(newSelectedTile);
-                UnitManager.Instance.CastSpell(tile: newSelectedTile, card: null);
+                CardManager.Instance.CastSpell(tile: newSelectedTile, card: null);
 
                 //then clear the unit data
                 ClearUnitData();

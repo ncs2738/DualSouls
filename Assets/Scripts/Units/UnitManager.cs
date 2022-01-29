@@ -1,109 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class UnitManager : MonoBehaviour
 {
     public static UnitManager Instance;
 
-    public event Action OnSpellCast;
-
-    [SerializeField]
     private PlayerTeam redTeam;
-    [SerializeField]
     private PlayerTeam blueTeam;
 
     [SerializeField]
     private GameObject unitPrefab;
-
-    [SerializeField]
-    private ConcreteCard spawnCard;
-
-    [SerializeField]
-    private SpellTypes? spell;
-    public SpellTypes? SpellType => spell;
-    private Faces spellFace;
-
-    [SerializeField]
-    private List<UnitKind> UnitTypes;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    private void Start()
+    public void SetTeams()
     {
-        redTeam.Initialize(PlayerTeam.Faction.Red);
-        blueTeam.Initialize(PlayerTeam.Faction.Blue);
-    }
-
-    public void SetSpawnCard(ConcreteCard spawnCard)
-    {
-        this.spawnCard = spawnCard;
-        this.spell = null;
-        UnitManager.Instance.ShowPlacementTiles(true);
-    }
-
-    public void SetSpellAndFace(SpellTypes spell, Faces face)
-    {
-        this.spawnCard = null;
-        this.spell = spell;
-        this.spellFace = face;
-    }
-
-    public void ClearOnSpellCast()
-    {
-        OnSpellCast = null;
-    }
-
-    public void CastSpell(Tile tile, ConcreteCard card)
-    {
-        void WarriorSpell(Faces face, Tile t)
-        {
-            OnSpellCast();
-            this.spell = null;
-        }
-        void DragonSpell(Faces face, Tile t)
-        {
-            OnSpellCast();
-            this.spell = null;
-        }
-        void WizardSpell(Faces face, Tile t)
-        {
-            OnSpellCast();
-            this.spell = null;
-        }
-        void ThiefSpell(Faces face, ConcreteCard c)
-        {
-            OnSpellCast();
-        }
-
-        switch (spell)
-        {
-            case SpellTypes.Warrior:
-                WarriorSpell(spellFace, tile);
-                break;
-            case SpellTypes.Wizard:
-                WizardSpell(spellFace, tile);
-                break;
-            case SpellTypes.Dragon:
-                DragonSpell(spellFace, tile);
-                break;
-            case SpellTypes.Thief:
-                ThiefSpell(spellFace, card);
-                break;
-            default:
-                // Do nothing -- spell might even be null.
-                break;
-        }
+        redTeam = PlayerManager.Instance.redTeam.GetTeam();
+        blueTeam = PlayerManager.Instance.blueTeam.GetTeam();
     }
 
     public void AddUnit(Tile tile, PlayerTeam.Faction faction = PlayerTeam.Faction.Red)
     {
         ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -2), Quaternion.identity)
             .GetComponent<ConcreteUnit>();
+
+        ConcreteCard spawnCard = CardManager.Instance.GetSpawnCard();
 
         newUnit.unitKind = spawnCard.UnitKind;
         newUnit.elementOne = spawnCard.elementOne;
@@ -127,7 +52,7 @@ public class UnitManager : MonoBehaviour
             tile.OccupyTile(newUnit);
         }
 
-        UnitManager.Instance.ShowPlacementTiles(false);
+        ShowPlacementTiles(false);
     }
 
     public void LoadUnit(Tile tile, ConcreteUnit.SaveObject unitData)
@@ -135,7 +60,6 @@ public class UnitManager : MonoBehaviour
         ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -2), Quaternion.identity)
             .GetComponent<ConcreteUnit>();
 
-        //newUnit.unitKind = UnitTypes[(int) unitData.unitType];
         newUnit.unitKind = unitData.unitKind;
         newUnit.elementOne = unitData.elementOne;
         newUnit.elementTwo = unitData.elementTwo;
@@ -246,15 +170,6 @@ public class UnitManager : MonoBehaviour
         }
         
          return blueTeam.DoesPlayerOwnTile(tile);
-    }
-
-    public bool HasSelectedUnit()
-    {
-        if(spawnCard != null)
-        {
-            return true;
-        }
-        return false;
     }
 
     public void ShowPlacementTiles(bool status)

@@ -128,7 +128,7 @@ public abstract class Tile : MonoBehaviour
     {
         void AddUnit()
         {
-            if (UnitManager.Instance.HasSelectedUnit() && UnitManager.Instance.CanPlayerSpawnUnit(this))
+            if (CardManager.Instance.HasSelectedUnit() && UnitManager.Instance.CanPlayerSpawnUnit(this))
             { 
                 if (occupiedUnit == null)
                 {
@@ -185,7 +185,7 @@ public abstract class Tile : MonoBehaviour
             DecrementTileType();
         }
 
-        if (Input.GetMouseButtonDown(2) && UnitManager.Instance.HasSelectedUnit())
+        if (Input.GetMouseButtonDown(2) && CardManager.Instance.HasSelectedUnit())
         {
             AddUnit();
         }

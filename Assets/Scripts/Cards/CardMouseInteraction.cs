@@ -35,13 +35,13 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
 
     public void SelectUnitOfCard()
     {
-        UnitManager.Instance.SetSpawnCard(card);
+        CardManager.Instance.SetSpawnCard(card);
     }
 
     public void SelectSpellOfCard()
     {
-        UnitManager.Instance.SetSpellAndFace(card.Spell, card.face);
-        UnitManager.Instance.ClearOnSpellCast();
-        UnitManager.Instance.OnSpellCast += () => hand.RemoveCard(card);
+        CardManager.Instance.SetSpellAndFace(card.Spell, card.face);
+        CardManager.Instance.ClearOnSpellCast();
+        CardManager.Instance.OnSpellCast += () => hand.RemoveCard(card);
     }
 }

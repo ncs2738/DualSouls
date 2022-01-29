@@ -8,20 +8,56 @@ public class GameManager : MonoBehaviour
 
     public PlayerTeam.Faction activePlayerTurn = PlayerTeam.Faction.Red;
 
+    private List<PlayerTeam.Faction> playerTurns;
+
     [SerializeField]
     private bool MapEditModeEnabled = true;
     [SerializeField]
     private bool isGameStarted = false;
+
+    private int currentPlayer;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void AddPlayer(PlayerTeam.Faction playerTeam)
     {
-        
+        playerTurns.Add(playerTeam);
+    }
+
+    public void StartGame()
+    {
+        //currentPlayer = Random.Range(0, playerTurns.Count);
+        currentPlayer = 0;
+        activePlayerTurn = playerTurns[currentPlayer];
+    }
+
+    public void HasTurnEnded()
+    {
+        //TODO
+    }
+
+    public void EndTurn()
+    {
+        currentPlayer++;
+        if(currentPlayer >= playerTurns.Count)
+        {
+            currentPlayer = 0;
+        }
+
+        activePlayerTurn = playerTurns[currentPlayer];
+    }
+
+    public void GameOver()
+    {
+        //TODO - add game over <3
+    }
+
+    public void RestartGame()
+    {
+        //TODO <3!
     }
 
     // Update is called once per frame

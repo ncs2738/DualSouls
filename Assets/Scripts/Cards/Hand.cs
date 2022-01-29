@@ -42,6 +42,20 @@ public class Hand : MonoBehaviour
         }
     }
 
+    public bool IsHandEmpty()
+    {
+        bool empty = true;
+        for (int i = 0; i < 4; i++)
+        {
+            if (activeCards[i] != null)
+            {
+                empty = false;
+            }
+        }
+
+        return empty;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.D))

@@ -133,8 +133,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6107763}
   - component: {fileID: 6107762}
+  - component: {fileID: 6107765}
+  - component: {fileID: 6107764}
   m_Layer: 0
-  m_Name: UnitManager
+  m_Name: PlayerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,15 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6c64a06c4c43f3438853e0ad40020b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  redTeam: {fileID: 11400000, guid: edeb84f4450bbaf4ea8832c1bddebc6f, type: 2}
-  blueTeam: {fileID: 11400000, guid: d600c588a9ff6e2428c6f4e8c63a22f9, type: 2}
   unitPrefab: {fileID: 3908449495439042357, guid: 450c25eb1cef92f4983b4e781da672ad, type: 3}
-  spawnCard: {fileID: 1419728432}
-  UnitTypes:
-  - {fileID: 11400000, guid: a0ae9cbb8d19de147a644ac8dff03b51, type: 2}
-  - {fileID: 11400000, guid: e2bf97ce10c1c9e4d97b58ed59e89f55, type: 2}
-  - {fileID: 11400000, guid: 7bbb2b57514db114bb046741f4b38a76, type: 2}
-  - {fileID: 11400000, guid: ed3d8b7f00a119643a4579052211ae77, type: 2}
 --- !u!4 &6107763
 Transform:
   m_ObjectHideFlags: 0
@@ -176,6 +170,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6107764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6107761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76e18188bed372946ae07291832e4b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnCard: {fileID: 1419728432}
+--- !u!114 &6107765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6107761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03285745b3cf0d44787caf17aebb8cbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redTeamObject: {fileID: 11400000, guid: edeb84f4450bbaf4ea8832c1bddebc6f, type: 2}
+  blueTeamObject: {fileID: 11400000, guid: d600c588a9ff6e2428c6f4e8c63a22f9, type: 2}
 --- !u!1 &149721576
 GameObject:
   m_ObjectHideFlags: 0
