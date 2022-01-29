@@ -29,7 +29,10 @@ public class ConcreteUnit : MonoBehaviour
 
     public Vector2 CurrentPos => Location.transform.position;
 
-    private List<Tile> availableMoves;
+    // Map from the terminal tile of each move,
+    // To the set of attackers the unit is vulnerable to
+    // upon landing in the terminal tile.
+    private Dictionary<Tile, HashSet<ConcreteUnit>> availableMoves;
     public Orientation orientation;
 
     public PlayerTeam.Faction faction;
@@ -47,7 +50,9 @@ public class ConcreteUnit : MonoBehaviour
 
     private void Start()
     {
-        availableMoves = new List<Tile>();
+
+        availableMoves = new Dictionary<Tile, HashSet<ConcreteUnit>>();
+        CaptureKey.SetActive(false);
     }
 
     int everyTen = 0;
@@ -73,7 +78,7 @@ public class ConcreteUnit : MonoBehaviour
         // WARNING: Should this set _location to null, too?
     }
 
-    public void MoveUnit(Tile newLocation)
+    public void MoveUnit(Tile newLocation, ISet<ConcreteUnit> attackersOfMove)
     {
         Debug.Log("MoveUnit called");
         ClearTile();
@@ -85,6 +90,48 @@ public class ConcreteUnit : MonoBehaviour
         {
             attackedTile.AddAttacker(this);
         }
+
+        this.InitiateCombatSelection(
+            attackers: attackersOfMove,
+            victims: GetUnitsThisAttacks());
+    }
+
+    private void InitiateCombatSelection(ISet<ConcreteUnit> attackers, ISet<ConcreteUnit> victims)
+    {
+        HashSet<ConcreteUnit> oneSidedAttackers;
+        HashSet<ConcreteUnit> oneSidedVictims;
+        HashSet<ConcreteUnit> duelists;
+
+        oneSidedAttackers = attackers.Except(victims).ToHashSet();
+        oneSidedVictims = victims.Except(attackers).ToHashSet();
+        duelists = attackers.Intersect(victims).ToHashSet();
+
+        if (duelists.Count > 0)
+        {
+            // force a fight with one of the duelists
+        } else if (oneSidedAttackers.Count > 0)
+        {
+            // force a fight with one of the attackers
+        } else if (oneSidedVictims.Count > 0)
+        {
+            // force a fight with one of the victims
+        } else
+        {
+            // no fight occurs
+        }
+    }
+
+    private enum CombatKind
+    {
+        DUEL = 0,
+        ONE_SIDED_DEFENSE = 1,
+        ONE_SIDED_ATTACK = 2,
+    }
+
+    // Should only be called if other is a valid combatant
+    private void InitiateCombat(ConcreteUnit other, CombatKind combatKind)
+    {
+        //TODO: handle combat
     }
 
     public void ShowAttackedTiles(bool status)
@@ -97,15 +144,17 @@ public class ConcreteUnit : MonoBehaviour
 
     public void ShowAvailableMoves(bool status)
     {
-        for (int i = 0; i < availableMoves.Count; i++)
+        foreach (Tile tile in availableMoves.Keys)
         {
-            availableMoves[i].SetMovementHighlight(status);
+            tile.SetMovementHighlight(status);
         }
     }
 
-    public List<Tile> GetTilesThisAttacks()
+    public ISet<ConcreteUnit> GetUnitsThisAttacks() => GetTilesThisAttacks().Select(t => t.OccupiedUnit).ToHashSet();
+
+    public ISet<Tile> GetTilesThisAttacks()
     {
-        List<Tile> attackedTiles = new List<Tile>();
+        HashSet<Tile> attackedTiles = new HashSet<Tile>();
         // This could become a performance bottleneck. If it does,
         // we can 
         foreach (Vector2Int rightAttack in GetAttackPatternVectorList())
@@ -178,9 +227,11 @@ public class ConcreteUnit : MonoBehaviour
         FindNextTiles(Vector2.left + Vector2.down, 3);
     }
 
-    public bool IsTileInMovePool(Tile tile) => availableMoves.Contains(tile);
+    public HashSet<ConcreteUnit> AttackersOfMoveTo(Tile tile) => availableMoves.ContainsKey(tile)
+        ? availableMoves[tile]
+        : null;
 
-    public List<Tile> GetAvailableMoves(SpellTypes? moveType)
+    public Dictionary<Tile, HashSet<ConcreteUnit>> GetAvailableMoves(SpellTypes? moveType)
     {
         if (moveType == null)
         {
@@ -204,6 +255,7 @@ public class ConcreteUnit : MonoBehaviour
 
     private void FindNextTiles(Vector2 direction, int startVal = 0, int endVal = 3)
     {
+        HashSet<ConcreteUnit> moveAttackers = new HashSet<ConcreteUnit>();
         for (int i = startVal; i <= endVal; i++)
         {
             Vector2 nextTilePos = new Vector2(CurrentPos.x + (direction.x * i), CurrentPos.y + (direction.y * i));
@@ -212,9 +264,12 @@ public class ConcreteUnit : MonoBehaviour
 
             if (nextTile != null && nextTile.IsPassable(faction))
             {
+                moveAttackers.UnionWith(nextTile.AttackingUnits);
                 if (nextTile.IsTileEmpty())
                 {
-                    availableMoves.Add(nextTile);
+                    availableMoves[nextTile] = new HashSet<ConcreteUnit>();
+                    availableMoves[nextTile].UnionWith(moveAttackers);
+                    Debug.Log($"<{nextTile.transform}, {nextTile.transform.parent}>: {availableMoves[nextTile]}");
                 }
             }
             else

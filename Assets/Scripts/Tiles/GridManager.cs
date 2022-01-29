@@ -26,8 +26,7 @@ public class GridManager : MonoBehaviour
     private Tile currentSelectedTile;
     private ConcreteUnit currentSelectedUnit;
 
-    [SerializeField]
-    private List<Tile> availableUnitMoves;
+    private Dictionary<Tile, HashSet<ConcreteUnit>> availableUnitMoves;
 
     private List<ConcreteUnit> selectedEnemyUnits;
     private List<Tile> enemyUnitMoves;
@@ -41,7 +40,7 @@ public class GridManager : MonoBehaviour
 
     void Start()
     {
-        availableUnitMoves = new List<Tile>();
+        availableUnitMoves = new Dictionary<Tile, HashSet<ConcreteUnit>>();
         selectedEnemyUnits = new List<ConcreteUnit>();
         enemyUnitMoves = new List<Tile>();
 
@@ -127,14 +126,15 @@ public class GridManager : MonoBehaviour
         if (currentSelectedUnit != null)
         {
             //we have a selected unit, so check if the tile we selected is in the unit's movement list
-            if(currentSelectedUnit.IsTileInMovePool(newSelectedTile))
+            HashSet<ConcreteUnit> attackersOfMove = currentSelectedUnit.AttackersOfMoveTo(newSelectedTile);
+            if (attackersOfMove != null)
             {
                 //TODO - PROBABLY WILL HAVE TO MOVE THIS TO HANDLE SHOWING MULTIPLE UNITS
                 //it is! this is a valid selection! First clear the attack-ranges!
                 currentSelectedUnit.ShowAttackedTiles(false);
 
                 //next move the unit
-                currentSelectedUnit.MoveUnit(newSelectedTile);
+                currentSelectedUnit.MoveUnit(newSelectedTile, attackersOfMove);
                 CardManager.Instance.CastSpell(tile: newSelectedTile, card: null);
 
                 //then clear the unit data
@@ -180,7 +180,7 @@ public class GridManager : MonoBehaviour
 
     public bool IsTileInMovePool(Tile selectedTile)
     {
-        if(availableUnitMoves.Contains(selectedTile))
+        if(availableUnitMoves.Keys.Contains(selectedTile))
         {
             return true;
         }
