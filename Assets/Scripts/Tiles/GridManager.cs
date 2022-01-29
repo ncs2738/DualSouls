@@ -114,8 +114,6 @@ public class GridManager : MonoBehaviour
 
     public void ClearUnitData()
     {
-        //TODO - PROBABLY WILL HAVE TO MOVE THIS TO HANDLE SHOWING MULTIPLE UNITS
-        currentSelectedUnit.ShowAttackedTiles(false);
         currentSelectedUnit.ShowAvailableMoves(false);
         availableUnitMoves.Clear(); currentSelectedUnit.ShowAvailableMoves(false);
         currentSelectedTile = null;
