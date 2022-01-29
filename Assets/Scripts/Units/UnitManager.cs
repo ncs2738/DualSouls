@@ -144,4 +144,13 @@ public class UnitManager : MonoBehaviour
         redTeam.ClearLists();
         blueTeam.ClearLists();
     }
+
+    public bool HasSelectedUnit()
+    {
+        if(spawnCard != null)
+        {
+            return true;
+        }
+        return false;
+    }
 }

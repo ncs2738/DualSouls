@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    public PlayerTeam.Faction playerTurn = PlayerTeam.Faction.Red;
+
     private void Awake()
     {
         Instance = this;
@@ -30,5 +32,10 @@ public class GameManager : MonoBehaviour
             Debug.Log("loaded");
             GridManager.Instance.Load();
         }
+    }
+
+    public PlayerTeam.Faction GetCurrentPlayerTurn()
+    {
+        return playerTurn;
     }
 }

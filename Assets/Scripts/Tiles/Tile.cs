@@ -114,7 +114,11 @@ public abstract class Tile : MonoBehaviour
         {
             tileType++;
 
+            /*
+            I'm really not sure why this isn't working... for some reason the maxTypeVal keeps changing? it's quite odd. I'm just gonna hardcode it.
             if (tileType > maxTypeVal)
+            */
+            if ((int) tileType > 3)
             {
                 tileType = minTypeVal;
             }
@@ -136,7 +140,7 @@ public abstract class Tile : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetKey(KeyCode.U))
+            if (Input.GetKey(KeyCode.U) && UnitManager.Instance.HasSelectedUnit())
             {
                 AddUnit();
             }
@@ -151,7 +155,7 @@ public abstract class Tile : MonoBehaviour
             DecrementTileType();
         }
 
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(2) && UnitManager.Instance.HasSelectedUnit())
         {
             AddUnit();
         }
