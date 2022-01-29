@@ -59,6 +59,10 @@ public class ConcreteUnit : MonoBehaviour
 
     public void ClearTile()
     {
+        foreach (Tile tile in GetTilesThisAttacks())
+        {
+            tile.RemoveAttacker(this);
+        }
         Location.RemoveUnit();
         // WARNING: Should this set _location to null, too?
     }
@@ -70,6 +74,11 @@ public class ConcreteUnit : MonoBehaviour
         Location = newLocation;
         float oldZ = transform.position.z;
         transform.position = new Vector3 (CurrentPos.x, CurrentPos.y, oldZ);
+
+        foreach (Tile attackedTile in GetTilesThisAttacks())
+        {
+            attackedTile.AddAttacker(this);
+        }
     }
 
     public void ShowAttackedTiles(bool status)

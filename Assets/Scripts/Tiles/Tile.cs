@@ -33,6 +33,10 @@ public abstract class Tile : MonoBehaviour
 
     private bool isHovered = false;
 
+    // TODO: HashSet would be better, but List is easier to debug for now.
+    [SerializeField]
+    protected List<ConcreteUnit> attackingUnits;
+
     public enum TileType
     {
         Grass = 0,
@@ -43,6 +47,7 @@ public abstract class Tile : MonoBehaviour
 
     private void Start()
     {
+        attackingUnits = new List<ConcreteUnit>();
         maxTypeVal = System.Enum.GetValues(typeof(TileType)).Cast<TileType>().Max();
         minTypeVal = System.Enum.GetValues(typeof(TileType)).Cast<TileType>().Min();
     }
@@ -129,7 +134,7 @@ public abstract class Tile : MonoBehaviour
         void AddUnit()
         {
             if (UnitManager.Instance.HasSelectedUnit() && UnitManager.Instance.CanPlayerSpawnUnit(this))
-            { 
+            {
                 if (occupiedUnit == null)
                 {
                     UnitManager.Instance.AddUnit(this);
@@ -263,6 +268,7 @@ public abstract class Tile : MonoBehaviour
 
     protected virtual void OnUnitExit()
     {
+
         return;
     }
 
@@ -309,6 +315,28 @@ public abstract class Tile : MonoBehaviour
         {
             spawnableTile.SetTileOwner(spawnableTileData.tileOwner);
             UnitManager.Instance.ClaimNewTile(spawnableTile, spawnableTileData.tileOwner); 
+        }
+    }
+
+    public void AddAttacker(ConcreteUnit unit)
+    {
+        if (attackingUnits.Contains(unit))
+        {
+            Debug.LogWarning($"Attacker `{unit.unitKind}` getting added twice to tile at "+
+                $"`{this.transform},{this.transform.parent}`. This shouldn't happen.");
+        } else
+        {
+            attackingUnits.Add(unit);
+        }
+    }
+
+    public void RemoveAttacker(ConcreteUnit unit)
+    {
+        bool success = attackingUnits.Remove(unit);
+        if (!success)
+        {
+            Debug.LogWarning($"Tried to remove `{unit.unitKind}` from attackers of "+
+                $"`{this.transform},{this.transform.parent} when it wasn't there. This shouldn't happen.`");
         }
     }
 }
