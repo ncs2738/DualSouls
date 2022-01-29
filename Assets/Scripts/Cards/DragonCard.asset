@@ -15,6 +15,6 @@ MonoBehaviour:
   name: Dragon!!
   artwork: {fileID: 21300000, guid: 4139d7210f5256f40973f15c48942365, type: 3}
   unit: {fileID: 11400000, guid: 7bbb2b57514db114bb046741f4b38a76, type: 2}
-  frontDescription: How scary, white frame
-  backDescription: How scary, black frame
+  frontDescription: Move a friendly unit up to 3 tiles in a straight line
+  backDescription: Move an enemy unit up to 3 tiles in a straight line
   spell: 2

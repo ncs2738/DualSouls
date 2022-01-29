@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: WarriorCard
   m_EditorClassIdentifier: 
   name: Warrior
-  artwork: {fileID: 21300000, guid: d74e32fdea977224087d095a267d37bd, type: 3}
+  artwork: {fileID: 21300000, guid: 67a61e2ef8b0cd34da976edf583b89e3, type: 3}
   unit: {fileID: 11400000, guid: a0ae9cbb8d19de147a644ac8dff03b51, type: 2}
-  frontDescription: warrior has white frame
-  backDescription: warrior has black frame
+  frontDescription: (TODO) Rotate a friendly unit 90 degrees
+  backDescription: (TODO) Rotate an enemy unit 90 degrees
+  spell: 0

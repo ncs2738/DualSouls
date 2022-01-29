@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ThiefCard
   m_EditorClassIdentifier: 
   name: Thief
-  artwork: {fileID: 21300000, guid: 7bf8d8bc81a11484bbaddb2886d6e3ef, type: 3}
+  artwork: {fileID: 21300000, guid: ea2661492659ae341a8b384f2e0dc9e1, type: 3}
   unit: {fileID: 11400000, guid: ed3d8b7f00a119643a4579052211ae77, type: 2}
-  frontDescription: flip your card
-  backDescription: flip your opponent's card
+  frontDescription: (TODO) Flip around one of your cards
+  backDescription: (TODO) Flip around one of your opponent's cards
   spell: 3

@@ -43,8 +43,8 @@ public class CardAppearance : MonoBehaviour
             ? card.FrontDescription
             : card.BackDescription;
 
-        elementOneImage.color = card.elementOne.GetColor();
-        elementTwoImage.color = card.elementTwo.GetColor();
+        elementOneImage.sprite = card.elementOne.Sprite();
+        elementTwoImage.sprite = card.elementTwo.Sprite();
 
         artImage.sprite = card.Artwork;
     }
