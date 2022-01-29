@@ -4,6 +4,49 @@ using UnityEngine;
 
 public static class EnumUtils
 {
+    // Rotate a vector so that the basis vector pointing to the right
+    // points towards the given orientation.
+    //
+    // e.g. rotating to Orientation.EAST does nothing,
+    // rotating to Orientation.WEST is a 180 degree turn.
+    public static Vector2Int Rotate(this Vector2Int vec, Orientation o)
+    {
+        Vector2Int newVec;
+        switch (o)
+        {
+            case Orientation.NORTH:
+                // rotation matrix is
+                //  0 1 (x goes to y)
+                // -1 0 (y goes to x and is negated)
+                newVec = new Vector2Int(-vec.y, vec.x);
+                break;
+            case Orientation.SOUTH:
+                // rotation matrix is
+                //  0 -1 (x goes to y and is negated)
+                //  1  0 (y goes to x)
+                newVec = new Vector2Int(vec.y, -vec.x);
+                break;
+            case Orientation.EAST:
+                // rotation matrix is
+                //  1 0 (x goes to x)
+                //  0 1 (y goes to y)
+                newVec = vec;
+                break;
+            case Orientation.WEST:
+                // rotation matrix is
+                // -1 0 (x stays in x and is negated)
+                // -1 0 (y stays in y and is negated)
+                newVec = new Vector2Int(-vec.x, -vec.y);
+                break;
+            default:
+                newVec = vec;
+                Debug.LogWarning("Bad rotation given to Vector2Int.Rotate(Orientation)");
+                break;
+        }
+
+        return newVec;
+    }
+
     public static bool Beats(this Elements a, Elements b)
     {
         return (a == Elements.FIRE) && (b == Elements.GRASS)

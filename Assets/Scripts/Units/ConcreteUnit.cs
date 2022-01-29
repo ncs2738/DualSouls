@@ -1,17 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
 
 public class ConcreteUnit : MonoBehaviour
 {
-    public enum Orientation
-    {
-        NORTH = 0,
-        SOUTH = 1,
-        EAST = 2,
-        WEST = 4
-    }
-
     public UnitKind unitKind;
     public Sprite Appearance => unitKind.appearance;
     public Array2DEditor.Array2DInt AttackPattern => unitKind.attackPattern;
@@ -42,6 +36,19 @@ public class ConcreteUnit : MonoBehaviour
         availableMoves = new List<Tile>();
     }
 
+    int everyTen = 0;
+    private void Update()
+    {
+        if (everyTen == 0)
+        {
+            UpdateAppearance();
+        }
+
+        everyTen++;
+
+        everyTen = everyTen % 10;
+    }
+
     public void ClearTile()
     {
         Location.RemoveUnit();
@@ -57,12 +64,70 @@ public class ConcreteUnit : MonoBehaviour
         transform.position = new Vector3 (CurrentPos.x, CurrentPos.y, oldZ);
     }
 
+    public void ShowAttackedTiles(bool status)
+    {
+        foreach (Tile tile in GetTilesThisAttacks())
+        {
+            tile.SetHoverHighlight(status);
+        }
+    }
+
     public void ShowAvailableMoves(bool status)
     {
         for (int i = 0; i < availableMoves.Count; i++)
         {
             availableMoves[i].SetHoverHighlight(status);
         }
+    }
+
+    public List<Tile> GetTilesThisAttacks()
+    {
+        List<Tile> attackedTiles = new List<Tile>();
+        // This could become a performance bottleneck. If it does,
+        // we can 
+        foreach (Vector2Int rightAttack in GetAttackPatternVectorList())
+        {
+            Vector2Int directedAttack = rightAttack.Rotate(orientation);
+            attackedTiles.Add(GridManager.Instance.GetTile(CurrentPos + directedAttack));
+        }
+
+        return attackedTiles;
+    }
+
+    public List<Vector2Int> GetAttackPatternVectorList()
+    {
+        List<Vector2Int> relativeAttackPositions = new List<Vector2Int>();
+        Vector2Int unitPositionInPattern = Vector2Int.zero;
+        bool unitPositionFound = false;
+
+        for (int xi = 0; xi < unitKind.attackPattern.GridSize.x; xi++)
+        {
+            for (int yi = 0; yi < unitKind.attackPattern.GridSize.y; yi++)
+            {
+                int num = unitKind.attackPattern.GetCell(x: xi, y: yi);
+                if (num == 0)
+                {
+                    // ignore zeroes
+                } else if (num == 1 && !unitPositionFound)
+                {
+                    unitPositionInPattern = new Vector2Int (xi, yi);
+                    unitPositionFound = true;
+                } else if (num == 2)
+                {
+                    relativeAttackPositions.Add(new Vector2Int(xi, yi));
+                } else
+                {
+                    Debug.LogWarning("Bad unit attack pattern for  `" + unitKind.name + "`");
+                }
+            }
+        }
+
+        if (!unitPositionFound)
+        {
+            Debug.LogWarning("Bad unit attack pattern for  `" + unitKind.name + "`");
+        }
+
+        return relativeAttackPositions.Select(p => p - unitPositionInPattern).ToList();
     }
 
     private void SetDragonMoves()
@@ -89,7 +154,10 @@ public class ConcreteUnit : MonoBehaviour
 
     public List<Tile> GetAvailableMoves(SpellTypes? moveType)
     {
-        if (moveType == null) return null;
+        if (moveType == null)
+        {
+            return null;
+        }
         if (moveType.Equals(SpellTypes.Dragon))
         {
             SetDragonMoves();
@@ -131,6 +199,24 @@ public class ConcreteUnit : MonoBehaviour
     public void UpdateAppearance()
     {
         GetComponent<SpriteRenderer>().sprite = Appearance;
+
+        switch (orientation)
+        {
+            case Orientation.NORTH:
+                transform.right = Vector2.up;
+                break;
+            case Orientation.SOUTH:
+                transform.right = Vector2.down;
+                break;
+            case Orientation.EAST:
+                transform.right = Vector2.right;
+                break;
+            case Orientation.WEST:
+                transform.right = Vector2.left;
+                break;
+            default:
+                break;
+        }
     }
 
     [System.Serializable]

@@ -98,8 +98,8 @@ public class UnitManager : MonoBehaviour
         newUnit.elementTwo = spawnCard.elementTwo;
         newUnit.Location = tile;
         newUnit.orientation = faction == PlayerTeam.Faction.Red
-            ? ConcreteUnit.Orientation.EAST
-            : ConcreteUnit.Orientation.WEST;
+            ? Orientation.EAST
+            : Orientation.WEST;
         newUnit.faction = faction;
 
         newUnit.UpdateAppearance();
@@ -127,8 +127,8 @@ public class UnitManager : MonoBehaviour
         newUnit.elementTwo = unitData.elementTwo;
         newUnit.Location = tile;
         newUnit.orientation = unitData.playerFaction == PlayerTeam.Faction.Red
-            ? ConcreteUnit.Orientation.EAST
-            : ConcreteUnit.Orientation.WEST;
+            ? Orientation.EAST
+            : Orientation.WEST;
         newUnit.faction = unitData.playerFaction;
 
         newUnit.UpdateAppearance();

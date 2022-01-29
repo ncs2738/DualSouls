@@ -116,6 +116,8 @@ public class GridManager : MonoBehaviour
         currentSelectedTile = newSelectedTile;
         currentSelectedUnit = newSelectedUnit;
 
+        currentSelectedUnit.ShowAttackedTiles(true);
+
         if (UnitManager.Instance.SpellType.Equals(SpellTypes.Dragon) || UnitManager.Instance.SpellType.Equals(SpellTypes.Wizard))
         {
             UnitManager.Instance.CastSpell(tile: newSelectedTile, card: null);
