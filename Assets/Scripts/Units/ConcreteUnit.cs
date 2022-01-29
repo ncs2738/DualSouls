@@ -141,7 +141,6 @@ public class ConcreteUnit : MonoBehaviour
         public Elements elementOne;
         public Elements elementTwo;
 
-        public Tile location;
         public Orientation orientation;
 
         public PlayerTeam.Faction playerFaction;
@@ -155,7 +154,6 @@ public class ConcreteUnit : MonoBehaviour
             elementOne = elementOne,
             elementTwo = elementTwo,
 
-            location = Location,
             orientation = orientation,
 
             playerFaction = faction,

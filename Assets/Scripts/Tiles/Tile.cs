@@ -241,12 +241,12 @@ public abstract class Tile : MonoBehaviour
 
     public void Load(ConcreteUnit.SaveObject loadedUnit, SpawnableTile.SaveObject spawnableTileData = null)
     {
-        UnitManager.Instance.AddUnit(this, loadedUnit.playerFaction);
+        UnitManager.Instance.LoadUnit(this, loadedUnit);
 
-        if(spawnableTileData != null)
+        SpawnableTile spawnTile = this as SpawnableTile;
+        if (spawnTile != null && spawnableTileData != null)
         {
-            SpawnableTile spawnTile = this as SpawnableTile;
-            spawnTile.SetTileOwner(spawnableTileData.tileOwner);
+            //spawnTile.SetTileOwner(spawnableTileData.tileOwner);
         }
     }
 }

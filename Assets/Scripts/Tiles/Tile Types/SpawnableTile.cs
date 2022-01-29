@@ -46,8 +46,7 @@ public class SpawnableTile : Tile
             TileType type = neighboringTiles[i].GetTileType();
             if (!type.Equals(TileType.Fortress) || !type.Equals(TileType.PlayerCastle) || !type.Equals(TileType.SpawnableTile))
             {
-                //neighboringTiles[i].
-                SetTileOwner(tileOwner);
+                //neighboringTiles[i].SetTileOwner(tileOwner);
             }
         }
     }
@@ -78,8 +77,12 @@ public class SpawnableTile : Tile
 
     public void SetTileOwner(PlayerTeam.Faction newOwner)
     {
-        //neighboringTiles[i].SetOwner()
+        tileOwner = newOwner;
 
+        if(neighboringTiles.Count > 0)
+        {
+            //SetNeighboringTiles();
+        }
     }
 
     [System.Serializable]

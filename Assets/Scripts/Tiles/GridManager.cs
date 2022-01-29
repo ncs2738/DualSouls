@@ -245,7 +245,7 @@ public class GridManager : MonoBehaviour
 
         tiles.Add(newTile.transform.position, newTile);
 
-        if(savedTile.occupiedUnit.playerFaction != PlayerTeam.Faction.None)
+        if(!savedTile.occupiedUnit.playerFaction.Equals(PlayerTeam.Faction.None))
         {
             newTile.Load(savedTile.occupiedUnit, savedTile.spawnableTileData);
         }

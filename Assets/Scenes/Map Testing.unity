@@ -156,6 +156,11 @@ MonoBehaviour:
   blueTeam: {fileID: 11400000, guid: d600c588a9ff6e2428c6f4e8c63a22f9, type: 2}
   unitPrefab: {fileID: 3908449495439042357, guid: 450c25eb1cef92f4983b4e781da672ad, type: 3}
   spawnCard: {fileID: 1419728432}
+  UnitTypes:
+  - {fileID: 11400000, guid: a0ae9cbb8d19de147a644ac8dff03b51, type: 2}
+  - {fileID: 11400000, guid: e2bf97ce10c1c9e4d97b58ed59e89f55, type: 2}
+  - {fileID: 11400000, guid: 7bbb2b57514db114bb046741f4b38a76, type: 2}
+  - {fileID: 11400000, guid: ed3d8b7f00a119643a4579052211ae77, type: 2}
 --- !u!4 &6107763
 Transform:
   m_ObjectHideFlags: 0

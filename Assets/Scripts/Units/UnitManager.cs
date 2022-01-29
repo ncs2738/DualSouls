@@ -22,6 +22,9 @@ public class UnitManager : MonoBehaviour
     public SpellTypes? SpellType => spell;
     private Faces spellFace;
 
+    [SerializeField]
+    private List<UnitKind> UnitTypes;
+
     private void Awake()
     {
         Instance = this;
@@ -29,8 +32,8 @@ public class UnitManager : MonoBehaviour
 
     private void Start()
     {
-        redTeam.Initialize();
-        blueTeam.Initialize();
+        redTeam.Initialize(PlayerTeam.Faction.Red);
+        blueTeam.Initialize(PlayerTeam.Faction.Blue);
     }
 
     public void SetSpawnCard(ConcreteCard spawnCard)
@@ -107,6 +110,35 @@ public class UnitManager : MonoBehaviour
             tile.OccupyTile(newUnit);
         }
         else if(faction == PlayerTeam.Faction.Blue)
+        {
+            blueTeam.AddUnit(newUnit);
+            tile.OccupyTile(newUnit);
+        }
+    }
+
+    public void LoadUnit(Tile tile, ConcreteUnit.SaveObject unitData)
+    {
+        ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -1), Quaternion.identity)
+            .GetComponent<ConcreteUnit>();
+
+        //newUnit.unitKind = UnitTypes[(int) unitData.unitType];
+        newUnit.unitKind = unitData.unitKind;
+        newUnit.elementOne = unitData.elementOne;
+        newUnit.elementTwo = unitData.elementTwo;
+        newUnit.Location = tile;
+        newUnit.orientation = unitData.playerFaction == PlayerTeam.Faction.Red
+            ? ConcreteUnit.Orientation.EAST
+            : ConcreteUnit.Orientation.WEST;
+        newUnit.faction = unitData.playerFaction;
+
+        newUnit.UpdateAppearance();
+
+        if (unitData.playerFaction == PlayerTeam.Faction.Red)
+        {
+            redTeam.AddUnit(newUnit);
+            tile.OccupyTile(newUnit);
+        }
+        else if (unitData.playerFaction == PlayerTeam.Faction.Blue)
         {
             blueTeam.AddUnit(newUnit);
             tile.OccupyTile(newUnit);

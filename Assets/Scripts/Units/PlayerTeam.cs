@@ -20,10 +20,16 @@ public class PlayerTeam : ScriptableObject
         Blue = 2,
     }
 
-    public void Initialize()
+
+    public void Initialize(Faction _playerFaction = Faction.None)
     {
         playerUnits.Clear();
         playerFortress.Clear();
+
+        if(!playerFaction.Equals(Faction.None))
+        {
+            playerFaction = _playerFaction;
+        }
     }
 
     public void AddUnit(ConcreteUnit newUnit)
