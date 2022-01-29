@@ -120,8 +120,6 @@ public class GridManager : MonoBehaviour
 
         if (UnitManager.Instance.SpellType.Equals(SpellTypes.Dragon) || UnitManager.Instance.SpellType.Equals(SpellTypes.Wizard))
         {
-            UnitManager.Instance.CastSpell(tile: newSelectedTile, card: null);
-
             //grab & show it's move-pool
             availableUnitMoves = currentSelectedUnit.GetAvailableMoves(UnitManager.Instance.SpellType);
             currentSelectedUnit.ShowAvailableMoves(true);
@@ -147,6 +145,7 @@ public class GridManager : MonoBehaviour
             {
                 //it is! this is a valid selection! First move the unit
                 currentSelectedUnit.MoveUnit(newSelectedTile);
+                UnitManager.Instance.CastSpell(tile: newSelectedTile, card: null);
 
                 //then clear the unit data
                 ClearUnitData();

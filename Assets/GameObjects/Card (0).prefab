@@ -44,6 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c57308598c65dab47921b5d5e57c0b93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardKinds:
+  - {fileID: 11400000, guid: 55730aaab154a6c41bb3b1a142591b9d, type: 2}
+  - {fileID: 11400000, guid: 177639b6d1ecd0843a49db8cac73c780, type: 2}
+  - {fileID: 11400000, guid: a5b45c3191a7b6e40a398290c31340d7, type: 2}
+  - {fileID: 11400000, guid: ece0e7eb41326cb448f3c5c1bdacfe28, type: 2}
   cardKind: {fileID: 11400000, guid: ece0e7eb41326cb448f3c5c1bdacfe28, type: 2}
   elementOne: 0
   elementTwo: 1

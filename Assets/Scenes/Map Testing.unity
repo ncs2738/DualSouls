@@ -496,6 +496,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardView (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6528800169949369387, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
+      propertyPath: hand
+      value: 
+      objectReference: {fileID: 990296357}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
 --- !u!224 &524394435 stripped
@@ -635,6 +639,7 @@ MonoBehaviour:
   - {fileID: 1261886567}
   - {fileID: 2072110032}
   - {fileID: 1904890829}
+  cardPrefab: {fileID: 1671637472252217421, guid: d030a4317ed69c845b62f77ea17ab0c2, type: 3}
 --- !u!4 &990296358
 Transform:
   m_ObjectHideFlags: 0
@@ -889,6 +894,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardView (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6528800169949369387, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
+      propertyPath: hand
+      value: 
+      objectReference: {fileID: 990296357}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
 --- !u!224 &1261886566 stripped
@@ -1211,6 +1220,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardView (0)
       objectReference: {fileID: 0}
+    - target: {fileID: 6528800169949369387, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
+      propertyPath: hand
+      value: 
+      objectReference: {fileID: 990296357}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
 --- !u!224 &1698329033 stripped
@@ -1336,6 +1349,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardView (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6528800169949369387, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
+      propertyPath: hand
+      value: 
+      objectReference: {fileID: 990296357}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
 --- !u!224 &1904890828 stripped

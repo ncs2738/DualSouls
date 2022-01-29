@@ -88,7 +88,12 @@ public class ConcreteUnit : MonoBehaviour
         foreach (Vector2Int rightAttack in GetAttackPatternVectorList())
         {
             Vector2Int directedAttack = rightAttack.Rotate(orientation);
-            attackedTiles.Add(GridManager.Instance.GetTile(CurrentPos + directedAttack));
+            Tile attackedTile = GridManager.Instance.GetTile(CurrentPos + directedAttack);
+
+            if (attackedTile != null)
+            {
+                attackedTiles.Add(attackedTile);
+            }
         }
 
         return attackedTiles;

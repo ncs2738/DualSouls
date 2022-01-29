@@ -9,6 +9,9 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
     private CardAppearance cardAppearance;
     private ConcreteCard card;
 
+    [SerializeField]
+    private Hand hand;
+
     void Start()
     {
         // weird that we get the card from the appearance and not
@@ -21,9 +24,11 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
     {
         if (pointerEventData.button == PointerEventData.InputButton.Left)
         {
+            Debug.Log("Unit selected for card `" + card.Name + "`");
             SelectUnitOfCard();
         } else if (pointerEventData.button == PointerEventData.InputButton.Right)
         {
+            Debug.Log("Spell selected for card `" + card.Name + "`");
             SelectSpellOfCard();
         }
     }
@@ -36,5 +41,7 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
     public void SelectSpellOfCard()
     {
         UnitManager.Instance.SetSpellAndFace(card.Spell, card.face);
+        UnitManager.Instance.ClearOnSpellCast();
+        UnitManager.Instance.OnSpellCast += () => hand.RemoveCard(card);
     }
 }

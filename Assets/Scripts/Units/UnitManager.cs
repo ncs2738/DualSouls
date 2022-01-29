@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class UnitManager : MonoBehaviour
 {
     public static UnitManager Instance;
+
+    public event Action OnSpellCast;
 
     [SerializeField]
     private PlayerTeam redTeam;
@@ -49,23 +52,31 @@ public class UnitManager : MonoBehaviour
         this.spellFace = face;
     }
 
+    public void ClearOnSpellCast()
+    {
+        OnSpellCast = null;
+    }
+
     public void CastSpell(Tile tile, ConcreteCard card)
     {
         void WarriorSpell(Faces face, Tile t)
         {
-            ;
+            OnSpellCast();
+            this.spell = null;
         }
         void DragonSpell(Faces face, Tile t)
         {
-            ;
+            OnSpellCast();
+            this.spell = null;
         }
         void WizardSpell(Faces face, Tile t)
         {
-            ;
+            OnSpellCast();
+            this.spell = null;
         }
         void ThiefSpell(Faces face, ConcreteCard c)
         {
-            ;
+            OnSpellCast();
         }
 
         switch (spell)

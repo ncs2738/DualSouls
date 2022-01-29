@@ -5,6 +5,7 @@ using System;
 
 public class ConcreteCard : MonoBehaviour
 {
+    public List<CardKind> cardKinds;
     public CardKind cardKind;
     public string Name => cardKind.name;
     public Sprite Artwork => cardKind.artwork;
@@ -27,6 +28,12 @@ public class ConcreteCard : MonoBehaviour
     }
 
     public void Reshuffle()
+    {
+        cardKind = cardKinds[UnityEngine.Random.Range(0, cardKinds.Count)];
+        ReshuffleNonKindParts();
+    }
+
+    public void ReshuffleNonKindParts()
     {
         List<Elements> randomElements = EnumUtils.RandomElementCombination(2);
         elementOne = randomElements[0];
