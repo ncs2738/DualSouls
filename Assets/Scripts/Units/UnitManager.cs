@@ -43,6 +43,7 @@ public class UnitManager : MonoBehaviour
     {
         this.spawnCard = spawnCard;
         this.spell = null;
+        UnitManager.Instance.ShowPlacementTiles(true);
     }
 
     public void SetSpellAndFace(SpellTypes spell, Faces face)
@@ -125,6 +126,8 @@ public class UnitManager : MonoBehaviour
             blueTeam.AddUnit(newUnit);
             tile.OccupyTile(newUnit);
         }
+
+        UnitManager.Instance.ShowPlacementTiles(false);
     }
 
     public void LoadUnit(Tile tile, ConcreteUnit.SaveObject unitData)

@@ -13,6 +13,9 @@ public class ConcreteUnit : MonoBehaviour
     public Elements elementOne;
     public Elements elementTwo;
 
+    [SerializeField]
+    private GameObject CaptureKey;
+
     private Tile _location;
     public Tile Location
     {
@@ -38,6 +41,7 @@ public class ConcreteUnit : MonoBehaviour
     private void Start()
     {
         availableMoves = new List<Tile>();
+        CaptureKey.SetActive(false);
     }
 
     int everyTen = 0;
@@ -213,6 +217,7 @@ public class ConcreteUnit : MonoBehaviour
     public void GiveUnitKey()
     {
         UnitHasKey = true;
+        CaptureKey.SetActive(true);
     }
 
     public void UpdateAppearance()
