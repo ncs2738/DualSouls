@@ -58,6 +58,7 @@ public class UnitManager : MonoBehaviour
         }
 
         ShowPlacementTiles(false);
+        tile.SetPlacementHighlight(faction, false);
     }
 
     public void LoadUnit(Tile tile, ConcreteUnit.SaveObject unitData)

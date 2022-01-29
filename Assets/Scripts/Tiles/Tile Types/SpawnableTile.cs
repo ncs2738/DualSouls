@@ -15,6 +15,8 @@ public class SpawnableTile : Tile
     [SerializeField]
     private GameObject RedTeamColorTint;
 
+    private PlayerTeam.Faction occupiedUnitFaction;
+
     private void Start()
     {
         neighboringTiles = new Dictionary<Vector2, Tile>();
@@ -102,7 +104,9 @@ public class SpawnableTile : Tile
 
     protected override void OnUnitEnter(ConcreteUnit occupiedUnit)
     {
-        if(tileType.Equals(TileType.Fortress))
+        occupiedUnitFaction = occupiedUnit.faction;
+
+        if (tileType.Equals(TileType.Fortress))
         {
             if(tileOwner.Equals(occupiedUnit.faction))
             {
@@ -120,6 +124,15 @@ public class SpawnableTile : Tile
                 ClaimTile(occupiedUnit.faction);
                 //remove from list
             }
+        }
+    }
+
+    protected override void OnUnitExit()
+    {
+        if(!tileOwner.Equals(PlayerTeam.Faction.None))
+        {
+            occupiedUnitFaction = PlayerTeam.Faction.None;
+            UnitManager.Instance.AddNewTile(this, occupiedUnitFaction);
         }
     }
 

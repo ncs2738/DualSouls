@@ -252,7 +252,9 @@ public class GridManager : MonoBehaviour
 
     public void Load()
     {
-        if(tiles != null && tiles.Count != 0)
+        CardManager.Instance.ClearOnSpellCast();
+
+        if (tiles != null && tiles.Count != 0)
         {
             foreach (KeyValuePair<Vector2, Tile> tile in tiles)
             {

@@ -32,11 +32,13 @@ public class CardManager : MonoBehaviour
         this.spawnCard = null;
         this.spell = spell;
         this.spellFace = face;
+        UnitManager.Instance.ShowPlacementTiles(false);
     }
 
     public void ClearOnSpellCast()
     {
         OnSpellCast = null;
+        UnitManager.Instance.ShowPlacementTiles(false);
     }
 
     public void CastSpell(Tile tile, ConcreteCard card)

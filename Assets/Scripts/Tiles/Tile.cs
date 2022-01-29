@@ -143,6 +143,7 @@ public abstract class Tile : MonoBehaviour
                 {
                     Debug.Log(occupiedUnit);
                     UnitManager.Instance.RemoveUnit(occupiedUnit);
+                    this.OnUnitExit();
                 }
             }
         }
@@ -268,7 +269,6 @@ public abstract class Tile : MonoBehaviour
 
     protected virtual void OnUnitExit()
     {
-
         return;
     }
 
