@@ -90,7 +90,7 @@ public class UnitManager : MonoBehaviour
     
     public void AddUnit(Tile tile, PlayerTeam.Faction faction = PlayerTeam.Faction.Red)
     {
-        ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -1), Quaternion.identity)
+        ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -2), Quaternion.identity)
             .GetComponent<ConcreteUnit>();
 
         newUnit.unitKind = spawnCard.UnitKind;
@@ -118,7 +118,7 @@ public class UnitManager : MonoBehaviour
 
     public void LoadUnit(Tile tile, ConcreteUnit.SaveObject unitData)
     {
-        ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -1), Quaternion.identity)
+        ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -2), Quaternion.identity)
             .GetComponent<ConcreteUnit>();
 
         //newUnit.unitKind = UnitTypes[(int) unitData.unitType];

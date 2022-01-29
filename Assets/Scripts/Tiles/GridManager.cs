@@ -53,31 +53,15 @@ public class GridManager : MonoBehaviour
 
     public void SetTileType(Tile tile, Tile.TileType tileType)
     {
-        int newTileType = 0;
-
-        switch (tileType)
-        {
-            case Tile.TileType.Fortress:
-                newTileType = (int) Tile.TileType.Fortress;
-                break;
-
-            case Tile.TileType.PlayerCastle:
-                newTileType = (int)Tile.TileType.PlayerCastle;
-                break;
-
-            case Tile.TileType.SpawnableTile:
-                newTileType = (int)Tile.TileType.SpawnableTile;
-                break;
-
-            default:
-                newTileType = 0;
-                break;   
-        }
-
-        Tile newTile = CreateNewTile(tile.gameObject.transform.parent, newTileType, (int)tile.transform.position.x, (int)tile.transform.position.y);
+        Tile newTile = CreateNewTile(tile.gameObject.transform.parent, (int) tileType, (int)tile.transform.position.x, (int)tile.transform.position.y);
         tiles[tile.transform.position] = newTile;
-
         Destroy(tile.gameObject);
+
+        if(tileType.Equals(Tile.TileType.Fortress) || tileType.Equals(Tile.TileType.PlayerCastle))
+        {
+            SpawnableTile t = newTile as SpawnableTile;
+            t.SetNeighboringTiles();
+        }
     }
 
     private void GenerateGrid()
@@ -128,14 +112,18 @@ public class GridManager : MonoBehaviour
 
     public void SetUnitData(Tile newSelectedTile, ConcreteUnit newSelectedUnit)
     {
-        Debug.Log("SET UNIT DATA CALLED");
         //update the unit data
         currentSelectedTile = newSelectedTile;
         currentSelectedUnit = newSelectedUnit;
 
-        //grab & show it's move-pool
-        availableUnitMoves = currentSelectedUnit.GetAvailableMoves(UnitManager.Instance.SpellType);
-        currentSelectedUnit.ShowAvailableMoves(true);
+        if (UnitManager.Instance.SpellType.Equals(SpellTypes.Dragon) || UnitManager.Instance.SpellType.Equals(SpellTypes.Wizard))
+        {
+            UnitManager.Instance.CastSpell(tile: newSelectedTile, card: null);
+
+            //grab & show it's move-pool
+            availableUnitMoves = currentSelectedUnit.GetAvailableMoves(UnitManager.Instance.SpellType);
+            currentSelectedUnit.ShowAvailableMoves(true);
+        }
     }
 
     public void ClearUnitData()

@@ -171,7 +171,7 @@ public abstract class Tile : MonoBehaviour
 
     protected virtual void GameModeInputs()
     {
-        UnitManager.Instance.CastSpell(tile: this, card: null);
+        //UnitManager.Instance.CastSpell(tile: this, card: null);
         return;
     }
 
