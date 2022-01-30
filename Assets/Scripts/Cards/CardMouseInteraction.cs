@@ -22,7 +22,12 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
     //Detect if a click occurs
     public void OnPointerClick(PointerEventData pointerEventData)
     {
-        if (pointerEventData.button == PointerEventData.InputButton.Left)
+        if (CardManager.Instance.SpellType == SpellTypes.Thief
+            && pointerEventData.button == PointerEventData.InputButton.Left)
+        {
+            card.Flip();
+            CardManager.Instance.CastSpell(null, null);
+        } else if (pointerEventData.button == PointerEventData.InputButton.Left)
         {
             Debug.Log("Unit selected for card `" + card.Name + "`");
             SelectUnitOfCard();
@@ -36,12 +41,18 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
     public void SelectUnitOfCard()
     {
         CardManager.Instance.SetSpawnCard(card);
+        UnitManager.Instance.ClearOnUnitSpawn();
+        if (GameManager.Instance.IsGameStarted())
+        {
+            UnitManager.Instance.OnUnitSpawn += () => hand.RemoveCard(card);
+        }
     }
 
     public void SelectSpellOfCard()
     {
         CardManager.Instance.SetSpellAndFace(card.Spell, card.face);
         CardManager.Instance.ClearOnSpellCast();
+
         CardManager.Instance.OnSpellCast += () => hand.RemoveCard(card);
     }
 }

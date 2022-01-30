@@ -95,8 +95,15 @@ public class ConcreteUnit : MonoBehaviour
         MarkAttackedTiles();
 
         InitiateCombatSelection(
-            attackers: attackersOfMove,
-            victims: GetUnitsThisAttacks());
+            attackers: attackersOfMove.Where(a => a.faction != this.faction).ToHashSet(),
+            victims: GetUnitsThisAttacks().Where(a => a.faction != this.faction).ToHashSet());
+
+        availableMoves.Clear();
+
+        if (!CombatManager.Instance.SelectingComponent)
+        {
+            GridManager.Instance.ClearUnitData();
+        }
     }
 
     public void MarkAttackedTiles()
@@ -143,6 +150,8 @@ public class ConcreteUnit : MonoBehaviour
 
     private void InitiateCombatSelection(ISet<ConcreteUnit> attackers, ISet<ConcreteUnit> victims)
     {
+        attackers.Remove(this);
+        victims.Remove(this);
         HashSet<ConcreteUnit> oneSidedAttackers;
         HashSet<ConcreteUnit> oneSidedVictims;
         HashSet<ConcreteUnit> duelists;
