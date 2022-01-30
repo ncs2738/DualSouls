@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
+public class CardMouseInteraction : MonoBehaviour,
+    IPointerClickHandler,
+    IPointerEnterHandler,
+    IPointerExitHandler
 {
     [SerializeField]
     private CardAppearance cardAppearance;
@@ -12,11 +15,14 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     private Hand hand;
 
+
+    private Vector3 originalParentPosition;
     void Start()
     {
         // weird that we get the card from the appearance and not
         // from some more neutral link, but it's fine for the jam
         card = cardAppearance.card;
+        originalParentPosition = transform.parent.parent.position;
     }
 
     //Detect if a click occurs
@@ -45,6 +51,19 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public void OnPointerEnter(PointerEventData ped)
+    {
+        Debug.Log("enter!");
+        transform.parent.parent.position = new Vector3(
+            transform.parent.parent.position.x,
+            10,
+            transform.parent.parent.position.z);
+    }
+
+    public void OnPointerExit(PointerEventData ped)
+    {
+        transform.parent.parent.position = originalParentPosition;
+    }
 
     public void SelectUnitOfCard()
     {

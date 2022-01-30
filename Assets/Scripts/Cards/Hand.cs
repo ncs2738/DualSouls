@@ -108,9 +108,6 @@ public class Hand : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             DrawBackToFour();
-        } else if (Input.GetKeyDown(KeyCode.X))
-        {
-            DiscardAll();
         }
 
         bool shouldRefresh = false;
