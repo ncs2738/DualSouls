@@ -110,23 +110,29 @@ public class SpawnableTile : Tile
 
     public override void OnTurnEnd()
     {
+        Debug.Log($"on turn end, `{transform.parent.name}, {transform.name}`!");
         if (tileType.Equals(TileType.Fortress))
         {
-            if (tileOwner.Equals(occupiedUnit.faction))
+            if (occupiedUnit != null)
             {
-                occupiedUnit.GiveUnitKey();
-            }
-            else
-            {
-                ClaimTile(occupiedUnit.faction);
+                if (tileOwner.Equals(occupiedUnit.faction))
+                {
+                    occupiedUnit.GiveUnitKey();
+                } else
+                {
+                    ClaimTile(occupiedUnit.faction);
+                }
             }
         }
         else if (tileType.Equals(TileType.PlayerCastle))
         {
-            if (occupiedUnit.DoesUnitHaveKey())
+            if (occupiedUnit)
             {
-                ClaimTile(occupiedUnit.faction);
-                //remove from list
+                if (occupiedUnit.DoesUnitHaveKey())
+                {
+                    ClaimTile(occupiedUnit.faction);
+                    //remove from list
+                }
             }
         }
     }

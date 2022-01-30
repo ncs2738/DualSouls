@@ -296,7 +296,7 @@ public class GridManager : MonoBehaviour
 
     public void OnTurnEnd()
     {
-        foreach(Tile tile in tiles.Value)
+        foreach(Tile tile in tiles.Values)
         {
             tile.OnTurnEnd();
         }
