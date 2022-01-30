@@ -35,7 +35,7 @@ public class CardMouseInteraction : MonoBehaviour,
             {
                 card.Flip();
                 CardManager.Instance.CastSpell(null, null);
-            } else
+            } else if (GoodNonThief())
             {
                 Debug.Log("Unit selected for card `" + card.Name + "`");
                 SelectUnitOfCard();

@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public PlayerTeam.Faction activePlayerTurn = PlayerTeam.Faction.Red;
+    public PlayerTeam.Faction activePlayerTurn;
 
     private List<PlayerTeam.Faction> playerTurns;
 
@@ -23,7 +23,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private bool isGameStarted = false;
 
-    private int currentPlayer;
+    public Hand redHand;
+    public Hand blueHand;
 
     private void Awake()
     {
@@ -83,18 +84,14 @@ public class GameManager : MonoBehaviour
         isGameStarted = true;
 
         //currentPlayer = Random.Range(0, playerTurns.Count);
-        currentPlayer = 0;
-        activePlayerTurn = playerTurns[currentPlayer];
+        activePlayerTurn = PlayerTeam.Faction.Red;
         ShowTeam();
     }
 
     private void ShowTeam()
     {
-        // This needs to be flipped to work, idk why
-        BlueTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Red);
-        Debug.Log($"blueteam: `{BlueTeamBG.enabled}`");
-        Debug.Log($"activePlayerTurn: `{activePlayerTurn}`");
-        RedTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Blue);
+        BlueTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Blue);
+        RedTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Red);
     }
 
     public void HasTurnEnded()
@@ -106,15 +103,17 @@ public class GameManager : MonoBehaviour
     {
         UnitManager.Instance.OnTurnEnd();
 
-        currentPlayer++;
-        if(currentPlayer >= playerTurns.Count)
+        if (activePlayerTurn == PlayerTeam.Faction.Red)
         {
-            currentPlayer = 0;
+            redHand.DrawBackToFour();
+            activePlayerTurn = PlayerTeam.Faction.Blue;
+        } else
+        {
+            blueHand.DrawBackToFour();
+            activePlayerTurn = PlayerTeam.Faction.Red;
         }
 
         ShowTeam();
-
-        activePlayerTurn = playerTurns[currentPlayer];
     }
 
     public void GameOver()

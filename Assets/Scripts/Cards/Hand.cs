@@ -110,13 +110,6 @@ public class Hand : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            if (faction == GameManager.Instance.activePlayerTurn)
-            {
-                DrawBackToFour();
-            }
-        }
 
         bool shouldRefresh = false;
 
