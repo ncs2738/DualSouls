@@ -119,6 +119,39 @@ public class GridManager : MonoBehaviour
         currentSelectedUnit = null;
     }
 
+    private bool inCombat = false;
+    public void EnterCombatChoice(ConcreteUnit unit, ConcreteUnit.CombatKind combatKind)
+    {
+        inCombat = true;
+        unit.ShowAttackedTiles(false);
+
+        unit.Location.SetMovementHighlight(true);
+
+        foreach (ConcreteUnit possibleOpponent in unit.possibleOpponents)
+        {
+            possibleOpponent.Location.SetAttackHighlight(unit.faction, true);
+        }
+
+        if (combatKind == ConcreteUnit.CombatKind.DUEL)
+        {
+            foreach (ConcreteUnit possibleOpponent in unit.possibleOpponents)
+            {
+                possibleOpponent.SetDuelCrosshair(true);
+            }
+            unit.SetDuelCrosshair(true);
+        } else if (combatKind == ConcreteUnit.CombatKind.ONE_SIDED_DEFENSE)
+        {
+            unit.SetOneSidedCrosshair(true);
+        } else if (combatKind == ConcreteUnit.CombatKind.ONE_SIDED_ATTACK)
+        {
+            foreach (ConcreteUnit possibleOpponent in unit.possibleOpponents)
+            {
+                possibleOpponent.SetOneSidedCrosshair(true);
+            }
+        }
+
+    }
+
     public void LeftClickInputHandler(Tile newSelectedTile, ConcreteUnit newSelectedUnit = null)
     {
         Debug.Log("LeftClickInputHandler");

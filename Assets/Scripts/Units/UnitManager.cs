@@ -77,6 +77,11 @@ public class UnitManager : MonoBehaviour
 
         newUnit.UpdateAppearance();
 
+        foreach (Tile attackedTile in newUnit.GetTilesThisAttacks())
+        {
+            attackedTile.AddAttacker(newUnit);
+        }
+
         if (unitData.playerFaction == PlayerTeam.Faction.Red)
         {
             redTeam.AddUnit(newUnit);

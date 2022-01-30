@@ -16,6 +16,11 @@ public class ConcreteUnit : MonoBehaviour
     [SerializeField]
     private GameObject CaptureKey;
 
+    [SerializeField]
+    private GameObject duelCrosshair;
+    [SerializeField]
+    private GameObject oneSidedCrosshair;
+
     private Tile _location;
     public Tile Location
     {
@@ -35,7 +40,7 @@ public class ConcreteUnit : MonoBehaviour
     private Dictionary<Tile, HashSet<ConcreteUnit>> availableMoves;
     public Orientation orientation;
 
-    private List<ConcreteUnit> possibleOpponents;
+    public List<ConcreteUnit> possibleOpponents;
 
     public PlayerTeam.Faction faction;
 
@@ -140,24 +145,43 @@ public class ConcreteUnit : MonoBehaviour
         if (duelists.Count > 0)
         {
             possibleOpponents = duelists.ToList();
+            GridManager.Instance.EnterCombatChoice(this, CombatKind.DUEL);
             // force a fight with one of the duelists
         } else if (oneSidedAttackers.Count > 0)
         {
             possibleOpponents = oneSidedAttackers.ToList();
+            GridManager.Instance.EnterCombatChoice(this, CombatKind.ONE_SIDED_DEFENSE);
             // force a fight with one of the attackers
-        } else if (oneSidedVictims.Count > 0)
+        }
+        else if (oneSidedVictims.Count > 0)
         {
             possibleOpponents = oneSidedVictims.ToList();
+            GridManager.Instance.EnterCombatChoice(this, CombatKind.ONE_SIDED_ATTACK);
             // force a fight with one of the victims
-        } else
+        }
+        else
         {
             // no fight occurs
         }
-
-
     }
 
-    private enum CombatKind
+    public void SetDuelCrosshair(bool status)
+    {
+        duelCrosshair.SetActive(status);
+    }
+
+    public void SetOneSidedCrosshair(bool status)
+    {
+        oneSidedCrosshair.SetActive(status);
+    }
+
+    public void ClearCrosshairs()
+    {
+        SetDuelCrosshair(false);
+        SetOneSidedCrosshair(false);
+    }
+
+    public enum CombatKind
     {
         DUEL = 0,
         ONE_SIDED_DEFENSE = 1,
