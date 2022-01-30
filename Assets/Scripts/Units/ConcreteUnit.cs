@@ -77,10 +77,7 @@ public class ConcreteUnit : MonoBehaviour
 
     public void ClearTile()
     {
-        foreach (Tile tile in GetTilesThisAttacks())
-        {
-            tile.RemoveAttacker(this);
-        }
+        UnmarkAttackedTiles();
         Location.RemoveUnit();
         // WARNING: Should this set _location to null, too?
     }
@@ -93,21 +90,36 @@ public class ConcreteUnit : MonoBehaviour
         float oldZ = transform.position.z;
         transform.position = new Vector3 (CurrentPos.x, CurrentPos.y, oldZ);
 
-        foreach (Tile attackedTile in GetTilesThisAttacks())
-        {
-            attackedTile.AddAttacker(this);
-        }
+        MarkAttackedTiles();
 
         InitiateCombatSelection(
             attackers: attackersOfMove,
             victims: GetUnitsThisAttacks());
     }
 
+    public void MarkAttackedTiles()
+    {
+        foreach (Tile attackedTile in GetTilesThisAttacks())
+        {
+            attackedTile.AddAttacker(this);
+            // Debug.Log($"added <{attackedTile.transform.name},{attackedTile.transform.parent.name}>");
+        }
+    }
+
+    public void UnmarkAttackedTiles()
+    {
+        foreach (Tile attackedTile in GetTilesThisAttacks())
+        {
+            attackedTile.RemoveAttacker(this);
+            // Debug.Log($"remove <{attackedTile.transform.name},{attackedTile.transform.parent.name}>");
+        }
+    }
+
     public void RotateUnit(Orientation newOrientation)
     {
         if (newOrientation == orientation)
         {
-            Debug.LogWarning($"Tried a useless rotation of `{unitKind}` from `{orientation}` to {orientation}");
+            // Debug.LogWarning($"Tried a useless rotation of `{unitKind}` from `{orientation}` to {orientation}");
         }
 
         orientation = newOrientation;
@@ -333,8 +345,6 @@ public class ConcreteUnit : MonoBehaviour
                 {
                     availableMoves[nextTile] = new HashSet<ConcreteUnit>();
                     availableMoves[nextTile].UnionWith(moveAttackers);
-                    //Debug.Log($"<{nextTile.transform.name}, {nextTile.transform.parent.name}>: "
-                    //    +$"{availableMoves[nextTile].Aggregate("", (str, unit) => unit.unitKind.name + ", " + str)}");
                 }
             }
             else

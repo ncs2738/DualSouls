@@ -329,7 +329,7 @@ public abstract class Tile : MonoBehaviour
     {
         if (attackingUnits.Contains(unit))
         {
-            Debug.LogWarning($"Attacker `{unit.unitKind}` getting added twice to tile at "+
+            Debug.LogWarning($"Attacker `{unit.unitKind.name}` getting added twice to tile at "+
                 $"`{this.transform},{this.transform.parent}`. This shouldn't happen.");
         } else
         {
@@ -342,7 +342,7 @@ public abstract class Tile : MonoBehaviour
         bool success = attackingUnits.Remove(unit);
         if (!success)
         {
-            Debug.LogWarning($"Tried to remove `{unit.unitKind}` from attackers of "+
+            Debug.LogWarning($"Tried to remove `{unit.unitKind.name}` from attackers of "+
                 $"`{this.transform},{this.transform.parent} when it wasn't there. This shouldn't happen.`");
         }
     }

@@ -243,6 +243,7 @@ public class GridManager : MonoBehaviour
         return newTile;
     }
 
+    private Dictionary<Tile, ConcreteUnit.SaveObject> unitsToLoad;
     private Tile LoadNewTile(Tile.SaveObject savedTile, Transform parentObject)
     {
         int x = (int)savedTile.posX;
@@ -259,7 +260,7 @@ public class GridManager : MonoBehaviour
 
         if (!savedTile.occupiedUnit.playerFaction.Equals(PlayerTeam.Faction.None))
         {
-            newTile.LoadUnit(savedTile.occupiedUnit);
+            unitsToLoad[newTile] = savedTile.occupiedUnit;
         }
 
         if (!savedTile.spawnableTileData.tileOwner.Equals(PlayerTeam.Faction.None))
@@ -321,10 +322,19 @@ public class GridManager : MonoBehaviour
             newColumn.transform.parent = this.gameObject.transform;
             tileRows[x] = newColumn;
         }
-        
+
+
+        unitsToLoad = new Dictionary<Tile, ConcreteUnit.SaveObject>();
         foreach (Tile.SaveObject savedTile in saveObject.savedLevel)
         {
             LoadNewTile(savedTile, tileRows[(int)savedTile.posX].transform);
+        }
+
+        foreach (KeyValuePair<Tile, ConcreteUnit.SaveObject> kv in unitsToLoad)
+        {
+            Tile tile = kv.Key;
+            ConcreteUnit.SaveObject unit = kv.Value;
+            tile.LoadUnit(unit);
         }
     }
 
