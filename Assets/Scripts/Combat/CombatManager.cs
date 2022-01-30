@@ -32,8 +32,8 @@ public class CombatManager : MonoBehaviour
     private ConcreteUnit ActivePlayerUnit;
     private ConcreteUnit EnemyPlayerUnit;
 
-    float countdown = 10f;
-    float startTime = 10f;
+    float countdown = 5f;
+    float startTime = 5f;
 
     private void Awake()
     {
@@ -140,10 +140,10 @@ public class CombatManager : MonoBehaviour
             {
                 countdown -= Time.deltaTime;
 
-                if (Input.GetKeyDown(KeyCode.Space) || Time.deltaTime < 0f)
+                if (Input.GetKeyDown(KeyCode.Space) || countdown < 0f)
                 {
-                    countdown = startTime;
                     DisplayResults = false;
+                    countdown = startTime;
                 }
             }
             else
@@ -155,7 +155,7 @@ public class CombatManager : MonoBehaviour
 
     private void OnCombatEnd()
     {
-        switch(CombatType)
+        switch (CombatType)
         {
             case ConcreteUnit.CombatKind.DUEL:
                 DuelOutComes();
@@ -168,8 +168,11 @@ public class CombatManager : MonoBehaviour
                 break;
         }
 
+        hasRedChosen = false;
+        hasBlueChosen = false;
         InCombat = false;
         BattleIsDecided = false;
+        CombatScreen.SetActive(false);
         CardManager.Instance.ActivateCardHolder(true);
     }
 

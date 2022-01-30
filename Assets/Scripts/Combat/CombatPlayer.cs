@@ -27,7 +27,7 @@ public class CombatPlayer : MonoBehaviour
     Image elem2Image;
 
     [SerializeField]
-    Image[] elementImages;
+    Sprite[] elementImages;
 
     private Elements selectedElement;
 
@@ -53,13 +53,13 @@ public class CombatPlayer : MonoBehaviour
         switch(element)
         {
             case Elements.FIRE:
-                elementImage = elementImages[0];
+                elementImage.sprite = elementImages[0];
                 break;
             case Elements.WATER:
-                elementImage = elementImages[1];
+                elementImage.sprite = elementImages[1];
                 break;
             default:
-                elementImage = elementImages[2];
+                elementImage.sprite = elementImages[2];
                 break;
         }
     }

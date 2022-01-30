@@ -212,9 +212,8 @@ public class GridManager : MonoBehaviour
             else
             {
                 //check if the player can select the unit...
-                //CURRNT PLACEHOLDER - swap the faction out with the current active team
                 //if(card.color == black && newSelectedUnit.GetFaction().Equals(activeteam))
-                if (newSelectedUnit.faction == PlayerTeam.Faction.Red)
+                if (newSelectedUnit.faction == GameManager.Instance.activePlayerTurn);
                 {
                     //they do! -this is a valid selection. First clear the currently selected unit's data
                     ClearUnitData();

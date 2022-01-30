@@ -142,18 +142,18 @@ public abstract class Tile : MonoBehaviour
     {
         void AddUnit()
         {
-            if (CardManager.Instance.HasSelectedUnit()/* && UnitManager.Instance.CanPlayerSpawnUnit(this)*/)
-            { 
-                if (occupiedUnit == null)
+            if (occupiedUnit == null)
+            {
+                if (CardManager.Instance.HasSelectedUnit()/* && UnitManager.Instance.CanPlayerSpawnUnit(this)*/)
                 {
                     UnitManager.Instance.AddUnit(this);
                 }
-                else
-                {
-                    Debug.Log(occupiedUnit);
-                    UnitManager.Instance.RemoveUnit(occupiedUnit);
-                    this.OnUnitExit();
-                }
+            }
+            else
+            {
+                Debug.Log(occupiedUnit);
+                UnitManager.Instance.RemoveUnit(occupiedUnit);
+                this.OnUnitExit();
             }
         }
 
@@ -189,7 +189,7 @@ public abstract class Tile : MonoBehaviour
             {
                 AddUnit();
             }
-            else
+            else if(occupiedUnit == null)
             {
                 IncrementTileType();
             }
@@ -200,7 +200,7 @@ public abstract class Tile : MonoBehaviour
             DecrementTileType();
         }
 
-        if (Input.GetMouseButtonDown(2) && CardManager.Instance.HasSelectedUnit())
+        if (Input.GetMouseButtonDown(2))
         {
             AddUnit();
         }
@@ -242,8 +242,6 @@ public abstract class Tile : MonoBehaviour
                     GridManager.Instance.LeftClickInputHandler(this, occupiedUnit);
                 }
             }
-
-            //UnitManager.Instance.CastSpell(tile: this, card: null);
         }
     }
 

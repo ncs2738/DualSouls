@@ -132,8 +132,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6107763}
-  - component: {fileID: 6107762}
   - component: {fileID: 6107765}
+  - component: {fileID: 6107762}
   - component: {fileID: 6107764}
   m_Layer: 0
   m_Name: PlayerManager
@@ -182,6 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e18188bed372946ae07291832e4b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardHolder: {fileID: 639933901}
   spawnCard: {fileID: 1419728432}
 --- !u!114 &6107765
 MonoBehaviour:
@@ -918,8 +919,8 @@ MonoBehaviour:
   BattleIsDecided: 0
   CombatScreen: {fileID: 787448848}
   BattleText: {fileID: 1741492825}
-  RedPlayer: {fileID: 0}
-  BluePlayer: {fileID: 0}
+  RedPlayer: {fileID: 7375786941066736638}
+  BluePlayer: {fileID: 2065922264}
 --- !u!4 &485309891
 Transform:
   m_ObjectHideFlags: 0
@@ -3174,9 +3175,12 @@ MonoBehaviour:
   playerFaction: 2
   sprite: {fileID: 173863582}
   ChoiceStatus: {fileID: 164275706}
-  elem1Image: {fileID: 0}
-  elem2Image: {fileID: 0}
-  elementImages: []
+  elem1Image: {fileID: 1197878618}
+  elem2Image: {fileID: 459255472}
+  elementImages:
+  - {fileID: 21300000, guid: 9a2ab15a939235a4487d81690c45ba9e, type: 3}
+  - {fileID: 21300000, guid: 5840140cfc302db4c8310b0a3c3b2507, type: 3}
+  - {fileID: 21300000, guid: def5b6f2058117b429cc0ff26851219d, type: 3}
 --- !u!114 &2072110032 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 514585150469981066, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
@@ -3400,6 +3404,9 @@ MonoBehaviour:
   playerFaction: 1
   sprite: {fileID: 1165600609}
   ChoiceStatus: {fileID: 103851042}
-  elem1Image: {fileID: 0}
-  elem2Image: {fileID: 0}
-  elementImages: []
+  elem1Image: {fileID: 167581833736883585}
+  elem2Image: {fileID: 167581834874733016}
+  elementImages:
+  - {fileID: 21300000, guid: 9a2ab15a939235a4487d81690c45ba9e, type: 3}
+  - {fileID: 21300000, guid: 5840140cfc302db4c8310b0a3c3b2507, type: 3}
+  - {fileID: 21300000, guid: def5b6f2058117b429cc0ff26851219d, type: 3}
