@@ -8,6 +8,9 @@ public class CardManager : MonoBehaviour
     public event Action OnSpellCast;
 
     [SerializeField]
+    private GameObject CardHolder;
+
+    [SerializeField]
     private SpellTypes? spell;
     public SpellTypes? SpellType => spell;
     private Faces spellFace;
@@ -95,5 +98,10 @@ public class CardManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void ActivateCardHolder(bool status)
+    {
+        CardHolder.SetActive(status);
     }
 }

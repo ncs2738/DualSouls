@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -51,6 +52,11 @@ public class GameManager : MonoBehaviour
                 EndTurn();
             }
         }
+
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            RestartGame();
+        }
     }
 
     public void AddPlayer(PlayerTeam.Faction playerTeam)
@@ -93,7 +99,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        //TODO <3!
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public bool IsMapEditEnabled()

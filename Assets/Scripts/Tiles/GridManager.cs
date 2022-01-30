@@ -114,16 +114,16 @@ public class GridManager : MonoBehaviour
     public void ClearUnitData()
     {
         currentSelectedUnit.ShowAvailableMoves(false);
-        availableUnitMoves.Clear(); currentSelectedUnit.ShowAvailableMoves(false);
+        availableUnitMoves.Clear();
+        currentSelectedUnit.ShowAvailableMoves(false);
         currentSelectedTile = null;
         currentSelectedUnit = null;
     }
 
-    private bool inCombat = false;
     public void EnterCombatChoice(ConcreteUnit unit, ConcreteUnit.CombatKind combatKind)
     {
-        inCombat = true;
         unit.ShowAttackedTiles(false);
+        currentSelectedUnit.ShowAvailableMoves(false);
 
         unit.Location.SetMovementHighlight(true);
 
@@ -139,17 +139,30 @@ public class GridManager : MonoBehaviour
                 possibleOpponent.SetDuelCrosshair(true);
             }
             unit.SetDuelCrosshair(true);
+            CombatManager.Instance.SelectingComponent = true;
+            CombatManager.Instance.CombatType = ConcreteUnit.CombatKind.DUEL;
+
         } else if (combatKind == ConcreteUnit.CombatKind.ONE_SIDED_DEFENSE)
         {
             unit.SetOneSidedCrosshair(true);
+            CombatManager.Instance.SelectingComponent = true;
+            CombatManager.Instance.CombatType = ConcreteUnit.CombatKind.ONE_SIDED_DEFENSE;
+
         } else if (combatKind == ConcreteUnit.CombatKind.ONE_SIDED_ATTACK)
         {
             foreach (ConcreteUnit possibleOpponent in unit.possibleOpponents)
             {
                 possibleOpponent.SetOneSidedCrosshair(true);
             }
-        }
 
+            CombatManager.Instance.SelectingComponent = true;
+            CombatManager.Instance.CombatType = ConcreteUnit.CombatKind.ONE_SIDED_ATTACK;
+        }
+        else
+        {
+            //Clear the unit data - there's nothing else to do!
+            ClearUnitData();
+        }
     }
 
     public void LeftClickInputHandler(Tile newSelectedTile, ConcreteUnit newSelectedUnit = null)
@@ -169,9 +182,6 @@ public class GridManager : MonoBehaviour
                 //next move the unit
                 currentSelectedUnit.MoveUnit(newSelectedTile, attackersOfMove);
                 CardManager.Instance.CastSpell(tile: newSelectedTile, card: null);
-
-                //then clear the unit data
-                ClearUnitData();
             }
             //check if the player clicked on an empty spot or on the same unit...
             else if (newSelectedTile.IsTileEmpty() || newSelectedUnit.Equals(currentSelectedUnit))
@@ -231,6 +241,11 @@ public class GridManager : MonoBehaviour
         return false;
     }
 
+    public ConcreteUnit GetSelectedUnit()
+    {
+        return currentSelectedUnit;
+    }
+
     private Tile CreateNewTile(Transform parentObject, int tileType, int x, int y)
     {
         Tile newTile = Instantiate(TileTypes[tileType], new Vector3(x, y), Quaternion.identity);
@@ -249,7 +264,7 @@ public class GridManager : MonoBehaviour
         int y = (int)savedTile.posY;
 
         Tile newTile = Instantiate(TileTypes[(int) savedTile.tileType], new Vector3(x,y,-1), Quaternion.identity);
-        newTile.name = $"X: {savedTile.posX} Y: {savedTile.posY}";
+        newTile.name = $"Y: {savedTile.posY}";
         newTile.transform.parent = parentObject;
 
         Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);

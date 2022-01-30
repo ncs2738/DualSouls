@@ -218,14 +218,26 @@ public abstract class Tile : MonoBehaviour
 
     private void GameModeInputs()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!CombatManager.Instance.InCombat)
         {
-            GridManager.Instance.LeftClickInputHandler(this, occupiedUnit);
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (CombatManager.Instance.SelectingComponent && occupiedUnit != null)
+                {
+                    ConcreteUnit selectedUnit = GridManager.Instance.GetSelectedUnit();
+                    if (selectedUnit.possibleOpponents.Contains(occupiedUnit) && !selectedUnit.Equals(occupiedUnit) && !occupiedUnit.faction.Equals(selectedUnit.faction))
+                    {
+                        CombatManager.Instance.StartCombat(selectedUnit, occupiedUnit);
+                    }
+                }
+                else
+                {
+                    GridManager.Instance.LeftClickInputHandler(this, occupiedUnit);
+                }
+            }
+
+            //UnitManager.Instance.CastSpell(tile: this, card: null);
         }
-
-        //UnitManager.Instance.CastSpell(tile: this, card: null);
-
-        //if()
     }
 
     public bool IsTileEmpty()
