@@ -294,6 +294,14 @@ public class GridManager : MonoBehaviour
         return false;
     }
 
+    public void OnTurnEnd()
+    {
+        foreach(Tile tile in tiles.Value)
+        {
+            tile.OnTurnEnd();
+        }
+    }
+
     public ConcreteUnit GetSelectedUnit()
     {
         return currentSelectedUnit;
@@ -400,9 +408,8 @@ public class GridManager : MonoBehaviour
 
         foreach (KeyValuePair<Tile, ConcreteUnit.SaveObject> kv in unitsToLoad)
         {
-            Tile tile = kv.Key;
             ConcreteUnit.SaveObject unit = kv.Value;
-            tile.LoadUnit(unit);
+            tiles[kv.Key.transform.position].LoadUnit(unit);
         }
     }
 

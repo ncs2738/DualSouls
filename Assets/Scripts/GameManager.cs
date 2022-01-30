@@ -113,6 +113,8 @@ public class GameManager : MonoBehaviour
             activePlayerTurn = PlayerTeam.Faction.Red;
         }
 
+        GridManager.Instance.OnTurnEnd();
+
         ShowTeam();
     }
 
