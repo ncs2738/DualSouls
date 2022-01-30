@@ -30,6 +30,14 @@ public class Hand : MonoBehaviour
         }
     }
 
+    public void DiscardAll()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            activeCards[i] = null;
+        }
+    }
+
     public void DrawBackToFour()
     {
         for (int i = 0; i < 4; i++)
@@ -61,6 +69,9 @@ public class Hand : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             DrawBackToFour();
+        } else if (Input.GetKeyDown(KeyCode.X))
+        {
+            DiscardAll();
         }
 
         bool shouldRefresh = false;

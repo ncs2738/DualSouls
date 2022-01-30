@@ -367,6 +367,7 @@ MonoBehaviour:
   tileType: 2
   isWalkable: 1
   occupiedUnit: {fileID: 0}
+  attackingUnits: []
   tileOwner: 0
   BlueTeamColorTint: {fileID: 6150683346448914744}
   RedTeamColorTint: {fileID: 6150683346458102420}

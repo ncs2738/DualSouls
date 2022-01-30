@@ -35,6 +35,8 @@ public class ConcreteUnit : MonoBehaviour
     private Dictionary<Tile, HashSet<ConcreteUnit>> availableMoves;
     public Orientation orientation;
 
+    private List<ConcreteUnit> possibleOpponents;
+
     public PlayerTeam.Faction faction;
 
     public SpriteRenderer elementOneRenderer;
@@ -91,9 +93,20 @@ public class ConcreteUnit : MonoBehaviour
             attackedTile.AddAttacker(this);
         }
 
-        this.InitiateCombatSelection(
+        InitiateCombatSelection(
             attackers: attackersOfMove,
             victims: GetUnitsThisAttacks());
+    }
+
+    public void RotateUnit(Orientation newOrientation)
+    {
+        if (newOrientation == orientation)
+        {
+            Debug.LogWarning($"Tried a useless rotation of `{unitKind}` from `{orientation}` to {orientation}");
+        }
+
+        orientation = newOrientation;
+        MoveUnit(Location, Location.AttackingUnits.ToHashSet());
     }
 
     private void InitiateCombatSelection(ISet<ConcreteUnit> attackers, ISet<ConcreteUnit> victims)
@@ -106,19 +119,42 @@ public class ConcreteUnit : MonoBehaviour
         oneSidedVictims = victims.Except(attackers).ToHashSet();
         duelists = attackers.Intersect(victims).ToHashSet();
 
+        // DEBUG ONLY
+        foreach (ConcreteUnit osAttacker in oneSidedAttackers)
+        {
+            Debug.DrawLine(osAttacker.transform.position, transform.position, Color.red, 3, false);
+        }
+
+        foreach (ConcreteUnit osVictim in oneSidedVictims)
+        {
+            Debug.DrawLine(osVictim.transform.position, transform.position, Color.green, 3, false);
+        }
+
+        foreach (ConcreteUnit duelist in duelists)
+        {
+            Debug.DrawLine(duelist.transform.position, transform.position, Color.blue, 3, false);
+        }
+        // DEBUG ONLY
+
+
         if (duelists.Count > 0)
         {
+            possibleOpponents = duelists.ToList();
             // force a fight with one of the duelists
         } else if (oneSidedAttackers.Count > 0)
         {
+            possibleOpponents = oneSidedAttackers.ToList();
             // force a fight with one of the attackers
         } else if (oneSidedVictims.Count > 0)
         {
+            possibleOpponents = oneSidedVictims.ToList();
             // force a fight with one of the victims
         } else
         {
             // no fight occurs
         }
+
+
     }
 
     private enum CombatKind
@@ -150,7 +186,11 @@ public class ConcreteUnit : MonoBehaviour
         }
     }
 
-    public ISet<ConcreteUnit> GetUnitsThisAttacks() => GetTilesThisAttacks().Select(t => t.OccupiedUnit).ToHashSet();
+    public ISet<ConcreteUnit> GetUnitsThisAttacks() =>
+        GetTilesThisAttacks()
+        .Select(t => t.OccupiedUnit)
+        .Where(u => u != null)
+        .ToHashSet();
 
     public ISet<Tile> GetTilesThisAttacks()
     {
@@ -269,7 +309,8 @@ public class ConcreteUnit : MonoBehaviour
                 {
                     availableMoves[nextTile] = new HashSet<ConcreteUnit>();
                     availableMoves[nextTile].UnionWith(moveAttackers);
-                    Debug.Log($"<{nextTile.transform}, {nextTile.transform.parent}>: {availableMoves[nextTile]}");
+                    //Debug.Log($"<{nextTile.transform.name}, {nextTile.transform.parent.name}>: "
+                    //    +$"{availableMoves[nextTile].Aggregate("", (str, unit) => unit.unitKind.name + ", " + str)}");
                 }
             }
             else
@@ -296,6 +337,7 @@ public class ConcreteUnit : MonoBehaviour
         tintSprite.sprite = Appearance;
         elementOneRenderer.sprite = elementOne.Sprite();
         elementTwoRenderer.sprite = elementTwo.Sprite();
+        SetUnitTeamTint();
 
         switch (orientation)
         {

@@ -135,7 +135,7 @@ public abstract class Tile : MonoBehaviour
     {
         void AddUnit()
         {
-            if (CardManager.Instance.HasSelectedUnit() && UnitManager.Instance.CanPlayerSpawnUnit(this))
+            if (CardManager.Instance.HasSelectedUnit()/* && UnitManager.Instance.CanPlayerSpawnUnit(this)*/)
             { 
                 if (occupiedUnit == null)
                 {
