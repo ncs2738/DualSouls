@@ -54,7 +54,8 @@ public class CardMouseInteraction : MonoBehaviour,
             hand.ResetHighlights();
             hand.SetCardHighlight(card, Hand.CardHighlightAction.left);
         }
-        else if (pointerEventData.button == PointerEventData.InputButton.Right)
+        else if (pointerEventData.button == PointerEventData.InputButton.Right
+            && GoodNonThief())
         {
             Debug.Log("Spell selected for card `" + card.Name + "`");
             SelectSpellOfCard();
