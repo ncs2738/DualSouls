@@ -117,21 +117,24 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public void ClearUnitData()
+    public void ClearHighlights()
     {
         currentSelectedUnit.ShowAvailableMoves(false);
         availableUnitMoves.Clear();
         currentSelectedUnit.ShowAvailableRotations(false);
         availableUnitRotations.Clear();
+    }
+
+    public void ClearUnitData()
+    {
+        ClearHighlights();
         currentSelectedTile = null;
         currentSelectedUnit = null;
     }
 
     public void EnterCombatChoice(ConcreteUnit unit, ConcreteUnit.CombatKind combatKind)
     {
-        unit.ShowAttackedTiles(false);
-        currentSelectedUnit.ShowAvailableMoves(false);
-
+        ClearHighlights();
         unit.Location.SetMovementHighlight(true);
 
         foreach (ConcreteUnit possibleOpponent in unit.possibleOpponents)

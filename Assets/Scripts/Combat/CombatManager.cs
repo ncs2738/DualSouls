@@ -140,7 +140,7 @@ public class CombatManager : MonoBehaviour
             {
                 countdown -= Time.deltaTime;
 
-                if (Input.GetKeyDown(KeyCode.Space) || countdown < 0f)
+                if (Input.GetKeyDown(KeyCode.Space) || countdown < 0)
                 {
                     DisplayResults = false;
                     countdown = startTime;
@@ -189,6 +189,7 @@ public class CombatManager : MonoBehaviour
         {
             //player lost, enemy won: kill player
             UnitManager.Instance.RemoveUnit(ActivePlayerUnit);
+            //END TURN
         }
         //neither won; it's a draw
         else
@@ -196,6 +197,7 @@ public class CombatManager : MonoBehaviour
             //neither won; kill em all!
             UnitManager.Instance.RemoveUnit(ActivePlayerUnit);
             UnitManager.Instance.RemoveUnit(EnemyPlayerUnit);
+            //END TURN
         }
     }
 
@@ -209,7 +211,8 @@ public class CombatManager : MonoBehaviour
         }
         else
         {
-            //neither won; do nothing
+            //neither won
+            //END TURN
         }
     }
 
@@ -220,10 +223,12 @@ public class CombatManager : MonoBehaviour
         {
             //player lost, enemy won: kill player
             UnitManager.Instance.RemoveUnit(ActivePlayerUnit);
+            //END TURN
         }
         else
         {
-            //neither won; do nothing
+            //neither won
+            //END TURN
         }
     }
 }

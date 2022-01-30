@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     private List<PlayerTeam.Faction> playerTurns;
 
     [SerializeField]
+    private TMPro.TMP_Text ActiveTeamTurn;
+
+    [SerializeField]
     private bool MapEditModeEnabled = true;
     [SerializeField]
     private bool isGameStarted = false;
@@ -42,6 +45,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            if(!isGameStarted)
+            {
+                StartGame();
+            }
+
             if (Input.GetKeyDown(KeyCode.S))
             {
                 StartGame();
@@ -72,6 +80,21 @@ public class GameManager : MonoBehaviour
         //currentPlayer = Random.Range(0, playerTurns.Count);
         currentPlayer = 0;
         activePlayerTurn = playerTurns[currentPlayer];
+        ShowTeam();
+    }
+
+    private void ShowTeam()
+    {
+        if(activePlayerTurn.Equals(PlayerTeam.Faction.Red))
+        {
+            ActiveTeamTurn.text = "Red";
+            ActiveTeamTurn.color = Color.red;
+        }
+        else
+        {
+            ActiveTeamTurn.text = "Blue";
+            ActiveTeamTurn.color = Color.blue;
+        }
     }
 
     public void HasTurnEnded()
@@ -88,6 +111,8 @@ public class GameManager : MonoBehaviour
         {
             currentPlayer = 0;
         }
+
+        ShowTeam();
 
         activePlayerTurn = playerTurns[currentPlayer];
     }
