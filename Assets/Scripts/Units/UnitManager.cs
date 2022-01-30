@@ -26,7 +26,7 @@ public class UnitManager : MonoBehaviour
         blueTeam = PlayerManager.Instance.blueTeam.GetTeam();
     }
 
-    public void AddUnit(Tile tile, PlayerTeam.Faction faction = PlayerTeam.Faction.Red)
+    public void AddUnit(Tile tile, PlayerTeam.Faction faction)
     {
         ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -3), Quaternion.identity)
             .GetComponent<ConcreteUnit>();
@@ -64,6 +64,8 @@ public class UnitManager : MonoBehaviour
         {
             OnUnitSpawn();
         }
+
+        CardManager.Instance.ForgetUnit();
     }
 
     public void LoadUnit(Tile tile, ConcreteUnit.SaveObject unitData)

@@ -10,6 +10,7 @@ public class Hand : MonoBehaviour
     public CardAppearance[] cardAppearances;
 
     public GameObject cardPrefab;
+    public PlayerTeam.Faction faction;
 
     public enum CardHighlightAction
     {
@@ -107,7 +108,10 @@ public class Hand : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            DrawBackToFour();
+            if (faction == GameManager.Instance.activePlayerTurn)
+            {
+                DrawBackToFour();
+            }
         }
 
         bool shouldRefresh = false;

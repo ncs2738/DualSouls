@@ -146,7 +146,7 @@ public abstract class Tile : MonoBehaviour
             {
                 if (CardManager.Instance.HasSelectedUnit())
                 {
-                    UnitManager.Instance.AddUnit(this);
+                    UnitManager.Instance.AddUnit(this, GameManager.Instance.activePlayerTurn);
                 }
             }
             else

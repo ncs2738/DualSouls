@@ -115,4 +115,9 @@ public class CardManager : MonoBehaviour
     {
         CardHolder.SetActive(status);
     }
+
+    public void ForgetUnit()
+    {
+        spawnCard = null;
+    }
 }

@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        BlueTeamBG.enabled = false;
         MapEditModeEnabled = false;
         isGameStarted = true;
 
@@ -89,9 +90,10 @@ public class GameManager : MonoBehaviour
 
     private void ShowTeam()
     {
-        BlueTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Blue);
+        // This needs to be flipped to work, idk why
+        BlueTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Red);
         Debug.Log($"blueteam: `{BlueTeamBG.enabled}`");
-        RedTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Red);
+        RedTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Blue);
     }
 
     public void HasTurnEnded()

@@ -251,9 +251,11 @@ public class GridManager : MonoBehaviour
         }
         else
         {
-            if (CardManager.Instance.HasSelectedUnit() && UnitManager.Instance.CanPlayerSpawnUnit(newSelectedTile))
+            if (CardManager.Instance.HasSelectedUnit()
+                && UnitManager.Instance.CanPlayerSpawnUnit(newSelectedTile)
+                && newSelectedTile.OccupiedUnit == null)
             {
-                UnitManager.Instance.AddUnit(newSelectedTile);
+                UnitManager.Instance.AddUnit(newSelectedTile, GameManager.Instance.activePlayerTurn);
             }
             else
             {
