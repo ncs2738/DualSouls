@@ -95,8 +95,8 @@ public class ConcreteUnit : MonoBehaviour
         MarkAttackedTiles();
 
         InitiateCombatSelection(
-            attackers: attackersOfMove,
-            victims: GetUnitsThisAttacks());
+            attackers: attackersOfMove.Where(a => a.faction != this.faction).ToHashSet(),
+            victims: GetUnitsThisAttacks().Where(a => a.faction != this.faction).ToHashSet());
 
         availableMoves.Clear();
 

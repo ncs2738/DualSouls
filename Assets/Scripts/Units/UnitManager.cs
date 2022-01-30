@@ -97,6 +97,7 @@ public class UnitManager : MonoBehaviour
 
     public void RemoveUnit(ConcreteUnit removedUnit)
     {
+        removedUnit.UnmarkAttackedTiles();
         if (removedUnit.faction == PlayerTeam.Faction.Red)
         {
             redTeam.RemoveUnit(removedUnit);
