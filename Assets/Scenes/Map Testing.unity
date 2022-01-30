@@ -367,7 +367,7 @@ MonoBehaviour:
   - {fileID: 7477132160650972708, guid: 2066e9d84fc923945a75ef0f2543076f, type: 3}
   - {fileID: 6150683346018954727, guid: 6f1fc354452d2b74d9759dc613c7b235, type: 3}
   - {fileID: 7260856724792336409, guid: ac38fc78f6bf5244cba25b560654aa36, type: 3}
-  gridWidth: 16
+  gridWidth: 17
   gridHeight: 9
   camera: {fileID: 519420032}
 --- !u!4 &149721578

@@ -63,28 +63,32 @@ public class UnitManager : MonoBehaviour
         ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -3), Quaternion.identity)
             .GetComponent<ConcreteUnit>();
 
+        Debug.Log(unitData.playerFaction);
+        Debug.Log(newUnit.orientation);
+
         newUnit.unitKind = unitData.unitKind;
         newUnit.elementOne = unitData.elementOne;
         newUnit.elementTwo = unitData.elementTwo;
         newUnit.Location = tile;
-        newUnit.orientation = unitData.playerFaction == PlayerTeam.Faction.Red
+        newUnit.orientation = unitData.playerFaction.Equals(PlayerTeam.Faction.Red)
             ? Orientation.EAST
             : Orientation.WEST;
         newUnit.faction = unitData.playerFaction;
 
         newUnit.UpdateAppearance();
-        newUnit.MarkAttackedTiles();
 
-        if (unitData.playerFaction == PlayerTeam.Faction.Red)
+        if (unitData.playerFaction.Equals(PlayerTeam.Faction.Red))
         {
             redTeam.AddUnit(newUnit);
             tile.OccupyTile(newUnit);
         }
-        else if (unitData.playerFaction == PlayerTeam.Faction.Blue)
+        else if (unitData.playerFaction.Equals(PlayerTeam.Faction.Blue))
         {
             blueTeam.AddUnit(newUnit);
             tile.OccupyTile(newUnit);
         }
+
+        newUnit.MarkAttackedTiles();
     }
 
     public void RemoveUnit(ConcreteUnit removedUnit)

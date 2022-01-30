@@ -223,9 +223,12 @@ public class ConcreteUnit : MonoBehaviour
 
     public void ShowAttackedTiles(bool status)
     {
-        foreach (Tile tile in GetTilesThisAttacks())
+        if(GameManager.Instance.IsGameStarted())
         {
-            tile.SetAttackHighlight(faction, status);
+            foreach (Tile tile in GetTilesThisAttacks())
+            {
+                tile.SetAttackHighlight(faction, status);
+            }
         }
     }
 

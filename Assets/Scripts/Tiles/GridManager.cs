@@ -117,12 +117,21 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    public void ClearMovements()
+    {
+        currentSelectedUnit.ShowAvailableMoves(false);
+        availableUnitMoves.Clear();
+        currentSelectedUnit.ShowAvailableRotations(false);
+        availableUnitRotations.Clear();
+    }
+
     public void ClearHighlights()
     {
         currentSelectedUnit.ShowAvailableMoves(false);
         availableUnitMoves.Clear();
         currentSelectedUnit.ShowAvailableRotations(false);
         availableUnitRotations.Clear();
+        currentSelectedUnit.ShowAttackedTiles(false);
     }
 
     public void ClearUnitData()
@@ -215,7 +224,7 @@ public class GridManager : MonoBehaviour
             {
                 //check if the player can select the unit...
                 //if(card.color == black && newSelectedUnit.GetFaction().Equals(activeteam))
-                if (newSelectedUnit.faction == GameManager.Instance.activePlayerTurn);
+                if (newSelectedUnit.faction == GameManager.Instance.activePlayerTurn)
                 {
                     //they do! -this is a valid selection. First clear the currently selected unit's data
                     ClearUnitData();
@@ -226,12 +235,19 @@ public class GridManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Tried to select a unit");
-            //we haven't a selected unit yet, so check if the tile we selected has a unit...
-            if (newSelectedUnit != null)
+            if (CardManager.Instance.HasSelectedUnit() && UnitManager.Instance.CanPlayerSpawnUnit(newSelectedTile))
             {
-                //it does - this is a valid selection. set the selected unit & tile
-                SetUnitData(newSelectedTile, newSelectedUnit);
+                UnitManager.Instance.AddUnit(newSelectedTile);
+            }
+            else
+            {
+                Debug.Log("Tried to select a unit");
+                //we haven't a selected unit yet, so check if the tile we selected has a unit...
+                if (newSelectedUnit != null)
+                {
+                    //it does - this is a valid selection. set the selected unit & tile
+                    SetUnitData(newSelectedTile, newSelectedUnit);
+                }
             }
         }
     }

@@ -28,10 +28,19 @@ public class CardManager : MonoBehaviour
         this.spawnCard = spawnCard;
         this.spell = null;
         UnitManager.Instance.ShowPlacementTiles(true);
+        if(GridManager.Instance.GetSelectedUnit() != null)
+        {
+            GridManager.Instance.ClearUnitData();
+        }
     }
 
     public void SetSpellAndFace(SpellTypes spell, Faces face)
     {
+        if (GridManager.Instance.GetSelectedUnit() != null)
+        {
+            GridManager.Instance.ClearMovements();
+        }
+
         this.spawnCard = null;
         this.spell = spell;
         this.spellFace = face;
