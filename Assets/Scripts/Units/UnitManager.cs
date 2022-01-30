@@ -73,8 +73,6 @@ public class UnitManager : MonoBehaviour
         newUnit.faction = unitData.playerFaction;
 
         newUnit.UpdateAppearance();
-
-        Debug.Log("about to call markAttackedTiles");
         newUnit.MarkAttackedTiles();
 
         if (unitData.playerFaction == PlayerTeam.Faction.Red)

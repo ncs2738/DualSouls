@@ -80,6 +80,27 @@ public static class EnumUtils
         return newVec;
     }
 
+    public static Orientation ToOrientation(this Vector2Int vec)
+    {
+        if (vec.Equals(Vector2.up))
+        {
+            return Orientation.NORTH;
+        } else if (vec.Equals(Vector2Int.down))
+        {
+            return Orientation.SOUTH;
+        } else if (vec.Equals(Vector2Int.left))
+        {
+            return Orientation.WEST;
+        } else if (vec.Equals(Vector2Int.right))
+        {
+            return Orientation.EAST;
+        } else
+        {
+            Debug.LogWarning($"Bad call to ToOrientation with `{vec}`");
+            return Orientation.EAST;
+        }
+    }
+
     public static bool Beats(this Elements a, Elements b)
     {
         return (a == Elements.FIRE) && (b == Elements.GRASS)

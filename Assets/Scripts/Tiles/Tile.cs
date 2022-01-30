@@ -9,6 +9,8 @@ public abstract class Tile : MonoBehaviour
     private GameObject hoverHighlight;
     [SerializeField]
     private GameObject movementHighlight;
+    [SerializeField]
+    private GameObject rotationHighlight;
 
     [SerializeField]
     private GameObject blueAttackHighlight;
@@ -93,6 +95,11 @@ public abstract class Tile : MonoBehaviour
     public void SetMovementHighlight(bool status)
     {
         movementHighlight.SetActive(status);
+    }
+
+    public void SetRotationHighlight(bool status)
+    {
+        rotationHighlight.SetActive(status);
     }
 
     public void SetAttackHighlight(PlayerTeam.Faction playerFaction, bool status)
@@ -343,7 +350,7 @@ public abstract class Tile : MonoBehaviour
         if (!success)
         {
             Debug.LogWarning($"Tried to remove `{unit.unitKind.name}` from attackers of "+
-                $"`{this.transform},{this.transform.parent} when it wasn't there. This shouldn't happen.`");
+                $"`{this.transform.name},{this.transform.parent.name} when it wasn't there. This shouldn't happen.`");
         }
     }
 }

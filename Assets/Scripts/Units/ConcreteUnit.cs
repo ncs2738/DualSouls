@@ -40,6 +40,8 @@ public class ConcreteUnit : MonoBehaviour
     private Dictionary<Tile, HashSet<ConcreteUnit>> availableMoves;
     public Orientation orientation;
 
+    private List<Tile> availableRotations;
+
     public List<ConcreteUnit> possibleOpponents;
 
     public PlayerTeam.Faction faction;
@@ -57,8 +59,8 @@ public class ConcreteUnit : MonoBehaviour
 
     private void Start()
     {
-
         availableMoves = new Dictionary<Tile, HashSet<ConcreteUnit>>();
+        availableRotations = new List<Tile>();
         CaptureKey.SetActive(false);
     }
 
@@ -102,7 +104,7 @@ public class ConcreteUnit : MonoBehaviour
         foreach (Tile attackedTile in GetTilesThisAttacks())
         {
             attackedTile.AddAttacker(this);
-            // Debug.Log($"added <{attackedTile.transform.name},{attackedTile.transform.parent.name}>");
+            Debug.Log($"added <{attackedTile.transform.name},{attackedTile.transform.parent.name}>");
         }
     }
 
@@ -111,7 +113,7 @@ public class ConcreteUnit : MonoBehaviour
         foreach (Tile attackedTile in GetTilesThisAttacks())
         {
             attackedTile.RemoveAttacker(this);
-            // Debug.Log($"remove <{attackedTile.transform.name},{attackedTile.transform.parent.name}>");
+            Debug.Log($"remove <{attackedTile.transform.name},{attackedTile.transform.parent.name}>");
         }
     }
 
@@ -119,11 +121,18 @@ public class ConcreteUnit : MonoBehaviour
     {
         if (newOrientation == orientation)
         {
-            // Debug.LogWarning($"Tried a useless rotation of `{unitKind}` from `{orientation}` to {orientation}");
+            Debug.LogWarning($"Tried a useless rotation of `{unitKind}` from `{orientation}` to {orientation}");
         }
 
+        UnmarkAttackedTiles();
+
         orientation = newOrientation;
-        MoveUnit(Location, Location.AttackingUnits.ToHashSet());
+
+        MarkAttackedTiles();
+
+        InitiateCombatSelection(
+            attackers: Location.AttackingUnits.ToHashSet(),
+            victims: GetUnitsThisAttacks());
     }
 
     private void InitiateCombatSelection(ISet<ConcreteUnit> attackers, ISet<ConcreteUnit> victims)
@@ -222,6 +231,14 @@ public class ConcreteUnit : MonoBehaviour
         }
     }
 
+    public void ShowAvailableRotations(bool status)
+    {
+        foreach (Tile tile in availableRotations)
+        {
+            tile.SetRotationHighlight(status);
+        }
+    }
+
     public ISet<ConcreteUnit> GetUnitsThisAttacks() =>
         GetTilesThisAttacks()
         .Select(t => t.OccupiedUnit)
@@ -241,6 +258,9 @@ public class ConcreteUnit : MonoBehaviour
             if (attackedTile != null)
             {
                 attackedTiles.Add(attackedTile);
+            } else
+            {
+                Debug.Log($"nu~rupo! `{CurrentPos + directedAttack}`");
             }
         }
 
@@ -327,6 +347,45 @@ public class ConcreteUnit : MonoBehaviour
         }
 
         return null;
+    }
+
+    public List<Tile> GetAvailableRotations()
+    {
+        List<Vector2Int> offsets = new List<Vector2Int>();
+        // it must be a warrior
+        if (orientation == Orientation.EAST || orientation == Orientation.WEST)
+        {
+            offsets.Add(Vector2Int.up);
+            offsets.Add(Vector2Int.down);
+        } else
+        {
+            offsets.Add(Vector2Int.left);
+            offsets.Add(Vector2Int.right);
+        }
+
+        foreach (Vector2Int offset in offsets)
+        {
+            Tile nextTile = GridManager.Instance.GetTile(CurrentPos + offset);
+            if (nextTile != null)
+            {
+                availableRotations.Add(nextTile);
+            }
+        }
+
+        return availableRotations;
+    }
+
+    public Orientation? RotationTo(Tile other)
+    {
+        if (!availableRotations.Contains(other))
+        {
+            return null;
+        }
+
+        Vector2Int offset =
+            Vector2Int.RoundToInt(other.transform.position - Location.transform.position);
+
+        return offset.ToOrientation();
     }
 
     private void FindNextTiles(Vector2 direction, int startVal = 0, int endVal = 3)
