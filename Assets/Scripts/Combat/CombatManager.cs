@@ -73,9 +73,6 @@ public class CombatManager : MonoBehaviour
         ActivePlayerUnit.SetDuelCrosshair(false);
         ActivePlayerUnit.SetOneSidedCrosshair(false);
 
-        //EnemyPlayerUnit.SetDuelCrosshair(false);
-        //EnemyPlayerUnit.SetOneSidedCrosshair(false);
-
         InCombat = true;
     }
 
@@ -189,7 +186,7 @@ public class CombatManager : MonoBehaviour
         {
             //player lost, enemy won: kill player
             UnitManager.Instance.RemoveUnit(ActivePlayerUnit);
-            //END TURN
+            GameManager.Instance.EndTurn();
         }
         //neither won; it's a draw
         else
@@ -197,7 +194,7 @@ public class CombatManager : MonoBehaviour
             //neither won; kill em all!
             UnitManager.Instance.RemoveUnit(ActivePlayerUnit);
             UnitManager.Instance.RemoveUnit(EnemyPlayerUnit);
-            //END TURN
+            GameManager.Instance.EndTurn();
         }
     }
 
@@ -212,7 +209,7 @@ public class CombatManager : MonoBehaviour
         else
         {
             //neither won
-            //END TURN
+            GameManager.Instance.EndTurn();
         }
     }
 
@@ -223,12 +220,12 @@ public class CombatManager : MonoBehaviour
         {
             //player lost, enemy won: kill player
             UnitManager.Instance.RemoveUnit(ActivePlayerUnit);
-            //END TURN
+            GameManager.Instance.EndTurn();
         }
         else
         {
             //neither won
-            //END TURN
+            GameManager.Instance.EndTurn();
         }
     }
 }
