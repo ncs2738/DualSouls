@@ -36,12 +36,20 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
     public void SelectUnitOfCard()
     {
         CardManager.Instance.SetSpawnCard(card);
+        UnitManager.Instance.ClearOnUnitSpawn();
+        if (GameManager.Instance.IsGameStarted())
+        {
+            UnitManager.Instance.OnUnitSpawn += () => hand.RemoveCard(card);
+        }
     }
 
     public void SelectSpellOfCard()
     {
         CardManager.Instance.SetSpellAndFace(card.Spell, card.face);
         CardManager.Instance.ClearOnSpellCast();
-        CardManager.Instance.OnSpellCast += () => hand.RemoveCard(card);
+        if (GameManager.Instance.IsGameStarted())
+        {
+            CardManager.Instance.OnSpellCast += () => hand.RemoveCard(card);
+        }
     }
 }

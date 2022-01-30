@@ -6,6 +6,7 @@ public class CardManager : MonoBehaviour
     public static CardManager Instance;
 
     public event Action OnSpellCast;
+    public event Action OnUnitSpawn;
 
     [SerializeField]
     private GameObject CardHolder;

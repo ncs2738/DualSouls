@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class UnitManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class UnitManager : MonoBehaviour
 
     [SerializeField]
     private GameObject unitPrefab;
+
+    public event Action OnUnitSpawn;
 
     private void Awake()
     {
@@ -56,6 +59,8 @@ public class UnitManager : MonoBehaviour
 
         ShowPlacementTiles(false);
         tile.SetPlacementHighlight(faction, false);
+
+        OnUnitSpawn();
     }
 
     public void LoadUnit(Tile tile, ConcreteUnit.SaveObject unitData)
@@ -210,5 +215,10 @@ public class UnitManager : MonoBehaviour
         {
             blueTeam.OnTurnEnd();
         }
+    }
+
+    public void ClearOnUnitSpawn()
+    {
+        OnUnitSpawn = null;
     }
 }
