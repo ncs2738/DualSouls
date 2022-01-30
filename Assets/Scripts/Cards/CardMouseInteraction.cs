@@ -22,7 +22,12 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
     //Detect if a click occurs
     public void OnPointerClick(PointerEventData pointerEventData)
     {
-        if (pointerEventData.button == PointerEventData.InputButton.Left)
+        if (CardManager.Instance.SpellType == SpellTypes.Thief
+            && pointerEventData.button == PointerEventData.InputButton.Left)
+        {
+            card.Flip();
+            CardManager.Instance.CastSpell(null, null);
+        } else if (pointerEventData.button == PointerEventData.InputButton.Left)
         {
             Debug.Log("Unit selected for card `" + card.Name + "`");
             SelectUnitOfCard();
