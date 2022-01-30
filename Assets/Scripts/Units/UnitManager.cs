@@ -60,7 +60,10 @@ public class UnitManager : MonoBehaviour
         ShowPlacementTiles(false);
         tile.SetPlacementHighlight(faction, false);
 
-        OnUnitSpawn();
+        if (OnUnitSpawn != null)
+        {
+            OnUnitSpawn();
+        }
     }
 
     public void LoadUnit(Tile tile, ConcreteUnit.SaveObject unitData)

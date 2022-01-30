@@ -47,9 +47,7 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
     {
         CardManager.Instance.SetSpellAndFace(card.Spell, card.face);
         CardManager.Instance.ClearOnSpellCast();
-        if (GameManager.Instance.IsGameStarted())
-        {
-            CardManager.Instance.OnSpellCast += () => hand.RemoveCard(card);
-        }
+
+        CardManager.Instance.OnSpellCast += () => hand.RemoveCard(card);
     }
 }

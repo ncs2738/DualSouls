@@ -105,6 +105,21 @@ public class GridManager : MonoBehaviour
 
         currentSelectedUnit.ShowAttackedTiles(true);
 
+        if (CardManager.Instance.SpellType == SpellTypes.Thief)
+        {
+            // the thief ability can't act on the board
+            return;
+        }
+
+        Faces validFace =
+            GameManager.Instance.activePlayerTurn == newSelectedUnit.faction ?
+            Faces.FRONT : Faces.BACK;
+        if (CardManager.Instance.SpellFace != validFace)
+        {
+            // Not a valid spell target.
+            return;
+        }
+
         if (CardManager.Instance.SpellType.Equals(SpellTypes.Dragon) || CardManager.Instance.SpellType.Equals(SpellTypes.Wizard))
         {
             //grab & show it's move-pool
@@ -181,11 +196,14 @@ public class GridManager : MonoBehaviour
         //check to see if we've selected a unit yet...
         if (currentSelectedUnit != null)
         {
+            Debug.Log("Selected unit isn't null");
             //we have a selected unit, so check if the tile we selected is in the unit's movement list
             HashSet<ConcreteUnit> attackersOfMove = currentSelectedUnit.AttackersOfMoveTo(newSelectedTile);
             Orientation? newOrientation = currentSelectedUnit.RotationTo(newSelectedTile);
             if (attackersOfMove != null)
             {
+                Debug.Log("selected unit is movin");
+
                 //it is! this is a valid selection! First clear the attack-ranges!
                 currentSelectedUnit.ShowAvailableMoves(false);
                 currentSelectedUnit.ShowAttackedTiles(false);
@@ -215,13 +233,10 @@ public class GridManager : MonoBehaviour
             {
                 //check if the player can select the unit...
                 //if(card.color == black && newSelectedUnit.GetFaction().Equals(activeteam))
-                if (newSelectedUnit.faction == GameManager.Instance.activePlayerTurn);
-                {
-                    //they do! -this is a valid selection. First clear the currently selected unit's data
-                    ClearUnitData();
-                    //set the selected unit &tile
-                    SetUnitData(newSelectedTile, newSelectedUnit);
-                }
+                //they do! -this is a valid selection. First clear the currently selected unit's data
+                ClearUnitData();
+                //set the selected unit &tile
+                SetUnitData(newSelectedTile, newSelectedUnit);
             }
         }
         else

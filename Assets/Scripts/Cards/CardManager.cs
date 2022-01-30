@@ -15,6 +15,7 @@ public class CardManager : MonoBehaviour
     private SpellTypes? spell;
     public SpellTypes? SpellType => spell;
     private Faces spellFace;
+    public Faces SpellFace => spellFace;
 
     [SerializeField]
     private ConcreteCard spawnCard;
@@ -49,22 +50,19 @@ public class CardManager : MonoBehaviour
     {
         void WarriorSpell(Faces face, Tile t)
         {
-            OnSpellCast();
             this.spell = null;
         }
         void DragonSpell(Faces face, Tile t)
         {
-            OnSpellCast();
             this.spell = null;
         }
         void WizardSpell(Faces face, Tile t)
         {
-            OnSpellCast();
             this.spell = null;
         }
         void ThiefSpell(Faces face, ConcreteCard c)
         {
-            OnSpellCast();
+            this.spell = null;
         }
 
         switch (spell)
@@ -85,6 +83,9 @@ public class CardManager : MonoBehaviour
                 // Do nothing -- spell might even be null.
                 break;
         }
+
+        Debug.Log("IMMENSE PAIN");
+        OnSpellCast();
     }
 
     public ConcreteCard GetSpawnCard()
