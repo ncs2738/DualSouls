@@ -126,4 +126,12 @@ public class PlayerTeam : ScriptableObject
 
         return placeableTiles;
     }
+
+    public void OnTurnEnd()
+    {
+        for (int i = 0; i < playerUnits.Count; i++)
+        {
+            playerUnits[i].Location.OnTurnEnd();
+        }
+    }
 }

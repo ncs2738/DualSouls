@@ -265,11 +265,16 @@ public abstract class Tile : MonoBehaviour
 
     public void RemoveUnit()
     {
-        occupiedUnit = null;
         OnUnitExit();
+        occupiedUnit = null;
     }
 
     protected virtual void OnUnitExit()
+    {
+        return;
+    }
+
+    public virtual void OnTurnEnd()
     {
         return;
     }

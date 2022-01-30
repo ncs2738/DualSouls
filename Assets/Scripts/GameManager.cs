@@ -20,6 +20,37 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        playerTurns = new List<PlayerTeam.Faction>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(MapEditModeEnabled)
+        {
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                GridManager.Instance.Save();
+            }
+
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                Debug.Log("loaded");
+                GridManager.Instance.Load();
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                StartGame();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                EndTurn();
+            }
+        }
     }
 
     public void AddPlayer(PlayerTeam.Faction playerTeam)
@@ -29,6 +60,9 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        MapEditModeEnabled = false;
+        isGameStarted = true;
+
         //currentPlayer = Random.Range(0, playerTurns.Count);
         currentPlayer = 0;
         activePlayerTurn = playerTurns[currentPlayer];
@@ -41,6 +75,8 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
+        UnitManager.Instance.OnTurnEnd();
+
         currentPlayer++;
         if(currentPlayer >= playerTurns.Count)
         {
@@ -58,21 +94,6 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         //TODO <3!
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.S))
-        {
-            GridManager.Instance.Save();
-        }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            Debug.Log("loaded");
-            GridManager.Instance.Load();
-        }
     }
 
     public bool IsMapEditEnabled()

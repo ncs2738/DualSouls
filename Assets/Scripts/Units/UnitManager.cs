@@ -201,4 +201,16 @@ public class UnitManager : MonoBehaviour
             }
         }       
     }
+
+    public void OnTurnEnd()
+    {
+        if (GameManager.Instance.activePlayerTurn.Equals(PlayerTeam.Faction.Red))
+        {
+            redTeam.OnTurnEnd();
+        }
+        else
+        {
+            blueTeam.OnTurnEnd();
+        }
+    }
 }

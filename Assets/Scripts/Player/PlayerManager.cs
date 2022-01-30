@@ -44,6 +44,7 @@ public class Player
         playerFaction = _playerFaction;
         playerTeam = _playerTeam;
         playerTeam.Initialize(_playerFaction);
+        GameManager.Instance.AddPlayer(playerFaction);
     }
 
     public PlayerTeam GetTeam()
