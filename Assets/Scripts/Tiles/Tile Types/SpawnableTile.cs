@@ -128,10 +128,11 @@ public class SpawnableTile : Tile
         {
             if (occupiedUnit)
             {
-                if (occupiedUnit.DoesUnitHaveKey())
+                if (occupiedUnit.DoesUnitHaveKey() && occupiedUnit.faction != tileOwner)
                 {
                     ClaimTile(occupiedUnit.faction);
                     //remove from list
+                    GameManager.Instance.GameOver();
                 }
             }
         }

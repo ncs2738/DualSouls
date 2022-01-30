@@ -28,6 +28,7 @@ public class CardMouseInteraction : MonoBehaviour,
     //Detect if a click occurs
     public void OnPointerClick(PointerEventData pointerEventData)
     {
+        if (GameManager.Instance.inMainMenu) return;
         if (CardManager.Instance.SpellType == SpellTypes.Thief
             && pointerEventData.button == PointerEventData.InputButton.Left)
         {

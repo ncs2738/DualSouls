@@ -58,8 +58,10 @@ public abstract class Tile : MonoBehaviour
 
     protected void OnMouseEnter()
     {
+        if (GameManager.Instance.inMainMenu) return;
+
         //First, check if there is a unit on the tile
-        if(occupiedUnit != null)
+        if (occupiedUnit != null)
         {
             //Then check to make sure we've not hovered over unit currently selected...
             if(!GridManager.Instance.IsUnitSelected(occupiedUnit))
@@ -225,6 +227,8 @@ public abstract class Tile : MonoBehaviour
 
     private void GameModeInputs()
     {
+        if (GameManager.Instance.inMainMenu) return;
+
         if (!CombatManager.Instance.InCombat)
         {
             if (Input.GetMouseButtonDown(0))

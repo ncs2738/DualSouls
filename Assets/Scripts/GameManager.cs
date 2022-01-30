@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     private bool MapEditModeEnabled = true;
     [SerializeField]
     private bool isGameStarted = false;
+    [SerializeField]
+    public bool inMainMenu = true;
 
     public Hand redHand;
     public Hand blueHand;
@@ -35,6 +37,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (inMainMenu) return;
         if(MapEditModeEnabled)
         {
             if (Input.GetKeyDown(KeyCode.S))
@@ -121,6 +124,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         //TODO - add game over <3
+        RestartGame();
     }
 
     public void RestartGame()
@@ -136,5 +140,21 @@ public class GameManager : MonoBehaviour
     public bool IsGameStarted()
     {
         return isGameStarted;
+    }
+
+    public void DisableMainMenu()
+    {
+        inMainMenu = false;
+    }
+
+    public void EnableMainManu()
+    {
+        inMainMenu = true;
+    }
+
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }
