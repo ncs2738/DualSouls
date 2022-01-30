@@ -14,6 +14,8 @@ public class CardAppearance : MonoBehaviour
     public Image elementOneImage;
     public Image elementTwoImage;
     public Image artImage;
+    public GameObject leftClickHighlight;
+    public GameObject rightClickHighlight;
 
     void Start()
     {
@@ -47,5 +49,22 @@ public class CardAppearance : MonoBehaviour
         elementTwoImage.sprite = card.elementTwo.Sprite();
 
         artImage.sprite = card.Artwork;
+    }
+
+
+    public void SetLeftClicKHighlight()
+    {
+        leftClickHighlight.SetActive(true);
+    }
+
+    public void SetRightClicKHighlight()
+    {
+        rightClickHighlight.SetActive(true);
+    }
+
+    public void ResetHighlights()
+    {
+        leftClickHighlight.SetActive(false);
+        rightClickHighlight.SetActive(false);
     }
 }

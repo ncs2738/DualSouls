@@ -27,16 +27,24 @@ public class CardMouseInteraction : MonoBehaviour, IPointerClickHandler
         {
             card.Flip();
             CardManager.Instance.CastSpell(null, null);
+
         } else if (pointerEventData.button == PointerEventData.InputButton.Left)
         {
             Debug.Log("Unit selected for card `" + card.Name + "`");
             SelectUnitOfCard();
+
+            hand.ResetHighlights();
+            hand.SetCardHighlight(card, Hand.CardHighlightAction.left);
         } else if (pointerEventData.button == PointerEventData.InputButton.Right)
         {
             Debug.Log("Spell selected for card `" + card.Name + "`");
             SelectSpellOfCard();
+
+            hand.ResetHighlights();
+            hand.SetCardHighlight(card, Hand.CardHighlightAction.right);
         }
     }
+
 
     public void SelectUnitOfCard()
     {

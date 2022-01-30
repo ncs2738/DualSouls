@@ -1293,8 +1293,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activePlayerTurn: 1
   ActiveTeamTurn: {fileID: 1752341038}
-  MapEditModeEnabled: 1
-  isGameStarted: 0
+  MapEditModeEnabled: 0
+  isGameStarted: 1
 --- !u!4 &686493358
 Transform:
   m_ObjectHideFlags: 0

@@ -11,6 +11,13 @@ public class Hand : MonoBehaviour
 
     public GameObject cardPrefab;
 
+    public enum CardHighlightAction
+    {
+        left = 0,
+        right = 1,
+        reset = 2,
+    }
+
     void Awake()
     {
         oldCards = (ConcreteCard[]) cards.Clone();
@@ -26,6 +33,38 @@ public class Hand : MonoBehaviour
             {
                 activeCards[i] = null;
                 return;
+            }
+        }
+    }
+
+    public void ResetHighlights()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            cardAppearances[i].ResetHighlights();
+        }
+    }
+
+    public void SetCardHighlight(ConcreteCard c, CardHighlightAction action)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (activeCards[i] == c)
+            {
+                switch(action)
+                {
+                    case CardHighlightAction.left:
+                        cardAppearances[i].SetLeftClicKHighlight();
+                        break;
+
+                    case CardHighlightAction.right:
+                        cardAppearances[i].SetRightClicKHighlight();
+                        break;
+
+                    case CardHighlightAction.reset:
+                        cardAppearances[i].ResetHighlights();
+                        break;
+                }
             }
         }
     }

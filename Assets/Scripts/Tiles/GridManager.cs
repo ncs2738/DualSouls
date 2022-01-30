@@ -46,7 +46,8 @@ public class GridManager : MonoBehaviour
         selectedEnemyUnits = new List<ConcreteUnit>();
         enemyUnitMoves = new List<Tile>();
 
-        GenerateGrid();
+        //GenerateGrid();
+        Load();
     }
 
     public void SetTileType(Tile tile, Tile.TileType tileType)
