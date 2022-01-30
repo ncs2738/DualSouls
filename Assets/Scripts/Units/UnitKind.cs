@@ -6,5 +6,6 @@ using UnityEngine;
 public class UnitKind : ScriptableObject
 {
     public Array2DEditor.Array2DInt attackPattern;
-    public Sprite appearance;
+    public Sprite redAppearance;
+    public Sprite bluAppearance;
 }

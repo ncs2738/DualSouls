@@ -7,7 +7,7 @@ using System;
 public class ConcreteUnit : MonoBehaviour
 {
     public UnitKind unitKind;
-    public Sprite Appearance => unitKind.appearance;
+    public Sprite Appearance => faction == PlayerTeam.Faction.Red ? unitKind.redAppearance : unitKind.bluAppearance;
     public Array2DEditor.Array2DInt AttackPattern => unitKind.attackPattern;
 
     public Elements elementOne;
@@ -335,10 +335,10 @@ public class ConcreteUnit : MonoBehaviour
     {
         availableMoves.Clear();
 
-        FindNextTiles(Vector2.left + Vector2.up, 3);
-        FindNextTiles(Vector2.right + Vector2.up, 3);
-        FindNextTiles(Vector2.right + Vector2.down, 3);
-        FindNextTiles(Vector2.left + Vector2.down, 3);
+        FindNextTiles(Vector2.left + Vector2.up, 2,2);
+        FindNextTiles(Vector2.right + Vector2.up, 2,2);
+        FindNextTiles(Vector2.right + Vector2.down, 2,2);
+        FindNextTiles(Vector2.left + Vector2.down, 2,2);
     }
 
     public HashSet<ConcreteUnit> AttackersOfMoveTo(Tile tile) => availableMoves.ContainsKey(tile)
