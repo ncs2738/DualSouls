@@ -229,12 +229,19 @@ public abstract class Tile : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (CombatManager.Instance.SelectingComponent && occupiedUnit != null)
+                if (CombatManager.Instance.SelectingComponent)
                 {
-                    ConcreteUnit selectedUnit = GridManager.Instance.GetSelectedUnit();
-                    if (selectedUnit.possibleOpponents.Contains(occupiedUnit) && !selectedUnit.Equals(occupiedUnit) && !occupiedUnit.faction.Equals(selectedUnit.faction))
+                    Debug.Log($"occupiedUnit {occupiedUnit}");
+                    if (occupiedUnit != null)
                     {
-                        CombatManager.Instance.StartCombat(selectedUnit, occupiedUnit);
+                        ConcreteUnit selectedUnit = GridManager.Instance.GetSelectedUnit();
+                        Debug.Log($"selectedUnit {selectedUnit}");
+                        if (selectedUnit.possibleOpponents.Contains(occupiedUnit)
+                            && !selectedUnit.Equals(occupiedUnit)
+                            && !occupiedUnit.faction.Equals(selectedUnit.faction))
+                        {
+                            CombatManager.Instance.StartCombat(selectedUnit, occupiedUnit);
+                        }
                     }
                 }
                 else

@@ -200,7 +200,6 @@ public class GridManager : MonoBehaviour
                 
                 currentSelectedUnit.RotateUnit(newOrientation ?? currentSelectedUnit.orientation);
                 CardManager.Instance.CastSpell(tile: null, card: null);
-                ClearUnitData();
             }
             //check if the player clicked on an empty spot or on the same unit...
             else if (newSelectedTile.IsTileEmpty() || newSelectedUnit.Equals(currentSelectedUnit))

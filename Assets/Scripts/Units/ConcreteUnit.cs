@@ -124,15 +124,21 @@ public class ConcreteUnit : MonoBehaviour
             Debug.LogWarning($"Tried a useless rotation of `{unitKind}` from `{orientation}` to {orientation}");
         }
 
+        // Unit is no longer attacking the tiles it used to attack
         UnmarkAttackedTiles();
 
+        // Turn the unit
         orientation = newOrientation;
 
+        // Unit is now attacking some new tiles
         MarkAttackedTiles();
 
-        InitiateCombatSelection(
-            attackers: Location.AttackingUnits.ToHashSet(),
-            victims: GetUnitsThisAttacks());
+        MoveUnit(Location, Location.AttackingUnits.ToHashSet());
+
+        // Initiate combat
+        //InitiateCombatSelection(
+        //    attackers: Location.AttackingUnits.ToHashSet(),
+        //    victims: GetUnitsThisAttacks());
     }
 
     private void InitiateCombatSelection(ISet<ConcreteUnit> attackers, ISet<ConcreteUnit> victims)
