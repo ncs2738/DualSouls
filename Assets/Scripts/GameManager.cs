@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +13,10 @@ public class GameManager : MonoBehaviour
     private List<PlayerTeam.Faction> playerTurns;
 
     [SerializeField]
-    private TMPro.TMP_Text ActiveTeamTurn;
+    private Image RedTeamBG;
+
+    [SerializeField]
+    private Image BlueTeamBG;
 
     [SerializeField]
     private bool MapEditModeEnabled = true;
@@ -85,16 +89,9 @@ public class GameManager : MonoBehaviour
 
     private void ShowTeam()
     {
-        if(activePlayerTurn.Equals(PlayerTeam.Faction.Red))
-        {
-            ActiveTeamTurn.text = "Red";
-            ActiveTeamTurn.color = Color.red;
-        }
-        else
-        {
-            ActiveTeamTurn.text = "Blue";
-            ActiveTeamTurn.color = Color.blue;
-        }
+        BlueTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Blue);
+        Debug.Log($"blueteam: `{BlueTeamBG.enabled}`");
+        RedTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Red);
     }
 
     public void HasTurnEnded()

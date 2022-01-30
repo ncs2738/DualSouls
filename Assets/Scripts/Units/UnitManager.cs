@@ -68,6 +68,7 @@ public class UnitManager : MonoBehaviour
 
     public void LoadUnit(Tile tile, ConcreteUnit.SaveObject unitData)
     {
+        /*
         ConcreteUnit newUnit = Instantiate(unitPrefab, new Vector3(tile.transform.position.x, tile.transform.position.y, -3), Quaternion.identity)
             .GetComponent<ConcreteUnit>();
 
@@ -97,6 +98,7 @@ public class UnitManager : MonoBehaviour
         }
 
         newUnit.MarkAttackedTiles();
+        */
     }
 
     public void RemoveUnit(ConcreteUnit removedUnit)
