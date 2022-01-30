@@ -62,6 +62,13 @@ public static class SaveSystem
         }
     }
 
+    public static GridManager.SaveObject LoadResource()
+    {
+        TextAsset savedFile = Resources.Load<TextAsset>("Saves/save");
+        GridManager.SaveObject saveObject = JsonUtility.FromJson<GridManager.SaveObject>(savedFile.text);
+        return saveObject;
+    }
+
     public static string LoadMostRecentFile()
     {
         Init();

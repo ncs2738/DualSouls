@@ -384,7 +384,7 @@ public class GridManager : MonoBehaviour
             tiles = new Dictionary<Vector2, Tile>();
         }
 
-        SaveObject saveObject = SaveSystem.LoadMostRecentObject<SaveObject>();
+        SaveObject saveObject = SaveSystem.LoadResource();
 
         gridWidth = saveObject.gridWidth;
         gridHeight = saveObject.gridHeight;
