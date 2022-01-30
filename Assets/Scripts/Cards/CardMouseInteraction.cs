@@ -28,16 +28,14 @@ public class CardMouseInteraction : MonoBehaviour,
     //Detect if a click occurs
     public void OnPointerClick(PointerEventData pointerEventData)
     {
-        if (Good())
+        if (CardManager.Instance.SpellType == SpellTypes.Thief
+            && pointerEventData.button == PointerEventData.InputButton.Left)
         {
-            if (CardManager.Instance.SpellType == SpellTypes.Thief
-                && pointerEventData.button == PointerEventData.InputButton.Left)
+            if (GoodThief())
             {
                 card.Flip();
                 CardManager.Instance.CastSpell(null, null);
-
-            }
-            else if (pointerEventData.button == PointerEventData.InputButton.Left)
+            } else
             {
                 Debug.Log("Unit selected for card `" + card.Name + "`");
                 SelectUnitOfCard();
@@ -45,14 +43,23 @@ public class CardMouseInteraction : MonoBehaviour,
                 hand.ResetHighlights();
                 hand.SetCardHighlight(card, Hand.CardHighlightAction.left);
             }
-            else if (pointerEventData.button == PointerEventData.InputButton.Right)
-            {
-                Debug.Log("Spell selected for card `" + card.Name + "`");
-                SelectSpellOfCard();
+        }
+        else if (pointerEventData.button == PointerEventData.InputButton.Left
+            && GoodNonThief())
+        {
+            Debug.Log("Unit selected for card `" + card.Name + "`");
+            SelectUnitOfCard();
 
-                hand.ResetHighlights();
-                hand.SetCardHighlight(card, Hand.CardHighlightAction.right);
-            }
+            hand.ResetHighlights();
+            hand.SetCardHighlight(card, Hand.CardHighlightAction.left);
+        }
+        else if (pointerEventData.button == PointerEventData.InputButton.Right)
+        {
+            Debug.Log("Spell selected for card `" + card.Name + "`");
+            SelectSpellOfCard();
+
+            hand.ResetHighlights();
+            hand.SetCardHighlight(card, Hand.CardHighlightAction.right);
         }
     }
 
@@ -87,7 +94,7 @@ public class CardMouseInteraction : MonoBehaviour,
         CardManager.Instance.OnSpellCast += () => hand.RemoveCard(card);
     }
 
-    private bool Good()
+    private bool GoodThief()
     {
         if (CardManager.Instance.SpellType == SpellTypes.Thief
             && CardManager.Instance.SpellFace == Faces.FRONT)
@@ -101,6 +108,10 @@ public class CardMouseInteraction : MonoBehaviour,
             return hand.faction != GameManager.Instance.activePlayerTurn;
         }
 
+        return false;
+    }
+
+    private bool GoodNonThief() {
         return hand.faction == GameManager.Instance.activePlayerTurn;
     }
 }

@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour
         // This needs to be flipped to work, idk why
         BlueTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Red);
         Debug.Log($"blueteam: `{BlueTeamBG.enabled}`");
+        Debug.Log($"activePlayerTurn: `{activePlayerTurn}`");
         RedTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Blue);
     }
 

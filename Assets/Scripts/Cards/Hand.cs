@@ -28,6 +28,8 @@ public class Hand : MonoBehaviour
 
     public void RemoveCard(ConcreteCard c)
     {
+        ResetHighlights();
+
         for (int i = 0; i < 4; i++)
         {
             if (activeCards[i] == c)
@@ -72,6 +74,8 @@ public class Hand : MonoBehaviour
 
     public void DiscardAll()
     {
+        ResetHighlights();
+
         for (int i = 0; i < 4; i++)
         {
             activeCards[i] = null;

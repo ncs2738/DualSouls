@@ -1624,7 +1624,7 @@ MonoBehaviour:
   RedTeamBG: {fileID: 1559994592}
   BlueTeamBG: {fileID: 893129069}
   MapEditModeEnabled: 0
-  isGameStarted: 1
+  isGameStarted: 0
 --- !u!4 &686493358
 Transform:
   m_ObjectHideFlags: 0
