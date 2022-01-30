@@ -52,10 +52,7 @@ public class UnitManager : MonoBehaviour
             tile.OccupyTile(newUnit);
         }
 
-        foreach (Tile attackedTile in newUnit.GetTilesThisAttacks())
-        {
-            attackedTile.AddAttacker(newUnit);
-        }
+        newUnit.MarkAttackedTiles();
 
         ShowPlacementTiles(false);
         tile.SetPlacementHighlight(faction, false);
@@ -76,11 +73,7 @@ public class UnitManager : MonoBehaviour
         newUnit.faction = unitData.playerFaction;
 
         newUnit.UpdateAppearance();
-
-        foreach (Tile attackedTile in newUnit.GetTilesThisAttacks())
-        {
-            attackedTile.AddAttacker(newUnit);
-        }
+        newUnit.MarkAttackedTiles();
 
         if (unitData.playerFaction == PlayerTeam.Faction.Red)
         {

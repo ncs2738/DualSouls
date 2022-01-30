@@ -27,6 +27,7 @@ public class GridManager : MonoBehaviour
     private ConcreteUnit currentSelectedUnit;
 
     private Dictionary<Tile, HashSet<ConcreteUnit>> availableUnitMoves;
+    private List<Tile> availableUnitRotations;
 
     private List<ConcreteUnit> selectedEnemyUnits;
     private List<Tile> enemyUnitMoves;
@@ -41,6 +42,7 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         availableUnitMoves = new Dictionary<Tile, HashSet<ConcreteUnit>>();
+        availableUnitRotations = new List<Tile>();
         selectedEnemyUnits = new List<ConcreteUnit>();
         enemyUnitMoves = new List<Tile>();
 
@@ -108,6 +110,10 @@ public class GridManager : MonoBehaviour
             //grab & show it's move-pool
             availableUnitMoves = currentSelectedUnit.GetAvailableMoves(CardManager.Instance.SpellType);
             currentSelectedUnit.ShowAvailableMoves(true);
+        } else if (CardManager.Instance.SpellType == SpellTypes.Warrior)
+        {
+            availableUnitRotations = currentSelectedUnit.GetAvailableRotations();
+            currentSelectedUnit.ShowAvailableRotations(true);
         }
     }
 
@@ -115,7 +121,8 @@ public class GridManager : MonoBehaviour
     {
         currentSelectedUnit.ShowAvailableMoves(false);
         availableUnitMoves.Clear();
-        currentSelectedUnit.ShowAvailableMoves(false);
+        currentSelectedUnit.ShowAvailableRotations(false);
+        availableUnitRotations.Clear();
         currentSelectedTile = null;
         currentSelectedUnit = null;
     }
@@ -173,15 +180,27 @@ public class GridManager : MonoBehaviour
         {
             //we have a selected unit, so check if the tile we selected is in the unit's movement list
             HashSet<ConcreteUnit> attackersOfMove = currentSelectedUnit.AttackersOfMoveTo(newSelectedTile);
+            Orientation? newOrientation = currentSelectedUnit.RotationTo(newSelectedTile);
             if (attackersOfMove != null)
             {
-                //TODO - PROBABLY WILL HAVE TO MOVE THIS TO HANDLE SHOWING MULTIPLE UNITS
                 //it is! this is a valid selection! First clear the attack-ranges!
+                currentSelectedUnit.ShowAvailableMoves(false);
                 currentSelectedUnit.ShowAttackedTiles(false);
 
                 //next move the unit
                 currentSelectedUnit.MoveUnit(newSelectedTile, attackersOfMove);
                 CardManager.Instance.CastSpell(tile: newSelectedTile, card: null);
+            } 
+            else if (newOrientation != null)
+            {
+                Debug.Log($"newOrientation: {newOrientation}");
+                currentSelectedUnit.ShowAvailableMoves(false);
+                currentSelectedUnit.ShowAttackedTiles(false);
+                currentSelectedUnit.ShowAvailableRotations(true);
+                
+                currentSelectedUnit.RotateUnit(newOrientation ?? currentSelectedUnit.orientation);
+                CardManager.Instance.CastSpell(tile: null, card: null);
+                ClearUnitData();
             }
             //check if the player clicked on an empty spot or on the same unit...
             else if (newSelectedTile.IsTileEmpty() || newSelectedUnit.Equals(currentSelectedUnit))
@@ -258,6 +277,7 @@ public class GridManager : MonoBehaviour
         return newTile;
     }
 
+    private Dictionary<Tile, ConcreteUnit.SaveObject> unitsToLoad;
     private Tile LoadNewTile(Tile.SaveObject savedTile, Transform parentObject)
     {
         int x = (int)savedTile.posX;
@@ -274,7 +294,7 @@ public class GridManager : MonoBehaviour
 
         if (!savedTile.occupiedUnit.playerFaction.Equals(PlayerTeam.Faction.None))
         {
-            newTile.LoadUnit(savedTile.occupiedUnit);
+            unitsToLoad[newTile] = savedTile.occupiedUnit;
         }
 
         if (!savedTile.spawnableTileData.tileOwner.Equals(PlayerTeam.Faction.None))
@@ -336,10 +356,19 @@ public class GridManager : MonoBehaviour
             newColumn.transform.parent = this.gameObject.transform;
             tileRows[x] = newColumn;
         }
-        
+
+
+        unitsToLoad = new Dictionary<Tile, ConcreteUnit.SaveObject>();
         foreach (Tile.SaveObject savedTile in saveObject.savedLevel)
         {
             LoadNewTile(savedTile, tileRows[(int)savedTile.posX].transform);
+        }
+
+        foreach (KeyValuePair<Tile, ConcreteUnit.SaveObject> kv in unitsToLoad)
+        {
+            Tile tile = kv.Key;
+            ConcreteUnit.SaveObject unit = kv.Value;
+            tile.LoadUnit(unit);
         }
     }
 

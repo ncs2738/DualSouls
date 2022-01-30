@@ -40,6 +40,8 @@ public class ConcreteUnit : MonoBehaviour
     private Dictionary<Tile, HashSet<ConcreteUnit>> availableMoves;
     public Orientation orientation;
 
+    private List<Tile> availableRotations;
+
     public List<ConcreteUnit> possibleOpponents;
 
     public PlayerTeam.Faction faction;
@@ -57,8 +59,8 @@ public class ConcreteUnit : MonoBehaviour
 
     private void Start()
     {
-
         availableMoves = new Dictionary<Tile, HashSet<ConcreteUnit>>();
+        availableRotations = new List<Tile>();
         CaptureKey.SetActive(false);
     }
 
@@ -77,10 +79,7 @@ public class ConcreteUnit : MonoBehaviour
 
     public void ClearTile()
     {
-        foreach (Tile tile in GetTilesThisAttacks())
-        {
-            tile.RemoveAttacker(this);
-        }
+        UnmarkAttackedTiles();
         Location.RemoveUnit();
         // WARNING: Should this set _location to null, too?
     }
@@ -93,14 +92,29 @@ public class ConcreteUnit : MonoBehaviour
         float oldZ = transform.position.z;
         transform.position = new Vector3 (CurrentPos.x, CurrentPos.y, oldZ);
 
-        foreach (Tile attackedTile in GetTilesThisAttacks())
-        {
-            attackedTile.AddAttacker(this);
-        }
+        MarkAttackedTiles();
 
         InitiateCombatSelection(
             attackers: attackersOfMove,
             victims: GetUnitsThisAttacks());
+    }
+
+    public void MarkAttackedTiles()
+    {
+        foreach (Tile attackedTile in GetTilesThisAttacks())
+        {
+            attackedTile.AddAttacker(this);
+            Debug.Log($"added <{attackedTile.transform.name},{attackedTile.transform.parent.name}>");
+        }
+    }
+
+    public void UnmarkAttackedTiles()
+    {
+        foreach (Tile attackedTile in GetTilesThisAttacks())
+        {
+            attackedTile.RemoveAttacker(this);
+            Debug.Log($"remove <{attackedTile.transform.name},{attackedTile.transform.parent.name}>");
+        }
     }
 
     public void RotateUnit(Orientation newOrientation)
@@ -110,8 +124,15 @@ public class ConcreteUnit : MonoBehaviour
             Debug.LogWarning($"Tried a useless rotation of `{unitKind}` from `{orientation}` to {orientation}");
         }
 
+        UnmarkAttackedTiles();
+
         orientation = newOrientation;
-        MoveUnit(Location, Location.AttackingUnits.ToHashSet());
+
+        MarkAttackedTiles();
+
+        InitiateCombatSelection(
+            attackers: Location.AttackingUnits.ToHashSet(),
+            victims: GetUnitsThisAttacks());
     }
 
     private void InitiateCombatSelection(ISet<ConcreteUnit> attackers, ISet<ConcreteUnit> victims)
@@ -210,6 +231,14 @@ public class ConcreteUnit : MonoBehaviour
         }
     }
 
+    public void ShowAvailableRotations(bool status)
+    {
+        foreach (Tile tile in availableRotations)
+        {
+            tile.SetRotationHighlight(status);
+        }
+    }
+
     public ISet<ConcreteUnit> GetUnitsThisAttacks() =>
         GetTilesThisAttacks()
         .Select(t => t.OccupiedUnit)
@@ -229,6 +258,9 @@ public class ConcreteUnit : MonoBehaviour
             if (attackedTile != null)
             {
                 attackedTiles.Add(attackedTile);
+            } else
+            {
+                Debug.Log($"nu~rupo! `{CurrentPos + directedAttack}`");
             }
         }
 
@@ -317,6 +349,45 @@ public class ConcreteUnit : MonoBehaviour
         return null;
     }
 
+    public List<Tile> GetAvailableRotations()
+    {
+        List<Vector2Int> offsets = new List<Vector2Int>();
+        // it must be a warrior
+        if (orientation == Orientation.EAST || orientation == Orientation.WEST)
+        {
+            offsets.Add(Vector2Int.up);
+            offsets.Add(Vector2Int.down);
+        } else
+        {
+            offsets.Add(Vector2Int.left);
+            offsets.Add(Vector2Int.right);
+        }
+
+        foreach (Vector2Int offset in offsets)
+        {
+            Tile nextTile = GridManager.Instance.GetTile(CurrentPos + offset);
+            if (nextTile != null)
+            {
+                availableRotations.Add(nextTile);
+            }
+        }
+
+        return availableRotations;
+    }
+
+    public Orientation? RotationTo(Tile other)
+    {
+        if (!availableRotations.Contains(other))
+        {
+            return null;
+        }
+
+        Vector2Int offset =
+            Vector2Int.RoundToInt(other.transform.position - Location.transform.position);
+
+        return offset.ToOrientation();
+    }
+
     private void FindNextTiles(Vector2 direction, int startVal = 0, int endVal = 3)
     {
         HashSet<ConcreteUnit> moveAttackers = new HashSet<ConcreteUnit>();
@@ -333,8 +404,6 @@ public class ConcreteUnit : MonoBehaviour
                 {
                     availableMoves[nextTile] = new HashSet<ConcreteUnit>();
                     availableMoves[nextTile].UnionWith(moveAttackers);
-                    //Debug.Log($"<{nextTile.transform.name}, {nextTile.transform.parent.name}>: "
-                    //    +$"{availableMoves[nextTile].Aggregate("", (str, unit) => unit.unitKind.name + ", " + str)}");
                 }
             }
             else
