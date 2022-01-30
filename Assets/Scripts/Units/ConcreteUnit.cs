@@ -397,6 +397,7 @@ public class ConcreteUnit : MonoBehaviour
     {
         if (!availableRotations.Contains(other))
         {
+            Debug.Log("OOPS!!");
             return null;
         }
 

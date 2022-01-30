@@ -82,7 +82,7 @@ public static class EnumUtils
 
     public static Orientation ToOrientation(this Vector2Int vec)
     {
-        if (vec.Equals(Vector2.up))
+        if (vec.Equals(Vector2Int.up))
         {
             return Orientation.NORTH;
         } else if (vec.Equals(Vector2Int.down))

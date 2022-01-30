@@ -228,7 +228,6 @@ public class GridManager : MonoBehaviour
                 currentSelectedUnit.ShowAvailableMoves(false);
                 currentSelectedUnit.ShowAttackedTiles(false);
                 currentSelectedUnit.ShowAvailableRotations(true);
-                
                 currentSelectedUnit.RotateUnit(newOrientation ?? currentSelectedUnit.orientation);
                 CardManager.Instance.CastSpell(tile: null, card: null);
             }
