@@ -118,9 +118,11 @@ public class SpawnableTile : Tile
                 if (tileOwner.Equals(occupiedUnit.faction))
                 {
                     occupiedUnit.GiveUnitKey();
+                    SoundManager.Instance.PlayGetKeySound();
                 } else
                 {
                     ClaimTile(occupiedUnit.faction);
+                    SoundManager.Instance.PlayCaptureFortressSound();
                 }
             }
         }

@@ -89,8 +89,8 @@ public class GameManager : MonoBehaviour
         BlueTeamBG.enabled = false;
         MapEditModeEnabled = false;
         isGameStarted = true;
+        SoundManager.Instance.PlayGameTheme();
 
-        //currentPlayer = Random.Range(0, playerTurns.Count);
         activePlayerTurn = PlayerTeam.Faction.Red;
         ShowTeam();
     }
@@ -99,11 +99,6 @@ public class GameManager : MonoBehaviour
     {
         BlueTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Blue);
         RedTeamBG.enabled = activePlayerTurn.Equals(PlayerTeam.Faction.Red);
-    }
-
-    public void HasTurnEnded()
-    {
-        //TODO
     }
 
     public void EndTurn()
@@ -127,7 +122,8 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        //TODO - add game over <3
+        //TODO - add game over
+        //SoundManager.Instance.PlayWinGame();
         RestartGame();
     }
 
@@ -154,6 +150,7 @@ public class GameManager : MonoBehaviour
     public void EnableMainManu()
     {
         inMainMenu = true;
+        SoundManager.Instance.PlayMenuTheme();
     }
 
 

@@ -63,10 +63,12 @@ public class CardManager : MonoBehaviour
         }
         void DragonSpell(Faces face, Tile t)
         {
+            SoundManager.Instance.PlayUnitMoveSound();
             this.spell = null;
         }
         void WizardSpell(Faces face, Tile t)
         {
+            SoundManager.Instance.PlayUnitTeleportSound();
             this.spell = null;
         }
         void ThiefSpell(Faces face, ConcreteCard c)
