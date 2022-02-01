@@ -130,13 +130,13 @@ public class GridManager : MonoBehaviour
         {
             //grab & show it's move-pool
             availableUnitMoves = unit.GetAvailableMoves(CardManager.Instance.SpellType);
-            availableUnitRotations = null;
+            availableUnitRotations.Clear();
             unit.ShowAvailableRotations(false);
             unit.ShowAvailableMoves(true);
         }
         else if (CardManager.Instance.SpellType == SpellTypes.Warrior)
         {
-            availableUnitMoves = null;
+            availableUnitMoves.Clear();
             availableUnitRotations = unit.GetAvailableRotations();
             unit.ShowAvailableMoves(false);
             unit.ShowAvailableRotations(true);
