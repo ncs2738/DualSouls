@@ -33,12 +33,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         playerTurns = new List<PlayerTeam.Faction>();
     }
-
-    private void Start()
-    {
-        SoundManager.Instance.PlayMenuTheme();
-    }
-
+    
     // Update is called once per frame
     void Update()
     {

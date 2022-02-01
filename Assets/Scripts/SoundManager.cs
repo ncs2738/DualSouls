@@ -119,6 +119,8 @@ public class SoundManager : MonoBehaviour
 
 
     GameSongs = new AudioClip[] { GameTheme1, GameTheme2, GameTheme3, GameTheme4, GameTheme5, GameTheme6, GameTheme7 };
+
+    PlayMenuTheme();
     }
 
     void Update()
