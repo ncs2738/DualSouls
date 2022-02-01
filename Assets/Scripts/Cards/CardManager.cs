@@ -104,11 +104,7 @@ public class CardManager : MonoBehaviour
 
     public bool HasSelectedUnit()
     {
-        if (spawnCard != null)
-        {
-            return true;
-        }
-        return false;
+        return spawnCard != null;
     }
 
     public void ActivateCardHolder(bool status)

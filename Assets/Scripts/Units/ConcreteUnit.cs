@@ -508,4 +508,16 @@ public class ConcreteUnit : MonoBehaviour
             tintSprite.color = BlueTeamTint;
         }
     }
+
+    public void OnHovered(bool hovered)
+    {
+        if (hovered)
+        {
+            GridManager.Instance.UpdateAndDisplaySpellOptions(this);
+        }
+
+        ShowAttackedTiles(hovered);
+        ShowAvailableMoves(hovered);
+        ShowAvailableRotations(hovered);
+    }
 }
