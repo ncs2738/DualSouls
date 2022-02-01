@@ -110,13 +110,13 @@ public class SpawnableTile : Tile
 
     public override void OnTurnEnd()
     {
-        Debug.Log($"on turn end, `{transform.parent.name}, {transform.name}`!");
         if (tileType.Equals(TileType.Fortress))
         {
             if (occupiedUnit != null)
             {
                 if (tileOwner.Equals(occupiedUnit.faction))
                 {
+                    SoundManager.Instance.PlayUnitGetKeySound();
                     occupiedUnit.GiveUnitKey();
                 } else
                 {
