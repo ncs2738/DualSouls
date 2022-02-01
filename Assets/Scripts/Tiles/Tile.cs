@@ -252,7 +252,23 @@ public abstract class Tile : MonoBehaviour
                             && !selectedUnit.Equals(occupiedUnit)
                             && !occupiedUnit.faction.Equals(selectedUnit.faction))
                         {
-                            CombatManager.Instance.StartCombat(selectedUnit, occupiedUnit);
+                            // sometimes the selected unit is an enemy unit
+                            if (selectedUnit.faction != GameManager.Instance.activePlayerTurn)
+                            {
+                                // in those cases, the active unit is flipped (so the combat kind is flipped as well).
+                                if (CombatManager.Instance.CombatType == ConcreteUnit.CombatKind.ONE_SIDED_ATTACK)
+                                {
+                                    CombatManager.Instance.CombatType = ConcreteUnit.CombatKind.ONE_SIDED_DEFENSE;
+                                } else if (CombatManager.Instance.CombatType == ConcreteUnit.CombatKind.ONE_SIDED_DEFENSE)
+                                {
+                                    CombatManager.Instance.CombatType = ConcreteUnit.CombatKind.ONE_SIDED_ATTACK;
+                                }
+
+                                CombatManager.Instance.StartCombat(occupiedUnit, selectedUnit);
+                            } else
+                            {
+                                CombatManager.Instance.StartCombat(selectedUnit, occupiedUnit);
+                            }
                         }
                     }
                 }

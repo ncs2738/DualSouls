@@ -29,7 +29,9 @@ public class CombatManager : MonoBehaviour
     private bool hasBlueChosen = false;
 
     private PlayerTeam.Faction winner;
+    [SerializeField]
     private ConcreteUnit ActivePlayerUnit;
+    [SerializeField]
     private ConcreteUnit EnemyPlayerUnit;
 
     float countdown = 5f;

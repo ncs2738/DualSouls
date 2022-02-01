@@ -234,7 +234,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 53.1, y: 4}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &103851042
 MonoBehaviour:
@@ -421,7 +421,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 53.1, y: 4}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &164275706
 MonoBehaviour:
@@ -1339,6 +1339,8 @@ MonoBehaviour:
   BattleText: {fileID: 1741492825}
   RedPlayer: {fileID: 7375786941066736638}
   BluePlayer: {fileID: 2065922264}
+  ActivePlayerUnit: {fileID: 0}
+  EnemyPlayerUnit: {fileID: 0}
 --- !u!4 &485309891
 Transform:
   m_ObjectHideFlags: 0
@@ -2255,6 +2257,7 @@ MonoBehaviour:
   - {fileID: 1904890829}
   cardPrefab: {fileID: 1671637472252217421, guid: d030a4317ed69c845b62f77ea17ab0c2, type: 3}
   faction: 1
+  selectedCard: {fileID: 0}
 --- !u!4 &990296358
 Transform:
   m_ObjectHideFlags: 0
@@ -5609,6 +5612,7 @@ MonoBehaviour:
   - {fileID: 1881627578}
   cardPrefab: {fileID: 1671637472252217421, guid: d030a4317ed69c845b62f77ea17ab0c2, type: 3}
   faction: 2
+  selectedCard: {fileID: 0}
 --- !u!4 &2125640546
 Transform:
   m_ObjectHideFlags: 0
