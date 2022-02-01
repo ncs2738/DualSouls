@@ -508,4 +508,9 @@ public class ConcreteUnit : MonoBehaviour
             tintSprite.color = BlueTeamTint;
         }
     }
+
+    public string GetUnitKindName()
+    {
+        return unitKind.name;
+    }
 }

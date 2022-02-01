@@ -5,6 +5,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
+    static AudioSource audioSource;
 
     //================ GENERAL ========================
     [SerializeField] static AudioClip ButtonClick;
@@ -56,7 +57,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] static AudioClip GameTheme7;
     [SerializeField] static AudioClip MenuTheme;
 
-    AudioClip GameSongs[];
+    AudioClip[] GameSongs;
 
     private void Awake()
     {
@@ -65,7 +66,9 @@ public class SoundManager : MonoBehaviour
 
     void Start()
     {
-    [SerializeField] ButtonClick = Resources.Load<AudioClip>("Audio/ClickAnyButton");
+    audioSource = GetComponent<AudioSource>();
+
+    ButtonClick = Resources.Load<AudioClip>("Audio/ClickAnyButton");
 
     //================ ATTACKING ========================
     AttackStart = Resources.Load<AudioClip>("Audio/AttackStart");
@@ -102,7 +105,7 @@ public class SoundManager : MonoBehaviour
     //================ WIZARD ========================
     WizardSelect = Resources.Load<AudioClip>("Audio/UnitWizardSelect");
     WizardUnselect = Resources.Load<AudioClip>("Audio/UnitWizardUnselect");
-    WizardSummon = Resources.Load<AudioClip>("Audio/UnitWarriorSummon");
+    WizardSummon = Resources.Load<AudioClip>("Audio/UnitWizardSummon");
 
     //================ MUSIC ========================
     GameTheme1 = Resources.Load<AudioClip>("Audio/BKGMUS_NL_Into-Battle");
@@ -115,7 +118,7 @@ public class SoundManager : MonoBehaviour
     MenuTheme = Resources.Load<AudioClip>("Audio/BKGMUS_NL_Tower-Defense");
 
 
-    AudioClip[] GameSongs = new AudioClip[] { GameTheme1, GameTheme2, GameTheme3, GameTheme4, GameTheme5, GameTheme6, GameTheme7 };
+    GameSongs = new AudioClip[] { GameTheme1, GameTheme2, GameTheme3, GameTheme4, GameTheme5, GameTheme6, GameTheme7 };
     }
 
     void Update()
@@ -179,7 +182,7 @@ public class SoundManager : MonoBehaviour
         audioSource.PlayOneShot(UnitMove);
     }
 
-    public void PlayUnitGeKeySound()
+    public void PlayUnitGetKeySound()
     {
         audioSource.PlayOneShot(UnitGetKey);
     }
@@ -227,7 +230,7 @@ public class SoundManager : MonoBehaviour
         audioSource.PlayOneShot(WarriorUnselect);
     }
 
-    public void PlayThiefSummonSound()
+    public void PlayWarriorSummonSound()
     {
         audioSource.PlayOneShot(WarriorSummon);
     }
@@ -238,7 +241,7 @@ public class SoundManager : MonoBehaviour
         audioSource.PlayOneShot(WizardSelect);
     }   
 
-    public void PlayThiefUnselectSound()
+    public void PlayWizardUnselectSound()
     {
         audioSource.PlayOneShot(WizardUnselect);
     }
@@ -257,8 +260,9 @@ public class SoundManager : MonoBehaviour
         }
 
         audioSource.PlayOneShot(GameSongs[Random.Range(0, GameSongs.Length)]);
-        audiSource.loop = false;
+        audioSource.loop = false;
         audioSource.playOnAwake = true;
+        audioSource.volume = .25f;
     }
 
     public void PlayMenuTheme()
@@ -269,7 +273,8 @@ public class SoundManager : MonoBehaviour
         }
 
         audioSource.PlayOneShot(MenuTheme);
-        audiSource.loop = true;
+        audioSource.loop = true;
         audioSource.playOnAwake = true;
+        audioSource.volume = .25f;
     }
 }

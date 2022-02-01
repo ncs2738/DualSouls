@@ -98,6 +98,50 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
+    private void PlaySelectSound()
+    {
+        switch (currentSelectedUnit.GetUnitKindName())
+        {
+            case "WarriorUnit":
+            SoundManager.Instance.PlayWarriorSelectSound();
+            break;
+
+            case "WizardUnit":
+            SoundManager.Instance.PlayWizardSelectSound();
+            break;
+
+            case "DragonUnit":
+            SoundManager.Instance.PlayDragonSelectSound();
+            break;
+
+            case "ThiefUnit":
+            SoundManager.Instance.PlayThiefSelectSound();
+            break;
+        }
+    }
+
+    private void PlayUnselectSound()
+    {
+        switch (currentSelectedUnit.GetUnitKindName())
+        {
+            case "WarriorUnit":
+            SoundManager.Instance.PlayWarriorUnselectSound();
+            break;
+
+            case "WizardUnit":
+            SoundManager.Instance.PlayWizardUnselectSound();
+            break;
+
+            case "DragonUnit":
+            SoundManager.Instance.PlayDragonUnselectSound();
+            break;
+
+            case "ThiefUnit":
+            SoundManager.Instance.PlayThiefUnselectSound();
+            break;
+        }
+    }
+
     public void SetUnitData(Tile newSelectedTile, ConcreteUnit newSelectedUnit)
     {
         //update the unit data
@@ -105,6 +149,7 @@ public class GridManager : MonoBehaviour
         currentSelectedUnit = newSelectedUnit;
 
         currentSelectedUnit.ShowAttackedTiles(true);
+        PlaySelectSound();
 
         if (CardManager.Instance.SpellType == SpellTypes.Thief)
         {
@@ -235,6 +280,7 @@ public class GridManager : MonoBehaviour
             else if (newSelectedTile.IsTileEmpty() || newSelectedUnit.Equals(currentSelectedUnit))
             {
                 //they did, so let's let the player unselect what they've chosen
+                PlayUnselectSound();
                 ClearUnitData();
             }
             //The player clicked on another unit...

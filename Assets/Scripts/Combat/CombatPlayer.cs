@@ -37,7 +37,7 @@ public class CombatPlayer : MonoBehaviour
         right = 1,
     }
 
-    public void SetData(Elements _elem1, Elements _elem2)
+    public void SetData(Elements _elem1, Elements _elem2, ConcreteUnit unit)
     {
         elem1 = _elem1;
         SetImage(elem1, elem1Image);
@@ -46,6 +46,8 @@ public class CombatPlayer : MonoBehaviour
         SetImage(elem2, elem2Image);
 
         ChoiceStatus.text = "Choose.";
+
+        sprite.sprite = unit.GetComponent<SpriteRenderer>().sprite;
     }
 
     private void SetImage(Elements element, Image elementImage)

@@ -33,6 +33,27 @@ public class UnitManager : MonoBehaviour
 
         ConcreteCard spawnCard = CardManager.Instance.GetSpawnCard();
 
+        Debug.Log(spawnCard.UnitKind.name);
+
+        switch (spawnCard.UnitKind.name)
+        {
+            case "WarriorUnit":
+            SoundManager.Instance.PlayWarriorSummonSound();
+            break;
+
+            case "WizardUnit":
+            SoundManager.Instance.PlayWizardSummonSound();
+            break;
+
+            case "DragonUnit":
+            SoundManager.Instance.PlayDragonSummonSound();
+            break;
+
+            case "ThiefUnit":
+            SoundManager.Instance.PlayThiefSummonSound();
+            break;
+        }
+
         newUnit.unitKind = spawnCard.UnitKind;
         newUnit.elementOne = spawnCard.elementOne;
         newUnit.elementTwo = spawnCard.elementTwo;
