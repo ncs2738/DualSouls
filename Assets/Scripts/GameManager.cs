@@ -34,6 +34,11 @@ public class GameManager : MonoBehaviour
         playerTurns = new List<PlayerTeam.Faction>();
     }
 
+    private void Start()
+    {
+        SoundManager.Instance.PlayMenuTheme();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -145,14 +150,11 @@ public class GameManager : MonoBehaviour
     public void DisableMainMenu()
     {
         inMainMenu = false;
-                Debug.Log("AGAGA1wadasdsaad");
     }
 
     public void EnableMainManu()
     {
         inMainMenu = true;
-        SoundManager.Instance.PlayMenuTheme();
-        Debug.Log("AGAGA");
     }
 
 

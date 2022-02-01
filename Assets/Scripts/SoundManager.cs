@@ -261,7 +261,6 @@ public class SoundManager : MonoBehaviour
 
         audioSource.PlayOneShot(GameSongs[Random.Range(0, GameSongs.Length)]);
         audioSource.loop = false;
-        audioSource.playOnAwake = true;
         audioSource.volume = .25f;
     }
 
