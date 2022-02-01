@@ -67,7 +67,8 @@ public abstract class Tile : MonoBehaviour
             if(!GridManager.Instance.IsUnitSelected(occupiedUnit))
             {
                 isHovered = true;
-                occupiedUnit.OnHovered(true);
+                //occupiedUnit.GetAvailableMoves(Unit.UnitMoveTypes.Dragon);
+                //occupiedUnit.ShowAvailableMoves(true);
             }
         }
 
@@ -79,16 +80,7 @@ public abstract class Tile : MonoBehaviour
         if(isHovered)
         {
             isHovered = false;
-
-            //First, check if there is a unit on the tile
-            if (occupiedUnit != null)
-            {
-                //Then check to make sure we've not hovered over unit currently selected...
-                if (!GridManager.Instance.IsUnitSelected(occupiedUnit))
-                {
-                    occupiedUnit.OnHovered(false);
-                }
-            }
+            //occupiedUnit.ShowAvailableMoves(false);
         }
 
         //if(!GridManager.Instance.IsTileInMovePool(this))

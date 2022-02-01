@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CardHolder: {fileID: 639933901}
-  spawnCard: {fileID: 0}
+  spawnCard: {fileID: 1419728432}
 --- !u!114 &6107765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4194,6 +4194,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 421620061}
     m_Modifications:
+    - target: {fileID: 2177697104380966973, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4266628938268169641, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
@@ -4225,6 +4229,18 @@ PrefabInstance:
     - target: {fileID: 4266628938268169641, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
       propertyPath: m_SizeDelta.y
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266628938268169641, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.60000014
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266628938268169641, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.60000014
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266628938268169641, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.60000014
       objectReference: {fileID: 0}
     - target: {fileID: 4266628938268169641, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4846,6 +4862,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 200286992}
     m_Modifications:
+    - target: {fileID: 2177697104380966973, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4266628938268169641, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5110,6 +5130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 421620061}
     m_Modifications:
+    - target: {fileID: 2177697104380966973, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4266628938268169641, guid: bd6b7acce0bebd643ab32f742490e31f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

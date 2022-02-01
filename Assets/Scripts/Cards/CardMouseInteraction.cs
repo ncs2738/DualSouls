@@ -69,7 +69,7 @@ public class CardMouseInteraction : MonoBehaviour,
     {
         transform.parent.parent.position = new Vector3(
             transform.parent.parent.position.x,
-            25,
+            10,
             transform.parent.parent.position.z);
     }
 
