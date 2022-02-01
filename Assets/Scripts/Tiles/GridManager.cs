@@ -166,15 +166,25 @@ public class GridManager : MonoBehaviour
             return;
         }
 
+        UpdateAndDisplaySpellOptions(currentSelectedUnit);
+    }
+
+    public void UpdateAndDisplaySpellOptions(ConcreteUnit unit)
+    {
         if (CardManager.Instance.SpellType.Equals(SpellTypes.Dragon) || CardManager.Instance.SpellType.Equals(SpellTypes.Wizard))
         {
             //grab & show it's move-pool
-            availableUnitMoves = currentSelectedUnit.GetAvailableMoves(CardManager.Instance.SpellType);
-            currentSelectedUnit.ShowAvailableMoves(true);
-        } else if (CardManager.Instance.SpellType == SpellTypes.Warrior)
+            availableUnitMoves = unit.GetAvailableMoves(CardManager.Instance.SpellType);
+            availableUnitRotations = null;
+            unit.ShowAvailableRotations(false);
+            unit.ShowAvailableMoves(true);
+        }
+        else if (CardManager.Instance.SpellType == SpellTypes.Warrior)
         {
-            availableUnitRotations = currentSelectedUnit.GetAvailableRotations();
-            currentSelectedUnit.ShowAvailableRotations(true);
+            availableUnitMoves = null;
+            availableUnitRotations = unit.GetAvailableRotations();
+            unit.ShowAvailableMoves(false);
+            unit.ShowAvailableRotations(true);
         }
     }
 

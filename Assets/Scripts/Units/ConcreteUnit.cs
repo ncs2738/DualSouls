@@ -509,6 +509,18 @@ public class ConcreteUnit : MonoBehaviour
         }
     }
 
+    public void OnHovered(bool hovered)
+    {
+        if (hovered)
+        {
+            GridManager.Instance.UpdateAndDisplaySpellOptions(this);
+        }
+
+        ShowAttackedTiles(hovered);
+        ShowAvailableMoves(hovered);
+        ShowAvailableRotations(hovered);
+    }
+
     public string GetUnitKindName()
     {
         return unitKind.name;
