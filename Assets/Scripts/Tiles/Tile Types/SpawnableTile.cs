@@ -118,6 +118,7 @@ public class SpawnableTile : Tile
                 if (tileOwner.Equals(occupiedUnit.faction))
                 {
                     occupiedUnit.GiveUnitKey();
+                    SoundManager.Instance.PlayUnitGetKeySound();
                 } else
                 {
                     ClaimTile(occupiedUnit.faction);

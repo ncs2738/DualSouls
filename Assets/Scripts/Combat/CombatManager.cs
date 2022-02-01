@@ -48,15 +48,17 @@ public class CombatManager : MonoBehaviour
         ActivePlayerUnit = _ActivePlayerUnit;
         EnemyPlayerUnit = _EnemyPlayerUnit;
 
+        SoundManager.Instance.PlayAttackStartSound();
+
         if (ActivePlayerUnit.faction.Equals(PlayerTeam.Faction.Red))
         {
-            RedPlayer.SetData(ActivePlayerUnit.elementOne, ActivePlayerUnit.elementTwo);
-            BluePlayer.SetData(EnemyPlayerUnit.elementOne, EnemyPlayerUnit.elementTwo);
+            RedPlayer.SetData(ActivePlayerUnit.elementOne, ActivePlayerUnit.elementTwo, ActivePlayerUnit);
+            BluePlayer.SetData(EnemyPlayerUnit.elementOne, EnemyPlayerUnit.elementTwo, EnemyPlayerUnit);
         }
         else
         {
-            BluePlayer.SetData(ActivePlayerUnit.elementOne, ActivePlayerUnit.elementTwo);
-            RedPlayer.SetData(EnemyPlayerUnit.elementOne, EnemyPlayerUnit.elementTwo);
+            BluePlayer.SetData(ActivePlayerUnit.elementOne, ActivePlayerUnit.elementTwo, ActivePlayerUnit);
+            RedPlayer.SetData(EnemyPlayerUnit.elementOne, EnemyPlayerUnit.elementTwo, EnemyPlayerUnit);
         }
 
         CombatScreen.SetActive(true);
@@ -114,16 +116,19 @@ public class CombatManager : MonoBehaviour
                 {
                     winner = PlayerTeam.Faction.None;
                     BattleText.text = "Draw!";
+                    SoundManager.Instance.PlayAttackDrawSound();
                 }
                 else if (RedPlayer.GetSelectedElement().Beats(BluePlayer.GetSelectedElement()))
                 {
                     winner = PlayerTeam.Faction.Red;
                     BattleText.text = "Red wins!";
+                    PlayWinSoundEffect();
                 }
                 else
                 {
                     winner = PlayerTeam.Faction.Blue;
                     BattleText.text = "Blue wins!";
+                    PlayWinSoundEffect();
                 }
 
                 BattleIsDecided = true;
@@ -226,6 +231,35 @@ public class CombatManager : MonoBehaviour
         {
             //neither won
             GameManager.Instance.EndTurn();
+        }
+    }
+
+    private void PlayWinSoundEffect()
+    {
+        Elements elem;
+
+        if (ActivePlayerUnit.faction.Equals(winner))
+        {
+            elem = RedPlayer.GetSelectedElement();
+        }
+        else
+        {
+            elem = BluePlayer.GetSelectedElement();
+        }
+
+        switch (elem)
+        {
+            case Elements.FIRE:
+                SoundManager.Instance.PlayAttackFireSound();
+                break;
+
+            case Elements.WATER:
+                SoundManager.Instance.PlayAttackFireSound();
+                break;
+
+            case Elements.GRASS:
+                SoundManager.Instance.PlayAttackGrassSound();
+                break;
         }
     }
 }

@@ -520,4 +520,9 @@ public class ConcreteUnit : MonoBehaviour
         ShowAvailableMoves(hovered);
         ShowAvailableRotations(hovered);
     }
+
+    public string GetUnitKindName()
+    {
+        return unitKind.name;
+    }
 }
