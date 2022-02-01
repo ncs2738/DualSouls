@@ -12,6 +12,8 @@ public class Hand : MonoBehaviour
     public GameObject cardPrefab;
     public PlayerTeam.Faction faction;
 
+    public ConcreteCard selectedCard;
+
     public enum CardHighlightAction
     {
         left = 0,
@@ -58,10 +60,12 @@ public class Hand : MonoBehaviour
                 {
                     case CardHighlightAction.left:
                         cardAppearances[i].SetLeftClicKHighlight();
+                        selectedCard = activeCards[i];
                         break;
 
                     case CardHighlightAction.right:
                         cardAppearances[i].SetRightClicKHighlight();
+                        selectedCard = activeCards[i];
                         break;
 
                     case CardHighlightAction.reset:

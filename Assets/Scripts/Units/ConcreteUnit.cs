@@ -511,7 +511,11 @@ public class ConcreteUnit : MonoBehaviour
 
     public void OnHovered(bool hovered)
     {
-        if (hovered)
+        Faces validFace =
+            GameManager.Instance.activePlayerTurn == this.faction ?
+            Faces.FRONT : Faces.BACK;
+
+        if (hovered && CardManager.Instance.SpellFace == validFace)
         {
             GridManager.Instance.UpdateAndDisplaySpellOptions(this);
         }

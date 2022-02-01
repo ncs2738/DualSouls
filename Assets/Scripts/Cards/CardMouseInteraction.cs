@@ -15,7 +15,6 @@ public class CardMouseInteraction : MonoBehaviour,
     [SerializeField]
     private Hand hand;
 
-
     private Vector3 originalParentPosition;
     void Start()
     {
@@ -99,7 +98,8 @@ public class CardMouseInteraction : MonoBehaviour,
     private bool GoodThief()
     {
         if (CardManager.Instance.SpellType == SpellTypes.Thief
-            && CardManager.Instance.SpellFace == Faces.FRONT)
+            && CardManager.Instance.SpellFace == Faces.FRONT
+            && hand.selectedCard != card)
         {
             return hand.faction == GameManager.Instance.activePlayerTurn;
         }

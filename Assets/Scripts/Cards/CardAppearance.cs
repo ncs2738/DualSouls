@@ -17,6 +17,9 @@ public class CardAppearance : MonoBehaviour
     public GameObject leftClickHighlight;
     public GameObject rightClickHighlight;
 
+    public Sprite lightFrameSprite;
+    public Sprite darkFrameSprite;
+
     void Start()
     {
         Refresh();
@@ -36,7 +39,14 @@ public class CardAppearance : MonoBehaviour
         {
             gameObject.SetActive(true);
         }
-        frame.color = card.face.GetColor();
+
+        if (card.face == Faces.FRONT)
+        {
+            frame.sprite = lightFrameSprite;
+        } else
+        {
+            frame.sprite = darkFrameSprite;
+        }
         nameText.color = card.face.Opposite().GetColor();
         descriptionText.color = card.face.Opposite().GetColor();
 
